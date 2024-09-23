@@ -48,9 +48,9 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
 </a>
 
-- Hackathon display
-- Hackathon details
-- The hackathon a user participated
+- **Hackathon Display**: Users can view a list of available hackathons.
+- **Hackathon Details**: Detailed information about each hackathon.
+- **User Participation**: View previous hackathons that a user has participated in.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -58,9 +58,9 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
 </a>
 
-- Find a group feature
-- Like feature
-- Sort/filter feature
+- **Group Finder**: A feature that allows users to find and join groups for hackathons.
+- **Like System**: A feature enabling users to like and favorite hackathons or projects.
+- **Sorting and Filtering**: A feature to sort and filter hackathons based on user's preferences.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -150,6 +150,29 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 ## 🤝 Contributing <a name="contributing"></a>
+
+### Team Lead
+
+- Jay Li
+
+### Project Manager
+
+- Simone LaPray
+
+### Designers
+
+- Flora Y. Kim
+- Helen Yan
+- Julia Cha
+
+### Developers
+
+- Jerrick Li
+- Abhishek
+- Hilary Chen
+- Michelle Wong
+- Jiachun Xiang
+- Nikita Van
 
 Contributions, issues, and feature requests are welcome!
 
