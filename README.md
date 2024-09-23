@@ -168,7 +168,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Developers
 
 - Jerrick Li
-- Abhishek
+- Abhishek Manyam
 - Hilary Chen
 - Michelle Wong
 - Jiachun Xiang
