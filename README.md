@@ -16,14 +16,13 @@
 
   - [🛠 Built With](#built-with)
 
-    - [Key Features](#key-features)
-    - [Future Features](#future-features)
+    - [🔑 Key Features](#key-features)
+    - [✨ Future Features](#future-features)
 - [📖 Live Demo](#live-demo)
 
 - [💻 Getting Started](#getting-started)
   - [Setup](#setup)
   - [Prerequisites](#prerequisites)
-- [👥 Authors](#authors)
 - [🤝 Contributing](#contributing)
 - [⭐️ Show your support](#support)
 - [🙏 Acknowledgements](#acknowledgements)
@@ -35,16 +34,14 @@
 **InnoLab**
 This is a project to provide different hackathons for people interested in participating and showcase.
 
-
-
 https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
-## 🛠 Built With 
+## 🛠 Built With <a name="built-with">
 - React
 - SCSS
 - Firebase
 
-### Key Features <a name="key-features">
+### 🔑 Key Features <a name="key-features">
 
 </a>
 
@@ -54,7 +51,7 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Future Features <a name="future-features">
+### ✨ Future Features <a name="future-features">
 
 </a>
 
@@ -71,11 +68,18 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
 ## 💻 Getting Started <a name="getting-started"></a>
 
-# Getting Started with Create React App
+Follow these instructions to run a local instance.
+
+### Prerequisites <a name="prerequisites"></a>
+
+- Ensure you have [Node.js](https://nodejs.org/) installed.
+- Install npm or yarn for package management.
+
+### Setup <a name="setup"></a>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Getting Started with Create React App
 
 In the project directory, you can run:
 
@@ -142,37 +146,31 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-## 👥 Authors <a name="authors"></a>
-👤 ** Jiachun Xiang **
-
-- GitHub: https://github.com/mpa-mxiang
-- LinkedIn: https://linkedin.com/in/jiachunlilyxiang
-
-
 ## 🤝 Contributing <a name="contributing"></a>
 
 ### Team Lead
 
-- Jay Li
+- Jay Li [[LinkedIn](https://www.linkedin.com/in/jialion/)]
 
 ### Project Manager
 
-- Simone LaPray
+- Simone LaPray [[LinkedIn](https://www.linkedin.com/in/simonelapray/)]
 
 ### Designers
 
-- Flora Y. Kim
-- Helen Yan
-- Julia Cha
+- Flora Y. Kim [[Website](florakim.ca) | [LinkedIn](https://www.linkedin.com/in/flora-k1/)]
+- Helen Yan [[LinkedIn](https://www.linkedin.com/in/helenyanux/)]
+- Julia Cha [[LinkedIn](https://www.linkedin.com/in/julia-cha/)]
 
 ### Developers
 
-- Jerrick Li
-- Abhishek Manyam
-- Hilary Chen
-- Michelle Wong
-- Jiachun Xiang
-- Nikita Van
+- Jiachun Xiang **(Author)** [[Github](https://github.com/mpa-mxiang) | [LinkedIn](https://www.linkedin.com/in/jiachunlilyxiang/)]
+- Jerrick Li [[Github](https://github.com/jerrickli24) | [LinkedIn](https://www.linkedin.com/in/jerrickli/)]
+- Abhishek Manyam [[Github](https://github.com/abhishekmanyam) | [LinkedIn](https://www.linkedin.com/in/abhishek-manyam/)]
+- Hilary Chen [[Github](https://github.com/hilarykhc) | [LinkedIn](https://www.linkedin.com/in/hilarykhc/)]
+- Michelle Wong [[Github](https://github.com/strawberrie68/) | [LinkedIn](https://www.linkedin.com/in/michelle-wong-yvr/)]
+- Nikita Van [[Github](https://github.com/nikitaszvan) | [LinkedIn](https://www.linkedin.com/in/nikita-van-162b9417b/)]
+
 
 Contributions, issues, and feature requests are welcome!
 
