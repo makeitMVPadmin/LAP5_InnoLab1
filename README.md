@@ -158,7 +158,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Designers
 
-- Flora Y. Kim [[Website](florakim.ca) | [LinkedIn](https://www.linkedin.com/in/flora-k1/)]
+- Flora Y. Kim [[Website](https://www.florakim.ca) | [LinkedIn](https://www.linkedin.com/in/flora-k1/)]
 - Helen Yan [[LinkedIn](https://www.linkedin.com/in/helenyanux/)]
 - Julia Cha [[LinkedIn](https://www.linkedin.com/in/julia-cha/)]
 
