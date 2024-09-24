@@ -41,7 +41,7 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 - SCSS
 - Firebase
 
-### Key Features <a name="key-features">
+### 🔑 Key Features <a name="key-features">
 
 </a>
 
@@ -51,7 +51,7 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Future Features <a name="future-features">
+### ✨ Future Features <a name="future-features">
 
 </a>
 
@@ -158,7 +158,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Designers
 
-- Flora Y. Kim [[LinkedIn](https://www.linkedin.com/in/flora-k1/)]
+- Flora Y. Kim [[Website](florakim.ca) | [LinkedIn](https://www.linkedin.com/in/flora-k1/)]
 - Helen Yan [[LinkedIn](https://www.linkedin.com/in/helenyanux/)]
 - Julia Cha [[LinkedIn](https://www.linkedin.com/in/julia-cha/)]
 
@@ -168,8 +168,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - Jerrick Li [[Github](https://github.com/jerrickli24) | [LinkedIn](https://www.linkedin.com/in/jerrickli/)]
 - Abhishek Manyam [[Github](https://github.com/abhishekmanyam) | [LinkedIn](https://www.linkedin.com/in/abhishek-manyam/)]
 - Hilary Chen [[Github](https://github.com/hilarykhc) | [LinkedIn](https://www.linkedin.com/in/hilarykhc/)]
-- Michelle Wong [[Github]() | [LinkedIn]()]
+- Michelle Wong [[Github](https://github.com/strawberrie68/) | [LinkedIn](https://www.linkedin.com/in/michelle-wong-yvr/)]
 - Nikita Van [[Github](https://github.com/nikitaszvan) | [LinkedIn](https://www.linkedin.com/in/nikita-van-162b9417b/)]
+
 
 Contributions, issues, and feature requests are welcome!
 
