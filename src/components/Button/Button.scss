@@ -1,0 +1,155 @@
+@use "../../styles/typography" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.button {
+  color: $MVP-black;
+  border-radius: 6vw;
+  border: none;
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 5vw;
+  padding: 2vw 3vw;
+  box-shadow: 0px 0.2rem 0.2rem 0px rgba(0, 0, 0, 0.25);
+
+  cursor: pointer;
+  
+  &--yellow {
+    background-color: $MVP-Yellow; /* Add yellow background color */
+  }
+  
+  @include Laptop {
+    padding: 0.5vw 1vw;
+    font-size: 1.6vw;
+  }
+
+  &--yellow-alt {
+    background-color: $MVP-Yellow;
+    color: $MVP-black;
+    font-size: 5vw;
+    width: 100%;
+    padding: 3vw 3vw;
+    border-radius: 0;
+    @include Laptop {
+      font-size: 1.9vw;
+      padding: 1vw 0vw;
+      height: 100%;
+    }
+  }
+  &--dark-blue {
+    background-color: $MVP-Dark-Blue;
+    color: $MVP-White;
+    font-size: 5vw;
+    width: 100%;
+    padding: 3vw 3vw;
+    border-radius: 0;
+    @include Laptop {
+      font-size: 1.9vw;
+      padding: 1vw 0vw;
+      height: 100%;
+    }
+  }
+  &--red {
+    background-color: $MVP-Red;
+    color: $MVP-black;
+    font-size: 5vw;
+    width: 100%;
+    padding: 3vw 3vw;
+    border-radius: 0;
+    @include Laptop {
+      font-size: 1.9vw;
+      padding: 1vw 0vw;
+      height: 100%;
+    }
+  }
+
+  &--blue {
+    background-color: $MVP-Light-Blue;
+    color: $MVP-White;
+    font-size: 5vw;
+    width: 100%;
+    padding: 3vw 3vw;
+    @include Laptop {
+      font-size: 1.4vw;
+      padding: 1vw 0vw;
+    }
+  }
+
+  &__not-active {
+    background-color: $MVP-Not-Active-Blue;
+    color: $MVP-White;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include Laptop {
+      width: 7rem;
+      height: 2.5rem;
+      padding: 0.5rem 1rem;
+      gap: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 1.4375rem;
+      line-height: 115.645%;
+    }
+    @include Desktop {
+      width: 8.125rem;
+      height: 2.9375rem;
+      padding: 1vw 3vw;
+      border-radius: 0.6vw;
+      font-size: 1.9vw;
+      line-height: 115.645%;
+    }
+  }
+
+  &__active {
+    background-color: $MVP-Dark-Blue;
+    color: $MVP-White;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include Laptop {
+      width: 7rem;
+      height: 2.5rem;
+      padding: 0.5rem 1rem;
+      gap: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 1.4375rem;
+      line-height: 115.645%;
+    }
+    @include Desktop {
+      width: 8.125rem;
+      height: 2.9375rem;
+      padding: 1vw 3vw;
+      border-radius: 0.6vw;
+      font-size: 1.9vw;
+      line-height: 115.645%;
+    }
+  }
+
+  &-back {
+    background-color: #636e7c;
+    color: $MVP-White;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include Laptop {
+      width: 7rem;
+      height: 2.5rem;
+      padding: 0.5rem 1rem;
+      gap: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 1.4375rem;
+      line-height: 115.645%;
+    }
+    @include Desktop {
+      width: 8.125rem;
+      height: 2.9375rem;
+      padding: 1vw 3vw;
+      border-radius: 0.6vw;
+      font-size: 1.9vw;
+      line-height: 115.645%;
+    }
+  }
+}

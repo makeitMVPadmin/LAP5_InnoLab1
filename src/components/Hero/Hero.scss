@@ -1,0 +1,182 @@
+@use "../../styles/typography" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.hero {
+  background-color: $MVP-White;
+  width: 100%;
+  padding: 1rem;
+
+  @include Laptop {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  @include Desktop {
+    padding: 7rem;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include Laptop {
+      width: 100%;
+    }
+  }
+
+  &__image {
+    width: 70%;
+
+    @include Laptop {
+      width: 90%;
+    }
+
+    &-container {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+
+      @include Laptop {
+        width: 50%;
+      }
+    }
+  }
+
+  &__left-container {
+    @include Laptop {
+      height: 100%;
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__header {
+    @include LandingPage-Titles;
+    margin-bottom: 1rem;
+    color: $MVP-black;
+    width: 65%;
+
+    @include Laptop {
+      font-size: 3vw;
+      width: 100%;
+    }
+  }
+
+  &__description {
+    @include LandingPage-Text;
+    display: flex;
+    margin: 1rem 0;
+    justify-content: center;
+    text-align: left;
+
+    @include Desktop {
+      width: 56%;
+    }
+  }
+
+  &__success {
+    background: $MVP-White;
+    margin: 1rem auto;
+    border-radius: 5.6vw;
+    border: 0.8vw solid #000;
+    box-shadow: 0.8vw 0.8vw 0px 0px #09f;
+    width: 81.8vw;
+    height: 45.7vw;
+    padding: 4.3vw 6.4vw;
+
+    @include Laptop {
+      border-radius: 1.5vw;
+      border: 0.2vw solid #000;
+      background: $MVP-White;
+      box-shadow: 0.6vw 0.6vw 0px 0px #09f;
+      width: 42.4vw;
+      height: 13vw;
+      margin: 1rem 0;
+      padding: 1.1vw 1.7vw;
+    }
+  }
+
+  &__success-message {
+    @include Body;
+    color: $MVP-black;
+    text-align: left;
+    border-color: black;
+    border-radius: 0.5rem;
+
+    &-header {
+      @include SubHeader;
+      margin-bottom: 6vw;
+
+      @include Laptop {
+        margin: 0 0 1.5vw 0;
+      }
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: row;
+    padding: 0.7vw 1.5vw;
+    border: solid 0.8vw #000000;
+    border-radius: 0.9vw;
+    justify-content: space-between;
+    align-items: center;
+    height: 12vw;
+    width: 69.8vw;
+
+    @include Laptop {
+      width: 23.4vw;
+      height: 4.4vw;
+      padding: 0.7vw 1.5vw;
+      border-radius: 0.6vw;
+      border: solid 0.2vw #000000;
+    }
+  }
+
+  &__form label {
+    margin-bottom: 1rem;
+  }
+
+  &__form input {
+    border: none;
+
+    &::placeholder {
+      color: $MVP-black;
+    }
+
+    &:focus {
+      outline: none;
+    }
+    @include Buttons;
+
+    @include Laptop {
+      height: 100%;
+      font-size: 1.5vw;
+    }
+  }
+
+  &__form button {
+    background-color: $MVP-Yellow;
+    border: none;
+    border-radius: 50%;
+    width: 6vw;
+    height: 6vw;
+
+    @include Laptop {
+      width: 1.4vw;
+      height: 1.4vw;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
