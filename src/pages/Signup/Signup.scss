@@ -1,0 +1,124 @@
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/typography" as *;
+
+.signuppage {
+  display: flex;
+  flex-direction: column;
+  padding: 3vw 5vw;
+  align-items: center;
+
+  @include Laptop {
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: unset;
+  }
+
+  &__image {
+    width: 42.5vw;
+    height: 43vw;
+    margin: 1rem 0;
+
+    @include Laptop {
+      width: 39vw;
+      height: 39.1vw;
+      margin: auto 0;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: auto;
+
+    @include Laptop {
+      width: 60%;
+      height: 100%;
+      justify-content: space-evenly;
+    }
+  }
+
+  &__heading {
+    @include Heading;
+    width: 100%;
+    margin: 1rem 0;
+    text-align: center;
+
+    @include Laptop {
+      margin-bottom: 5.6vw;
+    }
+  }
+
+  &__text {
+    font-size: 4vw;
+    margin: 0.5rem;
+
+    @include Laptop {
+      @include Body;
+    }
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include Laptop {
+        margin: 1vw 0 2.1vw 0;
+        width: 36.7vw;
+        justify-content: space-evenly;
+      }
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  &__input {
+    @include Input;
+    margin-bottom: 2.7vw;
+  }
+
+  &__button {
+    &-link {
+      width: 90.8vw;
+      height: 13.7vw;
+      margin: 7vw 0 0 0;
+
+      @include Laptop {
+        width: 36.7vw;
+        height: 5.6vw;
+        margin: 0 0 2.1vw 0;
+      }
+    }
+  }
+
+  &__divider {
+    width: 40vw;
+    height: 0.3vw;
+    @include Laptop {
+      width: 14.5vw;
+      height: 0.1vw;
+    }
+  }
+  &__label {
+    text-align: left;
+    margin-top: 1rem;
+    @include Buttons;
+
+    &-container {
+      display: flex;
+      width: 100%;
+
+      @include Laptop {
+        width: 36.7vw;
+      }
+    }
+  }
+}

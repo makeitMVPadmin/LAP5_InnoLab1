@@ -1,0 +1,27 @@
+@use "../styles/typography" as *;
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+html,
+body {
+  height: 100vh;
+  font-family: "Corben";
+}
+
+ul {
+  list-style: none;
+}
+
+#root {
+  height: 100vh;
+}

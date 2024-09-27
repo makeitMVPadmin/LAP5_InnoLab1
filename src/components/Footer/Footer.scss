@@ -1,0 +1,61 @@
+@use "../../styles/typography" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.footer {
+  background-color: $MVP-Red;
+  height: 200px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+  .icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 20px;
+  }
+
+  a {
+    margin: 0 10px;
+  }
+
+  img {
+    width: 50px;
+  }
+}
+
+.separator {
+  content: "";
+  width: 5px;
+  height: 45%;
+  background-color: #000;
+  margin: 0 150px;
+}
+
+.logo {
+  width: 275px !important;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .icon-row {
+    margin: 20px 0; /* Adjust this margin as needed */
+  }
+
+  .separator {
+    width: 80%; /* Horizontal separator */
+    height: 5px;
+  }
+
+  .logo {
+    margin: 30px 0;
+  }
+}

@@ -1,0 +1,177 @@
+@use "../styles/typography" as *;
+@use "../styles/variables" as *;
+
+@mixin Tablet {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin Laptop {
+  @media screen and (min-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin Desktop {
+  @media screen and (min-width: 1440px) {
+    @content;
+  }
+}
+
+@mixin FullSizeDesktop {
+  @media screen and (min-width: 1920px) {
+    @content;
+  }
+}
+
+@mixin Four-K {
+  @media screen and (min-width: 2560px) {
+    @content;
+  }
+}
+
+@mixin Designers {
+  @media screen and (width: 1440px) {
+    @content;
+  }
+}
+
+// Text
+@mixin Heading {
+  font-family: Gilroy;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  color: $MVP-black;
+
+  font-size: 7.2vw;
+  @include Laptop {
+    font-size: 4vw;
+  }
+  @include Designers {
+    font-size: 3.625rem; // 58px
+  }
+}
+
+@mixin SubHeader {
+  color: $MVP-black;
+  font-family: Gilroy;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 150%;
+  font-size: 20pt;
+
+  @include Laptop {
+    font-size: 4vw;
+    font-size: 20pt;
+  }
+
+  @include Designers {
+    font-size: 20pt; //30px
+  }
+}
+
+@mixin Body {
+  color: $MVP-black;
+  font-family: Gilroy;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 115.645%; /* 28.911px */
+  font-size: 16pt;
+
+  @include Laptop {
+    font-size: 16pt;
+  }
+  @include Designers {
+    font-size: 16pt;
+  }
+}
+@mixin Buttons {
+  color: $MVP-black;
+  font-family: Gilroy;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 115.645%; /* 28.911px */
+  font-size: 5.3vw;
+
+  @include Laptop {
+    font-size: 1.9vw;
+  }
+}
+
+@mixin LandingPage-Titles {
+  font-size: 8vw;
+  line-height: 114%;
+  font-family: Corben;
+
+  @include Laptop {
+    font-size: 3vw;
+  }
+
+  @include Designers {
+    font-size: 2vw;
+  }
+}
+
+@mixin LandingPage-Sub-Titles {
+  font-size: 5vw;
+  line-height: 114%;
+  font-family: Gilroy;
+
+  @include Laptop {
+    font-size: 3vw;
+  }
+
+  @include Desktop {
+    font-size: 2vw;
+  }
+}
+
+@mixin LandingPage-Text {
+  font-size: 6vw;
+  line-height: 115%;
+  font-family: Gilroy;
+
+  @include Laptop {
+    font-size: 2.5vw;
+  }
+
+  @include Desktop {
+    font-size: 1.5vw;
+  }
+}
+
+@mixin Input {
+  box-shadow: 0px 0.2rem 0.2rem 0px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  padding: 3vw 3vw;
+  border: none;
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 4vw;
+  background: #c8e7fb;
+
+  &:focus {
+    border: 2px solid $MVP-Yellow;
+  }
+  &::placeholder {
+    color: rgba(
+      0,
+      0,
+      0,
+      0.7
+    ); /* Change the placeholder text color to MVP-Blue */
+  }
+
+  &--margin {
+    margin: 0.5rem 0 1rem 0;
+  }
+
+  @include Laptop {
+    width: 36.7vw;
+    height: 5.6vw;
+    font-size: 1.9vw;
+    padding: 1vw 1vw;
+  }
+}
