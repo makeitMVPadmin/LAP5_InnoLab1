@@ -5,7 +5,7 @@ import miniCommuniti from "../../assets/logos/miniCommuniti.svg";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -51,4 +51,6 @@ export default function Navbar() {
       </nav>
     </>
   );
-}
+};
+
+export default Navbar;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./ProfilePage.scss";
 import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth, storage } from "../../Firebase/FirebaseConfig";
@@ -7,7 +7,7 @@ import profilePic from "../../assets/images/profilePic.svg";
 import edit from "../../assets/images/edit.svg";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-function ProfilePage() {
+const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isNotEditing, setIsNotEditing] = useState(false);
   const [name, setName] = useState("First Last Name");

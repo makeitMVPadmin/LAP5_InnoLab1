@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../../Firebase/FirebaseConfig";
 
-function DashboardNavbar() {
+const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [dropdownButton, setDropdownButton] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(() => {
