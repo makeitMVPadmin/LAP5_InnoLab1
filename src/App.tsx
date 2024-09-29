@@ -9,7 +9,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import { auth } from "./Firebase/FirebaseConfig";
 import "./styles/_global.scss";
 
-function App() {
+const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 

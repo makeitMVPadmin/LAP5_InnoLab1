@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Hero.scss";
 import Button from "../Button/Button";
 import communitiHero from "../../assets/images/communitiHero.svg";
@@ -6,7 +6,7 @@ import arrowCircleButton from "../../assets/images/arrowCircleButton.svg";
 import { db } from "../../Firebase/FirebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-function Hero() {
+const Hero = () => {
   const [email, setEmail] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);

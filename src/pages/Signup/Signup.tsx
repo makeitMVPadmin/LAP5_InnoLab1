@@ -7,7 +7,7 @@ import communitiHero from "../../assets//images/communitiHero.svg";
 import { Link } from "react-router-dom";
 import { handleSignUp, handleGoogleSignIn } from "../../Firebase/FirebaseAuth";
 
-function Signup() {
+const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

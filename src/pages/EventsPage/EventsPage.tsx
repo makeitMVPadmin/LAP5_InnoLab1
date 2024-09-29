@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 // import { collection, doc, getDoc } from "firebase/firestore";
 // import { db, auth } from "../../Firebase/FirebaseConfig";
 
-function EventsHomePage() {
+const EventsHomePage = () => {
   const [joinedCommunityEvents, setJoinedCommunityEvents] = useState([]);
   const [managedCommunityEvents, setManagedCommunityEvents] = useState([]);
   const [allEvents, setAllEvents] = useState([])

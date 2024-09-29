@@ -5,54 +5,63 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   sendPasswordResetEmail as sendResetEmail,
+  UserCredential,
 } from "firebase/auth";
 import { auth } from "./FirebaseConfig"; // Import the Firebase authentication object from FirebaseConfig
 import { updateUserInFirestore } from "./FirebaseStore";
 
 // Export a function to handle user sign-up
-export const handleSignUp = async (email, password, fullName) => {
+
+export const handleSignUp = async (
+  email: string,
+  password: string,
+  fullName: string
+): Promise<void> => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     const { user } = userCredential;
+    const photoURL = user.photoURL || null;
 
     // Update or create user in Firestore
-    await updateUserInFirestore(user, { email, fullName });
+    await updateUserInFirestore(user, { email, fullName, photoURL });
   } catch (error) {
-    // Handle the error or display an error message to the user.
     console.error("Sign-up error:", error);
   }
 };
 
 // Export a function to handle user sign-in
-export const handleSignIn = async (email, password) => {
+export const handleSignIn = async (
+  email: string,
+  password: string
+): Promise<void> => {
   try {
-    const userCredential = await signInWithEmailAndPassword(
+    const userCredential: UserCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
     const { user } = userCredential;
+    const photoURL = user.photoURL || null;
 
     // Update user in Firestore on sign-in (if needed)
-    await updateUserInFirestore(user, { email });
+    await updateUserInFirestore(user, { email, fullName: user.displayName || '', photoURL });
   } catch (error) {
-    // Handle the error or display an error message to the user.
     console.error("Sign-in error:", error);
   }
 };
 
 // Export a function to handle Google sign-in
-export const handleGoogleSignIn = async () => {
+export const handleGoogleSignIn = async (): Promise<void> => {
   try {
     const provider = new GoogleAuthProvider();
     provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
     // Sign in with Google and get user credentials
-    const result = await signInWithPopup(auth, provider);
+    const result: UserCredential = await signInWithPopup(auth, provider);
     const { user } = result;
 
     // Extract additional information
@@ -60,22 +69,21 @@ export const handleGoogleSignIn = async () => {
 
     // Update or create user in Firestore with additional information
     await updateUserInFirestore(user, {
-      email,
-      photoURL,
-      fullName: displayName,
+      email: email ?? "",
+      photoURL: photoURL ?? "",
+      fullName: displayName ?? "",
     });
   } catch (error) {
-    // Handle the error or display an error message to the user.
     console.error("Google sign-in error:", error);
   }
 };
 
-//reset user password via email
-export const sendPasswordResetEmail = async (email) => {
+// Reset user password via email
+export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   try {
     await sendResetEmail(auth, email);
     console.log("Password reset email sent!");
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error sending password reset email:", error.message);
     throw error;
   }
