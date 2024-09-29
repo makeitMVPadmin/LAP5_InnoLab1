@@ -65,6 +65,17 @@
       font-size: 3vw;
       width: 100%;
     }
+
+
+
+    > span {
+      font-size: 5vw;
+      display: block;
+
+      @include Laptop {
+        font-size: 2vw;
+      }
+    }
   }
 
   &__description {

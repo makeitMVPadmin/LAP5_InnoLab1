@@ -5,6 +5,7 @@ import communitiHero from "../../assets/images/communitiHero.svg";
 import arrowCircleButton from "../../assets/images/arrowCircleButton.svg";
 import { db } from "../../Firebase/FirebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [email, setEmail] = useState("");
@@ -50,19 +51,17 @@ const Hero = () => {
       </div>
       <div className="hero__left-container">
         <div className="hero__container">
-          <h1 className="hero__header">Welcome to your Communiti!</h1>
+          <h1 className="hero__header">Access Hackathons!<span>Head to our Innolab Suite</span></h1>
         </div>
         <p className="hero__description">
-          From interactive chats and virtual workshops to mentorships and more,
-          we've got all your community needs covered in one place.
+        It offers features like event creation, real-time participant tracking,
+        project submission, and collaboration tools
         </p>
         <div className="hero__container hero__container--alt">
           {!showForm && !showSuccess && (
-            <Button
-              buttonText="Join the Launch"
+            <Link to='/hackathons'
               className="button button--yellow"
-              onClick={() => setShowForm(true)}
-            />
+            >Start Your Hackathon Journey →</Link>
           )}
           {showForm && (
             <div className="hero__sign-up">

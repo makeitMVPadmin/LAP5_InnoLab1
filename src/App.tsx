@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import HomePage from "./pages/HomePage/HomePage";
-import EventsPage from "./pages/EventsPage/EventsPage";
+import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage";
 import Login from "./pages/LogIn/LogIn"; 
 import Signup from "./pages/Signup/Signup"; 
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
@@ -37,7 +37,7 @@ const App = () => {
     
       {user ? (
         <>
-          <Route path="/events" element={<EventsPage />} />
+          <Route path="/hackathons" element={<HackathonEventsPage />} />
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />

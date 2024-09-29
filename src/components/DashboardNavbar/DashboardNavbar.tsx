@@ -112,7 +112,7 @@ const DashboardNavbar = () => {
           <p className="dashboard-navbar__text">Communities</p>
         </NavLink>
         <NavLink
-          to="/events"
+          to="/hackathons"
           className={(navData) =>
             navData.isActive
               ? "dashboard-navbar__link active"
