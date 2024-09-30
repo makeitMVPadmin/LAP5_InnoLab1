@@ -1,7 +1,6 @@
 import EventCard from "../../components/EventCard/EventCard";
 import { useEffect, useState } from "react";
-import { getDocs, collection } from "firebase/firestore";
-import { db } from "../../Firebase/FirebaseConfig";
+import { fetchHackathonEvents } from "../../Firebase/GetHackathonEvents";
 
 
 const Home = () => {
@@ -10,9 +9,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const colRef = collection(db, "hackathonEvents");
-            const querySnapshot = await getDocs(colRef);
-            const data = querySnapshot.docs.map((doc) => doc.data());
+            const data = await fetchHackathonEvents();
             setHackathonEvents(data);
             setIsLoading(false);
         };
@@ -26,6 +23,7 @@ const Home = () => {
 
     return (
         <div className="home">
+
             {hackathonEvents.map((event, index) => (
                 <EventCard key={index} imageUrl={event.imageUrl} title={event.title} startTime={event.startTime} endTime={event.endTime} timeZone={event.timeZone} skillLevel={event.skillLevel} themes={event.themes} />
             ))}
