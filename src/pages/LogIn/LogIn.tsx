@@ -24,7 +24,7 @@ const LogIn = () => {
     event.preventDefault();
     try {
       await handleSignIn(email, password);
-      navigate("/events");
+      navigate("/hackathons");
     } catch (error) {
       console.error("Sign-in error:", error);
     }
