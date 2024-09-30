@@ -6,7 +6,7 @@ import EventsPage from "./pages/EventsPage/EventsPage";
 import Login from "./pages/LogIn/LogIn";
 import Signup from "./pages/Signup/Signup";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import HackathonPage from "./pages/HackathonPage/HackathonPage";
+import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage";
 import { auth } from "./Firebase/FirebaseConfig";
 import "./styles/_global.scss";
 
@@ -43,7 +43,7 @@ function App() {
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
       )}
-      <Route path="/hackathon" element={<HackathonPage />} />
+      <Route path="/hackathons" element={<HackathonEventsPage />} />
     </Routes>
   );
 }
