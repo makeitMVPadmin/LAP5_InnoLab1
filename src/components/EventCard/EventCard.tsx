@@ -1,7 +1,7 @@
-import { EventInfo, Container, Wrapper, CardImage, TopTagsContainer, Tag, BottomTagsContainer, FavIcon, CardDetails, Button, ThemesContainer } from "./EventCard.styled";
 import { convertToTimeZone, calculateDuration, countDown } from "../../utils/dateAndTimeFunctions";
 import HeartIcon from "../../assets/images/heart.png";
 import { v4 as uuidv4 } from 'uuid';
+import "./EventCard.scss";
 
 interface EventCardProps {
     title: string;
@@ -23,36 +23,36 @@ const EventCard: React.FC<EventCardProps> = ({ title, startTime, endTime, timeZo
     }));
 
     return (
-        <Container>
-            <CardImage image="https://via.placeholder.com/150" alt="hackathon event">
-                <Wrapper>
-                    <TopTagsContainer >
-                        <Tag>{countDown(startTime, "Online")}</Tag>
-                        <Tag>{eventDuration}</Tag>
-                    </TopTagsContainer>
-                    <BottomTagsContainer>
-                        <div>
-                            <Tag>{skillLevel}</Tag>
+        <article className="event-card__container">
+            <section className="event-card__image" style={{ backgroundImage: `url(${imageUrl})` }}>
+                <div className="event-card__wrapper">
+                    <div className="event-card__top-tags">
+                        <span className="event-card__tag ">{countDown(startTime, "Online")}</span>
+                        <span className="event-card__tag ">{eventDuration}</span>
+                    </div>
+                    <div className="event-card__bottom-tags">
+                        <div className="event-card__bottom-wrapper">
+                            <span className="event-card__tag ">{skillLevel}</span>
                         </div>
-                        <FavIcon>
-                            <img src={HeartIcon} alt="heart icon" />
-                        </FavIcon>
-                    </BottomTagsContainer>
-                </Wrapper>
-            </CardImage>
-            <CardDetails>
-                <EventInfo>
-                    <h3>{title}</h3>
-                    <p>{formattedDate}</p>
-                    <ThemesContainer>
+                        <div className="event-card__favorite">
+                            <img className="event-card__favorite-icon" src={HeartIcon} alt="favorite icon" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="event-card__details-container">
+                <div className="event-card__details">
+                    <h3 className="event-card__title">{title}</h3>
+                    <p className="event-card__date">{formattedDate}</p>
+                    <div className="event-card__theme-container">
                         {themesWithIds.map((theme) => (
-                            <span key={theme.id}>{theme.name}</span>
+                            <span className="event-card__theme-tag" key={theme.id}>{theme.name}</span>
                         ))}
-                    </ThemesContainer>
-                </EventInfo>
-                <Button><span>View Event</span></Button>
-            </CardDetails>
-        </Container>
+                    </div>
+                </div>
+                <button className="event-card__button" type="button" aria-label="View Event"><span className="event-card__button-text">View Event</span></button>
+            </section>
+        </article >
     )
 }
 

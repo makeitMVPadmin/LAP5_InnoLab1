@@ -26,9 +26,8 @@ const Home = () => {
 
     return (
         <div className="home">
-            <h1 className="home__title">Hello</h1>
             {hackathonEvents.map((event, index) => (
-                <EventCard key={index} title={event.title} startTime={event.startTime} endTime={event.endTime} timeZone={event.timeZone} skillLevel={event.skillLevel} themes={event.themes} />
+                <EventCard key={index} imageUrl={event.imageUrl} title={event.title} startTime={event.startTime} endTime={event.endTime} timeZone={event.timeZone} skillLevel={event.skillLevel} themes={event.themes} />
             ))}
         </div>
     );
