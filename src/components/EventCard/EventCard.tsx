@@ -9,10 +9,11 @@ interface EventCardProps {
     endTime: string;
     timeZone: string;
     skillLevel: string;
+    imageUrl: string;
     themes: string[];
 }
 
-const EventCard: React.FC<EventCardProps> = ({ title, startTime, endTime, timeZone, skillLevel, themes }) => {
+const EventCard: React.FC<EventCardProps> = ({ title, startTime, endTime, timeZone, skillLevel, themes, imageUrl }) => {
     const formattedDate = `${convertToTimeZone(startTime, timeZone)} ${timeZone}`;
     const eventDuration = calculateDuration(startTime, endTime);
 
