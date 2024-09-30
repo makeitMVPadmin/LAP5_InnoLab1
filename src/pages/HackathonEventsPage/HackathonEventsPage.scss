@@ -18,6 +18,10 @@
     height: 25%;
     background-color: #D9D9D9;
 
+    &__btn-navigate-back {
+      color: black;
+    }
+
     &__header {
       @include LandingPage-Text;
       font-family: 'Corben';

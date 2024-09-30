@@ -1,16 +1,12 @@
 import "./HackathonEventsPage.scss";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
-// import EventsInfo from "../../components/EventsInfo/EventsInfo";
-import { useState, useEffect } from "react";
-// import { collection, doc, getDoc } from "firebase/firestore";
-// import { db, auth } from "../../Firebase/FirebaseConfig";
 import { Link } from "react-router-dom";
 
-const EventsHomePage = () => {
-  const [joinedCommunityEvents, setJoinedCommunityEvents] = useState([]);
-  const [managedCommunityEvents, setManagedCommunityEvents] = useState([]);
-  const [allEvents, setAllEvents] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("option1"); // Default to All Events
+const HackathonEventsPage = () => {
+
+
+
+   // Default to All Events
 
   // // FIREBASE DATA
   // useEffect(() => {
@@ -63,7 +59,7 @@ const EventsHomePage = () => {
     <div className="event-page">
       <DashboardNavbar/>
       <div className="event-page__banner">
-        <div className="event-page__banner__btn-navigate-back">← Back</div>
+        <Link to="/" className="event-page__banner__btn-navigate-back">← Back</Link>
         <h1 className="event-page__banner__header">Hackathon Events</h1>
         <p className="event-page__banner__sub-header">Explore all the hackathon events</p>
       </div>
@@ -79,4 +75,4 @@ const EventsHomePage = () => {
   );
 }
 
-export default EventsHomePage;
+export default HackathonEventsPage;
