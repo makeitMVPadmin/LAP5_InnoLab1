@@ -6,7 +6,7 @@
   width: 100%;
   background: linear-gradient(
     to bottom,
-    #c8e7fb 5%,
+    $MVP-Extra-Light-Blue 5%,
     $MVP-White 20%,
     $MVP-White 20%
   );
@@ -16,11 +16,11 @@
 
   &__banner {
     height: 25%;
-    background-color: #D9D9D9;
+    background-color: $MVP-LightGray;
   }
 
   &__btn-navigate-back {
-    color: black;
+    color: $MVP-Black;
   }
 
   &__header {
@@ -43,13 +43,13 @@
   }
 
   &__my-events {
-    background-color: #1EB268;
-    color: black;
+    background-color: $MVP-Green;
+    color: $MVP-Black;
   }
 
   &__create-hackathon {
-    background-color: #0954B0;
-    color: white;
+    background-color: $MVP-Dark-Blue;
+    color: $MVP-White;
   }
 
   &__container {
@@ -61,11 +61,11 @@
 
   &__filters {
     flex: 1 1 20%;
-    border: 3px solid black;
+    border: 3px solid #000;
   }
 
   &__event-cards {
     flex: 1 1 80%;
-    border: 3px solid black;
+    border: 3px solid #000;
   }
 }

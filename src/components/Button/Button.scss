@@ -3,7 +3,7 @@
 @use "../../styles/mixins" as *;
 
 .button {
-  color: $MVP-black;
+  color: $MVP-Black;
   border-radius: 6vw;
   border: none;
   font-family: "Gilroy";
@@ -25,7 +25,7 @@
 
   &--yellow-alt {
     background-color: $MVP-Yellow;
-    color: $MVP-black;
+    color: $MVP-Black;
     font-size: 5vw;
     width: 100%;
     padding: 3vw 3vw;
@@ -51,7 +51,7 @@
   }
   &--red {
     background-color: $MVP-Red;
-    color: $MVP-black;
+    color: $MVP-Black;
     font-size: 5vw;
     width: 100%;
     padding: 3vw 3vw;
