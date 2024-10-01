@@ -62,7 +62,7 @@ const Signup = () => {
     handleSignUp(email, password, fullName)
       .then(() => {
         // Signup was successful, redirect
-        navigate("/events");
+        navigate("/hackathons");
       })
       .catch((error) => {
         // Handle signup error, you can display an error message
