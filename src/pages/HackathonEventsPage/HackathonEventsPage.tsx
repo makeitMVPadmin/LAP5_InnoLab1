@@ -48,3 +48,4 @@ const HackathonEventsPage = () => {
 };
 
 export default HackathonEventsPage;
+
