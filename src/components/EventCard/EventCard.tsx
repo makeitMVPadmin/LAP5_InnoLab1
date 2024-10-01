@@ -1,5 +1,5 @@
 import { convertToTimeZone, calculateDuration, countDown } from "../../utils/dateAndTimeFunctions";
-// import HeartIcon from "../../assets/images/"
+import HeartIcon from "../../assets/images/heart.png"
 import { v4 as uuidv4 } from 'uuid';
 import "./EventCard.scss";
 
@@ -35,7 +35,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, startTime, endTime, timeZo
                             <span className="event-card__tag ">{skillLevel}</span>
                         </div>
                         <div className="event-card__favorite">
-                            <img className="event-card__favorite-icon" src='' alt="favorite icon" />
+                            <img className="event-card__favorite-icon" src={HeartIcon} alt="favorite icon" />
                         </div>
                     </div>
                 </div>
