@@ -39,7 +39,7 @@ const DashboardNavbar = () => {
   return (
     <div className="dashboard-navbar">
       <div className="dashboard-navbar__left">
-        <Link to="/dashboard" className="dashboard-navbar__link">
+        <Link to="/" className="dashboard-navbar__link">
           <img
             src={LogoIcon}
             alt="Logo Icon"
