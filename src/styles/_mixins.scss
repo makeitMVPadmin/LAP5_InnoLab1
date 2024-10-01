@@ -175,3 +175,14 @@
     padding: 1vw 1vw;
   }
 }
+
+@mixin Flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin Flex-column {
+  display: flex;
+  flex-direction: column;
+}
