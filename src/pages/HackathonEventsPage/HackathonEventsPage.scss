@@ -16,11 +16,7 @@
 
   &__banner {
     height: 25%;
-<<<<<<< Updated upstream
-    background-color: $MVP-LightGray;
-=======
     background-color: $MVP-Light-Gray;
->>>>>>> Stashed changes
   }
 
   &__btn-navigate-back {
@@ -70,11 +66,7 @@
 
   &__event-cards {
     flex: 1 1 80%;
-<<<<<<< Updated upstream
-    border: 3px solid #000;
-=======
     display: flex;
     flex-wrap: wrap;
->>>>>>> Stashed changes
   }
 }

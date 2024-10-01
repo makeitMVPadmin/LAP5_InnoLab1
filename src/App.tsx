@@ -2,16 +2,10 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import HomePage from "./pages/HomePage/HomePage";
-<<<<<<< Updated upstream
-=======
 import Login from "./pages/LogIn/LogIn";
 import Signup from "./pages/Signup/Signup";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
->>>>>>> Stashed changes
 import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage";
-import Login from "./pages/LogIn/LogIn"; 
-import Signup from "./pages/Signup/Signup"; 
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import { auth } from "./Firebase/FirebaseConfig";
 import "./styles/_global.scss";
 
