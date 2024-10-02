@@ -13,7 +13,7 @@ export const updateUserInFirestore = async (
   { email, photoURL, fullName }
 ) => {
   try {
-    const usersRef = collection(db, "Users");
+    const usersRef = collection(db, "hackathonUsers");
     const userDocRef = doc(usersRef, user.uid);
     const userDoc = await getDoc(userDocRef);
 
@@ -22,7 +22,6 @@ export const updateUserInFirestore = async (
       await setDoc(userDocRef, {
         email: email || user.email,
         fullName: fullName || user.displayName,
-        userID: user.uid,
         createdAt: serverTimestamp(),
         CommunitiesJoined: [],
         CommunitiesManage: [],
@@ -35,7 +34,6 @@ export const updateUserInFirestore = async (
         {
           email: email || user.email,
           fullName: fullName || user.displayName,
-          userID: user.uid,
         },
         { merge: true }
       );
