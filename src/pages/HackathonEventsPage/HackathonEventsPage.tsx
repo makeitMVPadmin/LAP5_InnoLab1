@@ -28,12 +28,14 @@ const HackathonEventsPage = () => {
         <DashboardNavbar/>
         <div className="event-page__banner">
           <Link to="/" className="join-event__back-link">← Back</Link>
+
           <h1 className="event-page__header">Hackathon Events</h1>
           <p className="event-page__sub-header">Explore all the hackathon events</p>
         </div>
         <div className="event-page__btn">
           <Link to="#" className="event-page__my-events">My Events</Link>
           <Link to="#" className="event-page__create-hackathon">Create Hackathon</Link>
+
         </div>
         <div className="event-page__container">
           <div className="event-page__filters">FILTER CONTAINER</div>
@@ -54,6 +56,7 @@ const HackathonEventsPage = () => {
 ))}
             </div>
         </div>
+
     </div>
     );
 };
