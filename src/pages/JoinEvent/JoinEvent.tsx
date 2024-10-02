@@ -25,7 +25,7 @@ const JoinEvent = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const docRef = doc(db, "In_hackathonEvents", eventId);
+        const docRef = doc(db, "hackathonEvents", eventId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setEventData(docSnap.data());
@@ -56,22 +56,23 @@ const JoinEvent = () => {
       discipline,
       goal,
       strength,
-      weakness
+      weakness,
+      registeredAt: new Date().toISOString()
     };
 
     try {
-      const eventRef = doc(db, "In_hackathonParticipantData", eventId);
+      const eventRef = doc(db, "hackathonParticipantData", eventId);
       const eventSnap = await getDoc(eventRef);
 
-      if (eventSnap.exists() && eventSnap.data().participants?.[currentUser.uid]) {
+      if (eventSnap.exists() && eventSnap.data()?.[currentUser.uid]) {
         alert("You are already registered for this event.");
         return;
       }
 
       await setDoc(eventRef, {
-        participants: {
+
           [currentUser.uid]: participantData
-        }
+
       }, { merge: true });
 
       console.log("Participant data saved successfully");
