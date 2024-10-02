@@ -1,5 +1,5 @@
 import { convertToTimeZone, calculateDuration, countDown } from "../../utils/dateAndTimeFunctions";
-import HeartIcon from "../../assets/images/heart.png";
+import HeartIcon from "../../assets/images/heart.png"
 import { v4 as uuidv4 } from 'uuid';
 import "./EventCard.scss";
 

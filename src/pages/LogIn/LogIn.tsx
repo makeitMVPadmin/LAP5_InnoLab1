@@ -24,7 +24,7 @@ const LogIn = () => {
     event.preventDefault();
     try {
       await handleSignIn(email, password);
-      navigate("/events");
+      navigate("/hackathons");
     } catch (error) {
       console.error("Sign-in error:", error);
     }
@@ -34,7 +34,7 @@ const LogIn = () => {
     try {
       await handleGoogleSignIn();
       // Google sign-in was successful
-      navigate("/events");
+      navigate("/hackathons");
     } catch (error) {
       // Handle the error or display an error message to the user.
       console.error("Google sign-in error:", error);

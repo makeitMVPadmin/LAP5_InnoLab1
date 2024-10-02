@@ -89,11 +89,11 @@
       cursor: pointer;
 
       &--login {
-        background-color: $MVP-black;
+        background-color: $MVP-Black;
       }
 
       &--signup {
-        background-color: #525354;
+        background-color: $MVP-Gray;
       }
 
       @include Laptop {

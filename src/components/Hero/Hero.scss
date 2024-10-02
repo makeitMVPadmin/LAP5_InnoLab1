@@ -58,12 +58,23 @@
   &__header {
     @include LandingPage-Titles;
     margin-bottom: 1rem;
-    color: $MVP-black;
+    color: $MVP-Black;
     width: 65%;
 
     @include Laptop {
       font-size: 3vw;
       width: 100%;
+    }
+
+
+
+    > span {
+      font-size: 5vw;
+      display: block;
+
+      @include Laptop {
+        font-size: 2vw;
+      }
     }
   }
 
@@ -103,7 +114,7 @@
 
   &__success-message {
     @include Body;
-    color: $MVP-black;
+    color: $MVP-Black;
     text-align: left;
     border-color: black;
     border-radius: 0.5rem;
@@ -146,7 +157,7 @@
     border: none;
 
     &::placeholder {
-      color: $MVP-black;
+      color: $MVP-Black;
     }
 
     &:focus {

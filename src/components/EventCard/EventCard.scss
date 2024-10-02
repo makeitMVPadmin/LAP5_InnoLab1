@@ -10,7 +10,7 @@
 
   &__image {
     height: 18.4375rem;
-    border: 3px solid $MVP-black;
+    border: 3px solid $MVP-Black;
     border-radius: 24.2px;
     background-size: cover;
     background-position: center;
@@ -35,12 +35,12 @@
   &__tag {
     @include Flex-center;
     background: $MVP-White;
-    color: $MVP-black;
+    color: $MVP-Black;
     padding: 0.25rem 0.5rem;
     font-family: "Gilroy";
     height: 1.6169rem;
     border-radius: 83.44px;
-    border: 1.25px solid $MVP-black;
+    border: 1.25px solid $MVP-Black;
   }
 
   &__bottom-tags {
@@ -58,7 +58,7 @@
     border-radius: 50%;
     width: 2.8rem;
     height: 2.8rem;
-    border: 1.25px solid $MVP-black;
+    border: 1.25px solid $MVP-Black;
     background-color: $MVP-White;
   }
 
@@ -102,7 +102,7 @@
     background-color: $MVP-Light-Blue;
     width: 12.625rem;
     height: 3.9375rem;
-    border: 3px solid $MVP-black;
+    border: 3px solid $MVP-Black;
     border-radius: 0.625rem;
     font-size: 1.6875rem;
     border-width: 3px 5px 5px 3px;
