@@ -13,7 +13,7 @@ export const updateUserInFirestore = async (
   { email, photoURL, fullName }
 ) => {
   try {
-    const usersRef = collection(db, "Users");
+    const usersRef = collection(db, "In_Users");
     const userDocRef = doc(usersRef, user.uid);
     const userDoc = await getDoc(userDocRef);
 
@@ -24,8 +24,6 @@ export const updateUserInFirestore = async (
         fullName: fullName || user.displayName,
         userID: user.uid,
         createdAt: serverTimestamp(),
-        CommunitiesJoined: [],
-        CommunitiesManage: [],
         profilePhoto: photoURL || "", // You may set this value during signup
       });
     } else {

@@ -27,7 +27,7 @@ const HackathonEventsPage = () => {
         <div className="event-page">
         <DashboardNavbar/>
         <div className="event-page__banner">
-          <Link to="/" className="event-page__btn-navigate-back">← Back</Link>
+          <Link to="/" className="join-event__back-link">← Back</Link>
           <h1 className="event-page__header">Hackathon Events</h1>
           <p className="event-page__sub-header">Explore all the hackathon events</p>
         </div>
@@ -38,9 +38,20 @@ const HackathonEventsPage = () => {
         <div className="event-page__container">
           <div className="event-page__filters">FILTER CONTAINER</div>
           <div className="event-page__event-cards">
-            {hackathonEvents.map((event, index) => (
-                <EventCard key={index} imageUrl={event.imageUrl} title={event.title} startTime={event.startTime} endTime={event.endTime} timeZone={event.timeZone} skillLevel={event.skillLevel} themes={event.themes} />
-            ))}
+          {hackathonEvents.map((event, index) => (
+            <Link to={`/join-event/${event.id}`} key={index}>
+            <EventCard
+              imageUrl={event.imageUrl}
+              title={event.title}
+              startTime={event.startTime}
+              endTime={event.endTime}
+              timeZone={event.timeZone}
+              skillLevel={event.skillLevel}
+              themes={event.themes}
+            />
+          </Link>
+  
+))}
             </div>
         </div>
     </div>
