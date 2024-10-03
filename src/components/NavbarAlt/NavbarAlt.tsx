@@ -3,7 +3,7 @@ import miniCommuniti from "../../assets/logos/miniCommuniti.svg";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function NavbarAlt() {
+const NavbarAlt = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -31,4 +31,6 @@ export default function NavbarAlt() {
       </nav>
     </>
   );
-}
+};
+
+export default NavbarAlt;

@@ -1,11 +1,12 @@
 import "./HomePage.scss";
+import { MouseEventHandler } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import NavbarAlt from "../../components/NavbarAlt/NavbarAlt";
-import communitiHero from "../../assets//images/communitiHero.svg";
+import communitiHero from "../../assets/images/communitiHero.svg";
 import { handleGoogleSignIn } from "../../Firebase/FirebaseAuth";
 
-function HomePage() {
+const HomePage = () => {
   const navigate = useNavigate();
   const handleGoogleButtonClicked = async () => {
     try {

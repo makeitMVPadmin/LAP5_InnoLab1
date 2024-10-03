@@ -43,7 +43,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
-  color: $MVP-black;
+  color: $MVP-Black;
 
   font-size: 7.2vw;
   @include Laptop {
@@ -55,7 +55,7 @@
 }
 
 @mixin SubHeader {
-  color: $MVP-black;
+  color: $MVP-Black;
   font-family: Gilroy;
   font-style: normal;
   font-weight: 800;
@@ -73,7 +73,7 @@
 }
 
 @mixin Body {
-  color: $MVP-black;
+  color: $MVP-Black;
   font-family: Gilroy;
   font-style: normal;
   font-weight: 800;
@@ -88,7 +88,7 @@
   }
 }
 @mixin Buttons {
-  color: $MVP-black;
+  color: $MVP-Black;
   font-family: Gilroy;
   font-style: normal;
   font-weight: 800;
@@ -174,4 +174,15 @@
     font-size: 1.9vw;
     padding: 1vw 1vw;
   }
+}
+
+@mixin Flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin Flex-column {
+  display: flex;
+  flex-direction: column;
 }

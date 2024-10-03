@@ -7,7 +7,7 @@ import communitiHero from "../../assets//images/communitiHero.svg";
 import { Link } from "react-router-dom";
 import { handleSignUp, handleGoogleSignIn } from "../../Firebase/FirebaseAuth";
 
-function Signup() {
+const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +62,7 @@ function Signup() {
     handleSignUp(email, password, fullName)
       .then(() => {
         // Signup was successful, redirect
-        navigate("/events");
+        navigate("/hackathons");
       })
       .catch((error) => {
         // Handle signup error, you can display an error message
