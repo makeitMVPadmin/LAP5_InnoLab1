@@ -10,14 +10,15 @@ const HackathonEventsPage = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await fetchHackathonEvents();
-            setHackathonEvents(data);
-            setIsLoading(false);
-        };
+      const fetchData = async () => {
+          const data = await fetchHackathonEvents();
+          const eventsArray = Object.entries(data).map(([id, event]) => ({ id, ...event }));
+          setHackathonEvents(eventsArray);
+          setIsLoading(false);
+      };
 
-        fetchData();
-    }, []);
+      fetchData();
+  }, []);
 
     if (isLoading) {
         return <div>Loading...</div>;
