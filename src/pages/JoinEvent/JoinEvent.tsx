@@ -20,7 +20,7 @@ const JoinEvent = () => {
   const [strength, setStrength] = useState("");
   const [weakness, setWeakness] = useState("");
   const [eventData, setEventData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchEventData = async () => {

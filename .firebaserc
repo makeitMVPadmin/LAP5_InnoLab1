@@ -1,5 +1,16 @@
 {
   "projects": {
     "default": "launchacademybackend"
-  }
+  },
+  "targets": {
+    "launchacademybackend": {
+      "hosting": {
+        "innolab": [
+          "launchacademybackend-innolab"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

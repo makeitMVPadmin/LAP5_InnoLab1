@@ -1,6 +1,5 @@
 import "./DashboardNavbar.scss";
 import homeIcon from "../../assets/images/homeIcon.svg";
-import chatIcon from "../../assets/images/chatIcon.svg";
 import calendarIcon from "../../assets/images/calendarIcon.svg";
 import communitiesIcon from "../../assets/images/communitiesIcon.svg";
 import coffeeChatIcon from "../../assets/images/coffeeChatIcon.svg";
@@ -9,14 +8,13 @@ import profilePic from "../../assets/images/profilePic.svg";
 import DropDownArrow from "../../assets/images/drop-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { NavLink, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { collection, doc, getDoc } from "firebase/firestore";
-import { db, auth } from "../../Firebase/FirebaseConfig";
+import { useState } from "react";
+import { auth } from "../../Firebase/FirebaseConfig";
 
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [dropdownButton, setDropdownButton] = useState(false);
-  const [profilePhoto, setProfilePhoto] = useState(() => {
+  const [profilePhoto] = useState(() => {
     // Try to get profile photo from session storage
     const storedProfilePhoto = sessionStorage.getItem("profilePhoto");
     return storedProfilePhoto ? JSON.parse(storedProfilePhoto) : null;

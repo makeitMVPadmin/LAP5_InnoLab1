@@ -9,6 +9,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
+  // eslint-disable-next-line
   const [isNotEditing, setIsNotEditing] = useState(false);
   const [name, setName] = useState("First Last Name");
   const [profileImage, setProfileImage] = useState(profilePic);
@@ -55,7 +56,6 @@ const ProfilePage = () => {
 
         // Update Firestore document with the new profile photo URL
         await updateDoc(userDocRef, { profilePhoto: profileImage });
-
         setIsEditing(false);
         setIsNotEditing(true);
       }

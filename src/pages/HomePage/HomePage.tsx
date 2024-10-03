@@ -1,5 +1,4 @@
 import "./HomePage.scss";
-import { MouseEventHandler } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import NavbarAlt from "../../components/NavbarAlt/NavbarAlt";
