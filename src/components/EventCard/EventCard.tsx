@@ -21,6 +21,7 @@ interface EventCardProps {
 const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, timeZone, skillLevel, themes, imageUrl }) => {
     const formattedDate = `${convertToTimeZone(startTime, timeZone)} ${timeZone}`;
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     const themesWithIds = themes.map((theme) => ({
         id: uuidv4(),
@@ -30,7 +31,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
     const handleFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         setIsFavorite(!isFavorite);
-    }
+    };
 
     const tagStyle = "flex items-center justify-center px-4 font-gilroy h-7 rounded-full";
 
@@ -38,11 +39,12 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
         <article className="flex flex-col w-full md:w-80 h-[34.5625rem] mb-4">
             <section className="relative " >
                 <button
-                    className="z-10	absolute bottom-4 right-4 flex items-center justify-center w-[2.8rem] h-[2.8rem] rounded-full"
+                    className="z-10	hover:scale-105	absolute bottom-4 right-4 flex items-center justify-center w-[2.8rem] h-[2.8rem] rounded-full"
                     onClick={handleFavorite}
-                    aria-label="Toggle Favorite"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
                 >
-                    <img className="w-full h-full" src={isFavorite ? HeartIconActive : HeartIconInactive} alt="favorite icon" />
+                    <img className="w-full h-full" src={isFavorite || isHovered ? HeartIconActive : HeartIconInactive} alt="favorite icon" />
                 </button>
                 <Link to={`/join-event/${id}`}>
                     <div className="relative h-[18.4375rem] border-[3px] border-MVP-black rounded-[24.2px] bg-cover bg-center w-full" style={{ backgroundImage: `url(${imageUrl})` }}>
