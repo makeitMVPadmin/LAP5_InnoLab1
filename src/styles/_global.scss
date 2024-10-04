@@ -1,7 +1,6 @@
 @use "../styles/typography";
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
-@use "../styles/tailwind.css";
 
 @tailwind base;
 @tailwind components;
