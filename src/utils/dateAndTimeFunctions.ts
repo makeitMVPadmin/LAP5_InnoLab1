@@ -36,15 +36,24 @@ export const getEventStatus = (
   const eventStartTime = new Date(startTime);
   const eventEndTime = new Date(endTime);
 
+  const timeDifferenceInMs = eventStartTime.getTime() - currentTime.getTime();
+  const hoursRemaining = Math.floor(timeDifferenceInMs / (1000 * 60 * 60));
   const daysRemaining = Math.floor(
     (eventStartTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60 * 24)
   );
 
   if (currentTime < eventStartTime) {
-    return {
-      text: `In ${daysRemaining} days`,
-      style: "border-2	border-MVP-black bg-MVP-white text-MVP-black", // Default style
-    };
+    if (hoursRemaining < 25) {
+      return {
+        text: `In ${hoursRemaining} hours`,
+        style: "border-2 border-MVP-black bg-MVP-white text-MVP-black", // Style for event starting within 25 hours
+      };
+    } else {
+      return {
+        text: `In ${daysRemaining} days`,
+        style: "border-2 border-MVP-black bg-MVP-white text-MVP-black", // Default style
+      };
+    }
   } else if (currentTime >= eventStartTime && currentTime <= eventEndTime) {
     return {
       text: "On-going",
