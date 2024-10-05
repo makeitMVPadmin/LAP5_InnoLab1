@@ -6,6 +6,7 @@ interface EventFormInputs {
   title: string;
   organizer: string;
   description: string;
+  skillLevel: string;
   theme: string;
   startDate: string;
   endDate: string;
@@ -34,25 +35,80 @@ const EventForm: React.FC = () => {
       <section className="form-section">
         <h2>Create an Event</h2>
         <div className="form-group">
-          <label>Event Title</label>
+          <label>Event Title *</label>
           <input {...register('title', { required: 'Event Title is required' })} />
           {errors.title && <p className="error">{errors.title.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Organized By</label>
+          <label>Organized By *</label>
           <input {...register('organizer', { required: 'Organizer is required' })} />
           {errors.organizer && <p className="error">{errors.organizer.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Event Description</label>
+          <label>Event Description *</label>
           <textarea {...register('description', { required: 'Event description is required' })} />
           {errors.description && <p className="error">{errors.description.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Theme</label>
+        <label htmlFor="skillLevel">Skill Level *</label>
+        <Controller
+          name="skillLevel"
+          control={control}
+          rules={{ required: 'Skill Level is required' }}
+          render={({ field }) => (
+            <>
+              <div className="radio-group">
+                <label>
+                  <input
+                    {...field}
+                    type="radio"
+                    value="Beginner"
+                    checked={field.value === 'Beginner'}
+                  />
+                  Beginner
+                </label>
+
+                <label>
+                  <input
+                    {...field}
+                    type="radio"
+                    value="Intermediate"
+                    checked={field.value === 'Intermediate'}
+                  />
+                  Intermediate
+                </label>
+
+                <label>
+                  <input
+                    {...field}
+                    type="radio"
+                    value="Advanced"
+                    checked={field.value === 'Advanced'}
+                  />
+                  Advanced
+                </label>
+
+                <label>
+                  <input
+                    {...field}
+                    type="radio"
+                    value="Expert"
+                    checked={field.value === 'Expert'}
+                  />
+                  Expert
+                </label>
+              </div>
+            </>
+          )}
+        />
+        {errors.skillLevel && <p className="error-text">{errors.skillLevel.message}</p>}
+      </div>
+
+        <div className="form-group">
+          <label>Theme 8</label>
           <select {...register('theme', { required: 'Select at least one theme' })}>
             <option value="AI">AI</option>
             <option value="Healthcare">Healthcare</option>
@@ -62,7 +118,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Event Duration</label>
+          <label>Event Duration *</label>
           <Controller
             name="startDate"
             control={control}
@@ -80,7 +136,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Event Announcement Publish Date</label>
+          <label>Event Announcement Publish Date *</label>
           <Controller
             name="announcementDate"
             control={control}
@@ -97,18 +153,18 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Meeting Link</label>
+          <label>Meeting Link *</label>
           <input type="url" {...register('meetingLink')} />
         </div>
 
         <div className="form-group">
-          <label>Participant Count</label>
-          <input type="number" {...register('minParticipants', { valueAsNumber: true })} placeholder="Min" />
+          <label>Participant Count *</label>
+          <input type="number" {...register('minParticipants', { valueAsNumber: true })} placeholder="Min" /> - 
           <input type="number" {...register('maxParticipants', { valueAsNumber: true })} placeholder="Max" />
         </div>
 
         <div className="form-group">
-          <label>Judges</label>
+          <label>Judges *</label>
           {/* Handle dynamically adding/removing judges */}
           <input {...register(`judges.0`)} placeholder="Judge Name" />
         </div>
