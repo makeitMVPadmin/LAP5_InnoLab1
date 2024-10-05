@@ -8,6 +8,7 @@ import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage
 import JoinEvent from "./pages/JoinEvent/JoinEvent";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EventForm from "./pages/CreateEvent/EventForm";
 import "./styles/_global.scss";
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/hackathons" element={<HackathonEventsPage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
+          <Route path="/EventForm" element={<EventForm />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

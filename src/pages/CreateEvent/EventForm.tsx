@@ -1,0 +1,127 @@
+// EventForm.tsx
+import { useForm, Controller } from 'react-hook-form';
+import './EventForm.scss';
+
+interface EventFormInputs {
+  title: string;
+  organizer: string;
+  description: string;
+  theme: string;
+  startDate: string;
+  endDate: string;
+  announcementDate: string;
+  timezone: string;
+  meetingLink: string;
+  minParticipants: number;
+  maxParticipants: number;
+  judges: string[];
+  thumbnail: FileList;
+}
+
+const EventForm: React.FC = () => {
+  const { register, handleSubmit, control, formState: { errors } } = useForm<EventFormInputs>({
+    defaultValues: {
+      judges: [''],
+    }
+  });
+
+  const onSubmit = (data: EventFormInputs) => {
+    console.log('Form Data', data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="event-form">
+      <section className="form-section">
+        <h2>Create an Event</h2>
+        <div className="form-group">
+          <label>Event Title</label>
+          <input {...register('title', { required: 'Event Title is required' })} />
+          {errors.title && <p className="error">{errors.title.message}</p>}
+        </div>
+
+        <div className="form-group">
+          <label>Organized By</label>
+          <input {...register('organizer', { required: 'Organizer is required' })} />
+          {errors.organizer && <p className="error">{errors.organizer.message}</p>}
+        </div>
+
+        <div className="form-group">
+          <label>Event Description</label>
+          <textarea {...register('description', { required: 'Event description is required' })} />
+          {errors.description && <p className="error">{errors.description.message}</p>}
+        </div>
+
+        <div className="form-group">
+          <label>Theme</label>
+          <select {...register('theme', { required: 'Select at least one theme' })}>
+            <option value="AI">AI</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Design">Design</option>
+          </select>
+          {errors.theme && <p className="error">{errors.theme.message}</p>}
+        </div>
+
+        <div className="form-group">
+          <label>Event Duration</label>
+          <Controller
+            name="startDate"
+            control={control}
+            rules={{ required: 'Start date is required' }}
+            render={({ field }) => <input type="datetime-local" {...field} />}
+          />
+          {errors.startDate && <p className="error">{errors.startDate.message}</p>}
+          <Controller
+            name="endDate"
+            control={control}
+            rules={{ required: 'End date is required' }}
+            render={({ field }) => <input type="datetime-local" {...field} />}
+          />
+          {errors.endDate && <p className="error">{errors.endDate.message}</p>}
+        </div>
+
+        <div className="form-group">
+          <label>Event Announcement Publish Date</label>
+          <Controller
+            name="announcementDate"
+            control={control}
+            render={({ field }) => <input type="datetime-local" {...field} />}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Timezone</label>
+          <select {...register('timezone', { required: 'Timezone is required' })}>
+            <option value="GMT-0700">PST (GMT-0700)</option>
+            <option value="GMT-0500">EST (GMT-0500)</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Meeting Link</label>
+          <input type="url" {...register('meetingLink')} />
+        </div>
+
+        <div className="form-group">
+          <label>Participant Count</label>
+          <input type="number" {...register('minParticipants', { valueAsNumber: true })} placeholder="Min" />
+          <input type="number" {...register('maxParticipants', { valueAsNumber: true })} placeholder="Max" />
+        </div>
+
+        <div className="form-group">
+          <label>Judges</label>
+          {/* Handle dynamically adding/removing judges */}
+          <input {...register(`judges.0`)} placeholder="Judge Name" />
+        </div>
+
+        <div className="form-group">
+          <label>Upload a Thumbnail Image</label>
+          <input type="file" {...register('thumbnail')} />
+        </div>
+
+        <button type="submit" className="submit-btn">Next</button>
+      </section>
+    </form>
+  );
+};
+
+export default EventForm;
