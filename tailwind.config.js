@@ -21,6 +21,9 @@ module.exports = {
         gilroy: ["Gilroy", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
       },
+      borderWidth: {
+        3: '3px',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -59,11 +62,12 @@ module.exports = {
         "MVP-light-blue": "#0099ff",
         "MVP-white": "#ffffff",
         "MVP-yellow": "#ffd22f",
+        "MVP-green": "#1EB268",
         "MVP-dark-blue": "#0954b0",
         "MVP-red": "#ff7070",
         "MVP-cream": "#fff9f4",
         "MVP-gray": "#525354",
-        "MVP-light-gray": "#1e1e1e",
+        "MVP-light-gray": "#D9D9D9",
         "MVP-not-active-blue": "#98c4fa",
       },
       borderRadius: {

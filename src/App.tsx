@@ -22,6 +22,7 @@ const App = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/hackathons" element={<HackathonEventsPage />} />
+          <Route path="/hackathons/joined" element={<ProfilePage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />

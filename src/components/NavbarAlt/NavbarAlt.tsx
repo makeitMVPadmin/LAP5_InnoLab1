@@ -1,5 +1,5 @@
-import communiti from "../../assets/logos/communiti.svg";
-import miniCommuniti from "../../assets/logos/miniCommuniti.svg";
+import { ReactComponent as Communiti } from "../../assets/logos/communiti.svg";
+import { ReactComponent as MiniCommuniti } from "../../assets/logos/miniCommuniti.svg";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -22,11 +22,7 @@ const NavbarAlt = () => {
     <>
       <nav className="navbar">
         <Link to="/" className="navbar__link">
-          <img
-            className="navbar__img"
-            src={windowWidth <= 1023 ? miniCommuniti : communiti}
-            alt="communiti"
-          />
+        {windowWidth <= 1023 ? <MiniCommuniti className="navbar__img" /> : <Communiti className="navbar__img" />}
         </Link>
       </nav>
     </>

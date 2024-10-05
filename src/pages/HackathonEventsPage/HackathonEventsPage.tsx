@@ -1,4 +1,3 @@
-import "./HackathonEventsPage.scss";
 import EventCard from "../../components/EventCard/EventCard";
 import { useEffect, useState } from "react";
 import { fetchHackathonEvents } from "../../Firebase/GetHackathonEvents";
@@ -25,22 +24,21 @@ const HackathonEventsPage = () => {
   }
 
   return (
-    <div className="event-page">
+    <div className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
       <DashboardNavbar />
-      <div className="event-page__banner">
-        <Link to="/" className="join-event__back-link">← Back</Link>
-
-        <h1 className="event-page__header">Hackathon Events</h1>
-        <p className="event-page__sub-header">Explore all the hackathon events</p>
+      <div className="h-[25%] bg-MVP-light-gray">
+        <Link to="/" className="text-MVP-black">← Back</Link>
+        <h1 className="font-corben text-[8vw] leading-[114%] md:text-[3vw] lg:text-[2vw]">Hackathon Events</h1>
+        <p className="">Explore all the hackathon events</p>
       </div>
-      <div className="event-page__btn">
-        <Link to="#" className="event-page__my-events">My Events</Link>
-        <Link to="#" className="event-page__create-hackathon">Create Hackathon</Link>
+      <div className="w-full flex justify-end text-base gap-3">
+        <Link to="joined" className="p-2 border-3 border-black rounded-md bg-MVP-green text-MVP-black font-gilroy">My Events</Link>
+        <Link to="#" className="p-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
 
       </div>
-      <div className="event-page__container mt-4">
-        <div className="event-page__filters">FILTER CONTAINER</div>
-        <div className="flex flex-wrap gap-4 mx-4">
+      <div className="w-full h-full flex gap-4 mt-4">
+        <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>
+        <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
           {hackathonEvents.map((event) => (
             <EventCard
               key={event.id}
