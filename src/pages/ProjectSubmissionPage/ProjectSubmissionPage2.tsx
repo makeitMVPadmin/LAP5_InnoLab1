@@ -74,6 +74,10 @@ const ProjectSubmissionPage2 = () => {
         formState: { errors },
     } = form
     const formValues = watch();
+    const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({
+        control: form.control,
+        name: "teamMembers",
+    });
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
@@ -81,10 +85,24 @@ const ProjectSubmissionPage2 = () => {
         console.log(formValues)
         console.log(values)
     }
+
+    const handleAddMember = () => {
+        appendMember({ name: '', role: '' });
+    };
+
+    const handleDeleteMember = (index: number) => {
+        removeMember(index)
+    }
+    console.log(errors)
+
+
+
     const textareaStyle = "min-h-40 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
     const counterStyle = "block text-xs text-black text-right mt-1 font-bold"
     const labelStyle = "block text-sm font-bold mb-1 text-MVP-black"
     const inputStyle = "focus-visible:ring-0 focus:border-MVP-dark-blue h-12 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
+
+
     return (
         <main className="font-gilroy">
             <DashboardNavbar />
@@ -112,6 +130,77 @@ const ProjectSubmissionPage2 = () => {
                             placeHolder="Enter team name"
                             type="Input"
                         />
+
+                        {/* Team Members */}
+                        <div className="w-full">
+                            <div className="flex">
+                                <div className="flex w-full items-baseline gap-4">
+                                    <FormLabel className="text-sm font-medium flex-1 pb-2">Name</FormLabel>
+                                    <FormLabel className="text-sm font-medium flex-1 pb-2">Role</FormLabel>
+                                </div>
+                                <div className="min-w-10"></div>
+                            </div>
+                            {memberFields.map((member, index) => (
+                                <div key={member.id} className="py-2 flex items-center ">
+                                    <div className="flex gap-4 flex-1">
+                                        <FormField
+                                            name={`teamMembers.${index}.name`}
+                                            control={form.control}
+                                            render={({ field }) => (
+                                                <FormItem className="flex-1">
+                                                    <FormControl>
+                                                        <Input
+                                                            className={inputStyle}
+                                                            placeholder="Enter name"
+                                                            {...field}
+                                                            {...register(`teamMembers.${index}.name`)}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage className="text-MVP-red" />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name={`teamMembers.${index}.role`}
+                                            render={({ field }) => (
+                                                <FormItem className="flex-1">
+                                                    <Select onValueChange={(value) => {
+                                                        setValue(`teamMembers.${index}.role`, value);
+                                                    }} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger className={inputStyle} >
+                                                                <SelectValue placeholder="Select a role" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent className="font-gilroy font-bold rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black">
+                                                            <SelectItem value="Software developer">Software Developer</SelectItem>
+                                                            <SelectItem value="UX Designer">UX Designer</SelectItem>
+                                                            <SelectItem value="Product Manager">Product Manager</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <FormMessage className="text-MVP-red" />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="min-w-10">
+                                        {index > 0 && <button className="min-w-10 flex items-center justify-center" onClick={() => handleDeleteMember(index)} aria-label="delete button">
+                                            <img src={CloseButton} className="h-3 w-3" alt="delete team member button" />
+                                        </button>}
+                                    </div>
+
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                className="mt-4 ml-auto flex items-center justify-center py-4 px-6 w-42 h-12 bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-xl font-gilroy cursor-pointer"
+                                aria-label="Add member"
+                                onClick={handleAddMember}
+                            >
+                                <span>Add member</span>
+                            </button>
+                        </div>
                         {/* Tech Stack */}
                         <CustomInput
                             errors={errors?.techStack}
