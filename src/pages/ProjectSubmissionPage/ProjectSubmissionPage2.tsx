@@ -48,7 +48,7 @@ const formSchema = z.object({
             url: z.string().max(64, { message: "Project link url cannot exceed 64 characters." })
         })
     )
-        .min(1, { message: "At least one project link is required." })
+        .min(1, { message: "A project link is required." })
         .refine((links) => links[0]?.url?.length > 0, {
             message: "The first project link is required.",
             path: [0, 'url'],
@@ -107,9 +107,9 @@ const ProjectSubmissionPage2 = () => {
     } = form
     const formValues = watch();
 
-    const handleFileChange = (file) => {
-        console.log("File selected:", file); // Debugging line
-        setValue('file', file); // Set the file in form state
+    const handleFileChange = (file: File) => {
+        console.log("File selected:", file);
+        setValue('file', file);
     };
 
     useEffect(() => {
@@ -151,7 +151,6 @@ const ProjectSubmissionPage2 = () => {
     const handleDeleteMember = (index: number) => {
         removeMember(index)
     }
-    console.log("errors:", errors)
 
 
     const labelStyle = "block text-sm font-bold mb-1 text-MVP-black"
@@ -371,7 +370,7 @@ const ProjectSubmissionPage2 = () => {
                                             <FormItem className="flex-1">
                                                 <FormControl>
                                                     <Input
-                                                        className={inputStyle}
+                                                        className={`${inputStyle} ${errors.projectLinks?.[index]?.url && "border-MVP-red"}`}
                                                         placeholder="Enter link"
                                                         {...field}
                                                         {...register(`projectLinks.${index}.url`)}
