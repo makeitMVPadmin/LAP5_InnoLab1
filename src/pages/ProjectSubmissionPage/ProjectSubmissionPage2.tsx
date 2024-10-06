@@ -74,6 +74,10 @@ const ProjectSubmissionPage2 = () => {
         formState: { errors },
     } = form
     const formValues = watch();
+    const textareaStyle = "min-h-40 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
+    const counterStyle = "block text-xs text-black text-right mt-1 font-bold"
+    const labelStyle = "block text-sm font-bold mb-1 text-MVP-black"
+    const inputStyle = "focus-visible:ring-0 focus:border-MVP-dark-blue h-12 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
     return (
         <main className="font-gilroy">
         </main>
