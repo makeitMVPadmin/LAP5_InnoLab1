@@ -74,12 +74,36 @@ const ProjectSubmissionPage2 = () => {
         formState: { errors },
     } = form
     const formValues = watch();
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        console.log("hi")
+        console.log(formValues)
+        console.log(values)
+    }
     const textareaStyle = "min-h-40 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
     const counterStyle = "block text-xs text-black text-right mt-1 font-bold"
     const labelStyle = "block text-sm font-bold mb-1 text-MVP-black"
     const inputStyle = "focus-visible:ring-0 focus:border-MVP-dark-blue h-12 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
     return (
         <main className="font-gilroy">
+            <DashboardNavbar />
+            <section className="h-[3rem] bg-gray-500">
+                <Link to="/hackathons" className="text-black text-sm inline-block mb-5">
+                    ← Back
+                </Link>
+            </section>
+            <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
+                <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
+                <div className="flex py-12 justify-end gap-2 items-center">
+                    <img className="w-6	h-6" src={Clock} alt="clock icon" />
+                    <p className="font-bold text-xl">Submission Ends In: 1h: 25m: 15s</p>
+                </div>
+                <Form {...form} >
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    </form>
+                </Form>
+            </section>
         </main>
     );
 };
