@@ -3,7 +3,6 @@ import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../Firebase/FirebaseConfig";
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { useAuth } from "../../context/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
@@ -25,10 +24,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../components/ui/select"
+import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
+import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
+import CustomInput from "../../components/CustomInput/CustomInput";
 import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
-import UploadBox from "../../assets/images/uploadBox.svg"
-import CustomInput from "../../components/CustomInput/CustomInput";
 import ErrorIcon from "../../assets/images/error.svg"
 
 const formSchema = z.object({
@@ -40,7 +40,9 @@ const formSchema = z.object({
     designFeatures: z.string().min(1, { message: "Design features are required." }).max(500),
     designImpact: z.string().min(1, { message: "Design impact is required." }).max(500),
     nextSteps: z.string().min(1, { message: "Next steps are required." }).max(500),
-    // projectImage: z.string().url({ message: "Project image must be a valid URL." }),
+    file: z.instanceof(File).refine((file) => !!file, {
+        message: "File is required.",
+    }),
     projectLinks: z.array(
         z.object({
             url: z.string().max(64, { message: "Project link url cannot exceed 64 characters." })
@@ -77,6 +79,8 @@ const formSchema = z.object({
 
 
 const ProjectSubmissionPage2 = () => {
+    const [file, setFile] = useState(null);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -88,7 +92,7 @@ const ProjectSubmissionPage2 = () => {
             designFeatures: "",
             designImpact: "",
             nextSteps: "",
-            // projectImage: "",
+            file: null,
             projectLinks: [{ url: "" }],
             teamMembers: [{ name: "", role: "Software developer" }]
         },
@@ -102,6 +106,11 @@ const ProjectSubmissionPage2 = () => {
         formState: { errors },
     } = form
     const formValues = watch();
+
+    const handleFileChange = (file) => {
+        console.log("File selected:", file); // Debugging line
+        setValue('file', file); // Set the file in form state
+    };
 
     useEffect(() => {
         console.log(errors);
@@ -132,6 +141,7 @@ const ProjectSubmissionPage2 = () => {
         console.log("hi")
         console.log(formValues)
         console.log(values)
+        console.log(file)
     }
 
     const handleAddMember = () => {
@@ -390,8 +400,17 @@ const ProjectSubmissionPage2 = () => {
                                 <span>Add link</span>
                             </button>
                         </div>
+
                         {/* Upload image */}
-                        <img className="w-1/2 pt-10" src={UploadBox} alt="upload icon" />
+                        <div>
+                            <ImageUploadZone onFileChange={handleFileChange} />
+                            {errors.file && (
+                                <div className="flex items-center gap--2">
+                                    <img src={ErrorIcon} alt="error icon" />
+                                    <p className="text-red-500">{errors.file.message}</p>
+                                </div>
+                            )}
+                        </div>
                         <div className="flex justify-end gap-2 mt-5">
                             <Button type="submit" variant="default" >
                                 Join
