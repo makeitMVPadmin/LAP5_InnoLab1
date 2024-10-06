@@ -410,12 +410,12 @@ const ProjectSubmissionPage2 = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex justify-end gap-2 mt-5">
-                            <Button type="submit" variant="default" >
-                                Join
-                            </Button>
-                            <Button type="button" variant="secondary">
+                        <div className="flex justify-end gap-2 mt-5 py-10">
+                            <Button type="button" className="h-12 bg-MVP-white font-gilroy text-lg text-MVP-black border-2 border-MVP-black">
                                 Cancel
+                            </Button>
+                            <Button type="submit" className="cursor-pointer h-12 px-6 justify-center font-gilroy text-xl bg-MVP-light-blue text-MVP-black border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black" >
+                                Review Submission
                             </Button>
                         </div>
                     </form>
