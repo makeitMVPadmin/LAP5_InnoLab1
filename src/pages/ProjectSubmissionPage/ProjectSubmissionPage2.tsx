@@ -49,6 +49,9 @@ const formSchema = z.object({
         message: "Each team member must have a name and a role.",
     }),
 });
+
+
+
 const ProjectSubmissionPage2 = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -66,6 +69,7 @@ const ProjectSubmissionPage2 = () => {
             teamMembers: [{ name: "", role: "" }]
         },
     })
+
     const {
         handleSubmit,
         register,
@@ -74,10 +78,30 @@ const ProjectSubmissionPage2 = () => {
         formState: { errors },
     } = form
     const formValues = watch();
+
+    useEffect(() => {
+        console.log(errors);
+    }, [errors]);
+
+
     const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({
         control: form.control,
         name: "teamMembers",
     });
+
+    const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({
+        control: form.control,
+        name: "projectLinks",
+    });
+
+    const handleAddLink = () => {
+        appendLink({ url: "" });
+    };
+
+    const handleDeleteLink = (index: number) => {
+        removeLink(index)
+    }
+
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
@@ -119,6 +143,7 @@ const ProjectSubmissionPage2 = () => {
                 </div>
                 <Form {...form} >
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
                         {/* Team Name */}
                         <CustomInput
                             errors={errors?.teamName}
@@ -201,6 +226,7 @@ const ProjectSubmissionPage2 = () => {
                                 <span>Add member</span>
                             </button>
                         </div>
+
                         {/* Tech Stack */}
                         <CustomInput
                             errors={errors?.techStack}
@@ -281,6 +307,48 @@ const ProjectSubmissionPage2 = () => {
                             placeHolder="What are your next steps and future plans on your solution?"
                             type="Textarea"
                         />
+                        {/* Project Links */}
+                        <div>
+                            <FormLabel className={labelStyle}>Project Links*</FormLabel>
+                            {linkFields.map((link, index) => (
+                                <div key={link.id} className="py-2 flex items-center">
+                                    <FormField
+                                        name={`projectLinks.${index}.url`}
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem className="flex-1">
+                                                <FormControl>
+                                                    <Input
+                                                        className={inputStyle}
+                                                        placeholder="Enter link"
+                                                        {...field}
+                                                        {...register(`projectLinks.${index}.url`)}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage className="text-MVP-red" />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="min-w-10">
+
+                                        {index > 0 && <button className="min-w-10 flex items-center justify-center" onClick={() => handleDeleteLink(index)} aria-label="delete button">
+                                            <img src={CloseButton} className="h-3 w-3" alt="delete team member button" />
+                                        </button>}
+                                    </div>
+                                </div>
+
+
+                            ))
+                            }
+                            <button
+                                type="button"
+                                className="mt-4 ml-auto flex items-center justify-center py-4 px-6 w-42 h-12 bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-xl font-gilroy cursor-pointer"
+                                aria-label="Add link"
+                                onClick={handleAddLink}
+                            >
+                                <span>Add link</span>
+                            </button>
+                        </div>
                         {/* Upload image */}
                         <img className="w-1/2 pt-10" src={UploadBox} alt="upload icon" />
                         <div className="flex justify-end gap-2 mt-5">
