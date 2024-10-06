@@ -15,8 +15,6 @@ const labelStyle = "block text-sm font-bold mb-1 text-MVP-black"
 const inputStyle = "focus-visible:ring-0 focus:border-MVP-dark-blue h-12 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
 
 const CustomInput = ({ type, errors, form, register, inputName, name, formValues, placeHolder }) => {
-    console.log(errors)
-
     return (
         <FormField
             name={inputName}
@@ -37,7 +35,7 @@ const CustomInput = ({ type, errors, form, register, inputName, name, formValues
                                 {errors?.message}
                             </FormMessage>
                         </div>
-                        <span className={`${counterStyle} ${errors ? 'text-MVP-red' : ""}`}>{formValues ? formValues.length : 0}/80 characters</span>
+                        <span className={`${counterStyle} ${errors ? 'text-MVP-red' : ""}`}>{formValues ? formValues.length : 0}/{type === "Textarea" ? "500" : "80"} characters</span>
                     </div>
                 </FormItem>
             )}
