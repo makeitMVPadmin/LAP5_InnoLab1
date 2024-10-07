@@ -203,7 +203,7 @@ const ProjectSubmissionPage2 = () => {
                                                 <FormItem className="flex-1">
                                                     <FormControl>
                                                         <Input
-                                                            className={`${inputStyle} ${errors.teamMembers?.[index]?.name && "border-MVP-red"}`}
+                                                            className={`${STYLES.input} ${errors.teamMembers && "border-MVP-red"}`}
                                                             placeholder="Enter name"
                                                             {...field}
                                                             {...register(`teamMembers.${index}.name`)}
@@ -233,7 +233,7 @@ const ProjectSubmissionPage2 = () => {
                                                         }}
                                                     >
                                                         <FormControl>
-                                                            <SelectTrigger className={`${inputStyle} ${errors?.teamMembers?.[index]?.role?.message && "border-MVP-red"}`} >
+                                                            <SelectTrigger className={`${STYLES.input} ${errors?.teamMembers && "border-MVP-red"}`} >
                                                                 <SelectValue placeholder="Select a role" />
                                                             </SelectTrigger>
                                                         </FormControl>
@@ -360,7 +360,7 @@ const ProjectSubmissionPage2 = () => {
                         />
                         {/* Project Links */}
                         <div>
-                            <FormLabel className={labelStyle}>Project Links*</FormLabel>
+                            <FormLabel className={STYLES.label}>Project Links*</FormLabel>
                             {linkFields.map((link, index) => (
                                 <div key={link.id} className="py-2 flex items-center">
                                     <FormField
@@ -370,7 +370,7 @@ const ProjectSubmissionPage2 = () => {
                                             <FormItem className="flex-1">
                                                 <FormControl>
                                                     <Input
-                                                        className={`${inputStyle} ${errors.projectLinks?.[index]?.url && "border-MVP-red"}`}
+                                                        className={`${STYLES.input} ${errors.projectLinks?.[index]?.url && "border-MVP-red"}`}
                                                         placeholder="Enter link"
                                                         {...field}
                                                         {...register(`projectLinks.${index}.url`)}
@@ -386,13 +386,11 @@ const ProjectSubmissionPage2 = () => {
                                         </button>}
                                     </div>
                                 </div>
-
-
                             ))
                             }
                             <button
                                 type="button"
-                                className="mt-4 ml-auto flex items-center justify-center py-4 px-6 w-42 h-12 bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-xl font-gilroy cursor-pointer"
+                                className={`${STYLES.primaryButton} mt-4 ml-auto flex items-center py-4 w-42 rounded-[0.625rem] text-MVP-black`}
                                 aria-label="Add link"
                                 onClick={handleAddLink}
                             >
@@ -401,7 +399,7 @@ const ProjectSubmissionPage2 = () => {
                         </div>
 
                         {/* Upload image */}
-                        <div>
+                        <div className="w-1/2">
                             <ImageUploadZone onFileChange={handleFileChange} />
                             {errors.file && (
                                 <div className="flex items-center gap--2">
@@ -414,7 +412,7 @@ const ProjectSubmissionPage2 = () => {
                             <Button type="button" className="h-12 bg-MVP-white font-gilroy text-lg text-MVP-black border-2 border-MVP-black">
                                 Cancel
                             </Button>
-                            <Button type="submit" className="cursor-pointer h-12 px-6 justify-center font-gilroy text-xl bg-MVP-light-blue text-MVP-black border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black" >
+                            <Button type="submit" className={STYLES.primaryButton}>
                                 Review Submission
                             </Button>
                         </div>
