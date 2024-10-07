@@ -24,6 +24,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../../components/ui/select"
+import { STYLES } from "../../constants/styles"
+import { ROLES } from "../../constants/roles";
+import { PLACEHOLDERS } from "../../constants/placeholders"
 import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import CustomInput from "../../components/CustomInput/CustomInput";
@@ -153,8 +156,6 @@ const ProjectSubmissionPage2 = () => {
     }
 
 
-    const labelStyle = "block text-sm font-bold mb-1 text-MVP-black"
-    const inputStyle = "focus-visible:ring-0 focus:border-MVP-dark-blue h-12 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins"
 
 
     return (
@@ -169,6 +170,7 @@ const ProjectSubmissionPage2 = () => {
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
                 <div className="flex py-12 justify-end gap-2 items-center">
                     <img className="w-6	h-6" src={Clock} alt="clock icon" />
+                    {/* TODO get date and count how much time left */}
                     <p className="font-bold text-xl">Submission Ends In: 1h: 25m: 15s</p>
                 </div>
                 <Form {...form} >
@@ -181,15 +183,15 @@ const ProjectSubmissionPage2 = () => {
                             inputName="teamName"
                             name="Team Name"
                             formValues={formValues.teamName}
-                            placeHolder="Enter team name"
+                            placeHolder={PLACEHOLDERS.ENTER_TEAM_NAME}
                             type="Input"
                         />
                         {/* Team Members */}
                         <div className="w-full">
                             <div className="flex">
                                 <div className="flex w-full items-baseline gap-4">
-                                    <FormLabel className="text-sm font-medium flex-1 ">Name</FormLabel>
-                                    <FormLabel className="text-sm font-medium flex-1 ">Role</FormLabel>
+                                    <FormLabel className="text-sm font-medium flex-1">Name</FormLabel>
+                                    <FormLabel className="text-sm font-medium flex-1">Role</FormLabel>
                                 </div>
                                 <div className="min-w-10"></div>
                             </div>
@@ -238,9 +240,9 @@ const ProjectSubmissionPage2 = () => {
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent className={`font-gilroy font-bold rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px]  ${errors?.teamMembers?.[index]?.role ? 'border-MVP-red' : "border-black"}`}>
-                                                            <SelectItem value="Software developer">Software Developer</SelectItem>
-                                                            <SelectItem value="UX Designer">UX Designer</SelectItem>
-                                                            <SelectItem value="Product Manager">Product Manager</SelectItem>
+                                                            <SelectItem value={ROLES.SOFTWARE_DEVELOPER}>{ROLES.SOFTWARE_DEVELOPER}</SelectItem>
+                                                            <SelectItem value={ROLES.UX_DESIGNER}>{ROLES.UX_DESIGNER}</SelectItem>
+                                                            <SelectItem value={ROLES.PRODUCT_MANAGER}>{ROLES.PRODUCT_MANAGER}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                     {errors?.teamMembers?.[index]?.role?.message && (
@@ -286,7 +288,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="techStack"
                             name="Tech Stack"
                             formValues={formValues.techStack}
-                            placeHolder="Enter Tech Stack"
+                            placeHolder={PLACEHOLDERS.ENTER_TECH_STACK}
                             type="Input"
                         />
 
@@ -299,7 +301,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="designTools"
                             name="Design Tools"
                             formValues={formValues.designTools}
-                            placeHolder="Enter Design Tools"
+                            placeHolder={PLACEHOLDERS.ENTER_DESIGN_TOOLS}
                             type="Input"
                         />
                         {/* Problem Statement */}
@@ -310,7 +312,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="problemStatement"
                             name="Problem Statement"
                             formValues={formValues.problemStatement}
-                            placeHolder="Describe the problem statement"
+                            placeHolder={PLACEHOLDERS.ENTER_PROBLEM_STATEMENT}
                             type="Textarea"
                         />
                         {/* Project Challenge */}
@@ -321,7 +323,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="projectChallenge"
                             name="Problem Challenge"
                             formValues={formValues.projectChallenge}
-                            placeHolder="What were some challenges or constraints?"
+                            placeHolder={PLACEHOLDERS.ENTER_PROBLEM_CHALLENGE}
                             type="Textarea"
                         />
                         {/* Design Features */}
@@ -332,7 +334,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="designFeatures"
                             name="Design Features"
                             formValues={formValues.designFeatures}
-                            placeHolder="What is impact from your solution?"
+                            placeHolder={PLACEHOLDERS.ENTER_DESIGN_FEATURES}
                             type="Textarea"
                         />
 
@@ -344,7 +346,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="designImpact"
                             name="Design Impact"
                             formValues={formValues.designImpact}
-                            placeHolder="What is impact from your solution?"
+                            placeHolder={PLACEHOLDERS.ENTER_DESIGN_IMPACT}
                             type="Textarea"
                         />
                         {/* Next Steps */}
@@ -355,7 +357,7 @@ const ProjectSubmissionPage2 = () => {
                             inputName="nextSteps"
                             name="Next Steps"
                             formValues={formValues.nextSteps}
-                            placeHolder="What are your next steps and future plans on your solution?"
+                            placeHolder={PLACEHOLDERS.ENTER_NEXT_STEPS}
                             type="Textarea"
                         />
                         {/* Project Links */}

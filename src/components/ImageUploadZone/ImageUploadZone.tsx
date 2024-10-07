@@ -30,11 +30,11 @@ const ImageUploadZone = ({ onFileChange }) => {
         <div {...getRootProps()} className="dropzone">
             <input {...getInputProps()} />
             {preview ? (
-                <div className="mt-4 w-1/2">
+                <div className="mt-4">
                     <h3 className={labelStyle}>Upload Project Files </h3>
                     <img src={preview} alt="File Preview" className="max-w-xs border rounded-[10px]" />
                 </div>
-            ) : <img className="w-1/2 pt-10" src={UploadBox} alt="upload icon" />
+            ) : <img className="pt-10" src={UploadBox} alt="upload icon" />
             }
         </div>
     )
