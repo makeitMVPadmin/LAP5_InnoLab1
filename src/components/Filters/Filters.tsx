@@ -1,6 +1,6 @@
 import "./Filters.scss";
 
-export default function Filters() {
+export default function Filters({ filters, onFilterChange }) {
   return (
     <>
       <section className="event-page__section">
@@ -10,9 +10,11 @@ export default function Filters() {
             <input
               type="radio"
               id="beginner"
-              name="skill-level"
+              name="skillLevel"
               value="beginner"
               className="event-page__input"
+              checked={filters.skillLevel === "Beginner"}
+              onChange={onFilterChange}
             />
             <label htmlFor="beginner">Beginner</label>
           </li>
@@ -20,9 +22,11 @@ export default function Filters() {
             <input
               type="radio"
               id="intermediate"
-              name="skill-level"
+              name="skillLevel"
               value="intermediate"
               className="event-page__input"
+              checked={filters.skillLevel === "Intermediate"}
+              onChange={onFilterChange}
             />
             <label htmlFor="intermediate">Intermediate</label>
           </li>
@@ -30,11 +34,13 @@ export default function Filters() {
             <input
               type="radio"
               id="experienced"
-              name="skill-level"
+              name="skillLevel"
               value="experienced"
               className="event-page__input"
+              checked={filters.skillLevel === "Advanced"}
+              onChange={onFilterChange}
             />
-            <label htmlFor="experienced">Experienced</label>
+            <label htmlFor="experienced">Advanced</label>
           </li>
         </ul>
       </section>
