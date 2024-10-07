@@ -6,6 +6,7 @@ import Signup from "./pages/Signup/Signup";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage";
 import JoinEvent from "./pages/JoinEvent/JoinEvent";
+import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/_global.scss";
@@ -22,7 +23,7 @@ const App = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/hackathons" element={<HackathonEventsPage />} />
-          <Route path="/hackathons/joined" element={<ProfilePage />} />
+          <Route path="/hackathons/joined" element={<MyEventsPage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />

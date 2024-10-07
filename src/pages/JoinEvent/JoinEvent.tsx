@@ -1,7 +1,7 @@
 import "./JoinEvent.scss";
 import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../Firebase/FirebaseConfig";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { useAuth } from "../../context/AuthContext";
@@ -62,6 +62,7 @@ const JoinEvent = () => {
 
     try {
       const eventRef = doc(db, "hackathonParticipantData", eventId);
+      const participantRef = doc(db, "hackathonUsers", currentUser.uid);
       const eventSnap = await getDoc(eventRef);
 
       if (eventSnap.exists() && eventSnap.data()?.[currentUser.uid]) {
@@ -70,10 +71,12 @@ const JoinEvent = () => {
       }
 
       await setDoc(eventRef, {
-
           [currentUser.uid]: participantData
-
       }, { merge: true });
+
+      await setDoc(participantRef, {
+        joinedEvents: arrayUnion(eventId)
+    }, { merge: true });
 
       console.log("Participant data saved successfully");
     } catch (error) {
