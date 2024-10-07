@@ -1,29 +1,16 @@
 
-import { useState, FormEvent, ChangeEvent, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../Firebase/FirebaseConfig";
-import { useAuth } from "../../context/AuthContext";
+import { useState, useEffect } from "react";
+import { Link, } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { z } from "zod"
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../../Firebase/FirebaseConfig";
+import { useAuth } from "../../context/AuthContext";
 import { Input } from "../../components/ui/input"
-import { Button } from "../../components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "../../components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "../../components/ui/select"
+import { Button } from "../../components/ui/button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
 import { STYLES } from "../../constants/styles"
 import { ROLES } from "../../constants/roles";
 import { PLACEHOLDERS } from "../../constants/placeholders"
@@ -82,8 +69,7 @@ const formSchema = z.object({
 
 
 const ProjectSubmissionPage2 = () => {
-    const [file, setFile] = useState(null);
-
+    const [file, setFile] = useState<File | null>(null);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -101,61 +87,24 @@ const ProjectSubmissionPage2 = () => {
         },
     })
 
-    const {
-        handleSubmit,
-        register,
-        watch,
-        setValue,
-        formState: { errors },
-    } = form
+    const { handleSubmit, register, watch, setValue, formState: { errors } } = form
     const formValues = watch();
 
-    const handleFileChange = (file: File) => {
-        console.log("File selected:", file);
-        setValue('file', file);
-    };
-
-    useEffect(() => {
-        console.log(errors);
-    }, [errors]);
-
-
-    const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({
-        control: form.control,
-        name: "teamMembers",
-    });
-
-    const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({
-        control: form.control,
-        name: "projectLinks",
-    });
-
-    const handleAddLink = () => {
-        appendLink({ url: "" });
-    };
-
-    const handleDeleteLink = (index: number) => {
-        removeLink(index)
-    }
+    const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({ control: form.control, name: "teamMembers", });
+    const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({ control: form.control, name: "projectLinks" });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log("hi")
-        console.log(formValues)
         console.log(values)
         console.log(file)
     }
 
-    const handleAddMember = () => {
-        appendMember({ name: '', role: '' });
-    };
-
-    const handleDeleteMember = (index: number) => {
-        removeMember(index)
-    }
-
-
+    const handleFileChange = (file: File) => { setValue('file', file) };
+    const handleAddLink = () => { appendLink({ url: "" }); };
+    const handleDeleteLink = (index: number) => { removeLink(index) }
+    const handleAddMember = () => appendMember({ name: "", role: "" });
+    const handleDeleteMember = (index: number) => removeMember(index);
 
 
     return (
