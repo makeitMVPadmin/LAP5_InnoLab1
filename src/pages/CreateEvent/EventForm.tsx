@@ -1,6 +1,7 @@
 // EventForm.tsx
 import { useForm, Controller } from 'react-hook-form';
 import './EventForm.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface EventFormInputs {
   title: string;
@@ -28,6 +29,16 @@ const EventForm: React.FC = () => {
 
   const onSubmit = (data: EventFormInputs) => {
     console.log('Form Data', data);
+  };
+
+  const navigate = useNavigate();
+
+  const handleCancelClick = () => {
+    navigate('/hackathons');
+  };
+
+  const handleNextClick = () => {
+    navigate('/ChallengeDetails');
   };
 
   return (
@@ -178,9 +189,13 @@ const EventForm: React.FC = () => {
           <label>Upload a Thumbnail Image</label>
           <input type="file" {...register('thumbnail')} />
         </div>
+        <div className="form-navigation">
 
-        <button type="submit" className="submit-btn">Next</button>
+        <button type="button" className="btn cancel" onClick={handleCancelClick}>Cancel</button>
+        <button type="button" className="btn next"  onClick={handleNextClick}>Next</button>
+        </div>
       </section>
+
     </form>
   );
 };

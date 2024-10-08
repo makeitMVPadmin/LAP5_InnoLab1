@@ -64,7 +64,8 @@
   
     .form-navigation {
       display: flex;
-      justify-content: space-between;
+      justify-content: end;
+      gap: 1rem;
   
       .btn {
         padding: 10px 20px;
