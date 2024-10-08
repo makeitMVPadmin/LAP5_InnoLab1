@@ -1,5 +1,5 @@
 import EventCard from "../../components/EventCard/EventCard";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useJoinedEvents } from "../../Firebase/FirebaseQueries";
 import { useAuth } from "../../context/AuthContext";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
@@ -12,12 +12,13 @@ import useEvents from "../../hooks/useEvents";
 const MyEventsPage = () => {
   const { currentUser } = useAuth();
   const { joinedEvents } = useJoinedEvents(currentUser?.uid);
-  const { events, error, refetchEvents } = useEvents(joinedEvents);
-  const [showCurrent, setShowCurrent] = useState(true);
+  const { events, error, isLoading, refetchEvents } = useEvents(joinedEvents);
+  const { joinedCurrentEvents, joinedPastEvents } = events;
+  const [ showCurrent, setShowCurrent ] = useState(true);
 
   const handleCountdownEnd = () => {
     refetchEvents();
-};
+  };
 
   const toggleEvents = useCallback(() => {
     setShowCurrent(prev => !prev);
@@ -27,7 +28,61 @@ const MyEventsPage = () => {
     ? { icon: <RoundEventRepeat className="h-6 w-6"/>, label: 'Past Events' } 
     : { icon: <CalendarIcon className="h-5 w-5 fill-MVP-black"/>, label: 'Current Events' };
 
-  const displayedEvents = showCurrent ? events.joinedCurrentEvents : events.joinedPastEvents;
+    const displayCards = useMemo(() => {
+      return (
+        showCurrent
+          ? joinedCurrentEvents.map(event => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                imageUrl={event.imageUrl}
+                title={event.title}
+                startTime={event.startTime}
+                endTime={event.endTime}
+                timeZone={event.timeZone}
+                skillLevel={event.skillLevel}
+                themes={event.themes}
+                joined={joinedEvents.includes(event.id)}
+              />
+            ))
+          : joinedPastEvents.map(event => (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                imageUrl={event.imageUrl}
+                title={event.title}
+                startTime={event.startTime}
+                endTime={event.endTime}
+                timeZone={event.timeZone}
+                skillLevel={event.skillLevel}
+                themes={event.themes}
+                joined={joinedEvents.includes(event.id)}
+              />
+            ))
+      );
+    }, [joinedEvents, showCurrent, joinedCurrentEvents, joinedPastEvents]);
+
+    const renderEvents = () => {
+      if (error) {
+        return <div>{error}</div>;
+      }
+      
+      if (isLoading) {
+        return <div>Loading...</div>;
+      }
+    
+      if (showCurrent) {
+        if (joinedCurrentEvents.length === 0) {
+          return <div>No Current Events</div>;
+        }
+      } else {
+        if (joinedPastEvents.length === 0) {
+          return <div>No Past Events</div>;
+        }
+      }
+    
+      return displayCards;
+    };
 
   return (
     <div className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
@@ -50,26 +105,7 @@ const MyEventsPage = () => {
       <div className="w-full h-full flex gap-4 mt-4 px-8">
         <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>
         <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
-          {error ? (
-            <div>{error}</div>
-          ) : displayedEvents.length === 0 ? (
-            <div>Loading...</div>
-          ) : (
-            displayedEvents.map(({ id, imageUrl, title, startTime, endTime, timeZone, skillLevel, themes }) => (
-              <EventCard
-                key={id}
-                id={id}
-                imageUrl={imageUrl}
-                title={title}
-                startTime={startTime}
-                endTime={endTime}
-                timeZone={timeZone}
-                skillLevel={skillLevel}
-                themes={themes}
-                joined={joinedEvents.includes(id)}
-              />
-            ))
-          )}
+        {renderEvents()}
         </div>
       </div>
     </div>

@@ -61,6 +61,7 @@ const useEvents = (joinedEvents: string[]) => {
     return {
       events,
       error,
+      isLoading,
       getEndingEvent,
       refetchEvents: fetchData,
     };

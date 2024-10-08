@@ -21,31 +21,29 @@ const Navbar = () => {
   }, []);
 
   return (
-    <>
-      <nav className="navbar">
-        <Link to="/home" className="navbar__link">
-        {windowWidth <= 1023 ? <MiniCommuniti className="navbar__img" /> : <Communiti className="navbar__img" />}
+    <nav className="navbar">
+      <Link to="/home" className="navbar__link">
+      {windowWidth <= 1023 ? <MiniCommuniti className="navbar__img" /> : <Communiti className="navbar__img" />}
+      </Link>
+      <ul className="navbar__links">
+        <Link
+          to="/home"
+          className="navbar__link-container navbar__link-container--desktop"
+        >
+          <li className="navbar__link">Home</li>
         </Link>
-        <ul className="navbar__links">
-          <Link
-            to="/home"
-            className="navbar__link-container navbar__link-container--desktop"
-          >
-            <li className="navbar__link">Home</li>
-          </Link>
-          <Link className="navbar__link-container" to="/login">
-            <li className="navbar__link-button">
-              <Button buttonText="Log In" className="button" />
-            </li>
-          </Link>
-          <Link className="navbar__link-container" to="/signup">
-            <li className="navbar__link-button">
-              <Button buttonText="Sign Up" className="button button--yellow" />
-            </li>
-          </Link>
-        </ul>
-      </nav>
-    </>
+        <Link className="navbar__link-container" to="/login">
+          <li className="navbar__link-button">
+            <Button buttonText="Log In" className="button" />
+          </li>
+        </Link>
+        <Link className="navbar__link-container" to="/signup">
+          <li className="navbar__link-button">
+            <Button buttonText="Sign Up" className="button button--yellow" />
+          </li>
+        </Link>
+      </ul>
+    </nav>
   );
 };
 

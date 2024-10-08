@@ -19,13 +19,11 @@ const NavbarAlt = () => {
   }, []);
 
   return (
-    <>
       <nav className="navbar">
         <Link to="/" className="navbar__link">
         {windowWidth <= 1023 ? <MiniCommuniti className="navbar__img" /> : <Communiti className="navbar__img" />}
         </Link>
       </nav>
-    </>
   );
 };
 

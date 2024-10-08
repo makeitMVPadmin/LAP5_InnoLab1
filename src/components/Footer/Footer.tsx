@@ -7,7 +7,7 @@ import { ReactComponent as Communiti2 } from "../../assets/logos/communiti2.svg"
 
 const Footer = () => {
   return (
-    <div className="footer">
+    <footer className="footer">
       <Communiti2 className="logo" />
       <div className="separator"></div>
       <div className="icon-row">
@@ -21,7 +21,7 @@ const Footer = () => {
           <Linkedin />
         </Link>
       </div>
-    </div>
+    </footer>
   );
 }
 export default Footer;
