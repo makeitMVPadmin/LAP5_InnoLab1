@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchHackathonEvents } from "../../Firebase/GetHackathonEvents";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link } from "react-router-dom";
-
+import EventForm from "../CreateEvent/EventForm";
 const HackathonEventsPage = () => {
     const [hackathonEvents, setHackathonEvents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +35,7 @@ const HackathonEventsPage = () => {
         </div>
         <div className="event-page__btn">
           <Link to="#" className="event-page__my-events">My Events</Link>
-          <Link to="#" className="event-page__create-hackathon">Create Hackathon</Link>
+          <Link to="/EventForm" className="event-page__create-hackathon">Create Hackathon</Link>
 
         </div>
         <div className="event-page__container">
