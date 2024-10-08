@@ -1,5 +1,6 @@
 import { useForm, Controller } from 'react-hook-form';
 import './ChallengeDetails.scss';
+import { useNavigate } from 'react-router-dom';
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
@@ -24,6 +25,12 @@ const ChallengeDetailsForm: React.FC = () => {
 
   const onSubmit = (data: ChallengeDetailsFormInputs) => {
     console.log(data);
+  };
+
+  const navigate = useNavigate();
+
+  const handlePreviousClick = () => {
+    navigate('/EventForm');
   };
 
   return (
@@ -110,7 +117,7 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-navigation">
-        <button type="button" className="btn prev">Previous</button>
+        <button type="button" className="btn prev" onClick={handlePreviousClick}>Previous</button>
         <button type="submit" className="btn next">Next</button>
       </div>
     </form>
