@@ -34,6 +34,11 @@ const EventForm: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="event-form">
       <section className="form-section">
         <h2>Create an Event</h2>
+        <div className="steps">
+        <div className="step active">1. Event Details</div>
+        <div className="step">2. Challenge Details</div>
+        <div className="step">3. Review</div>
+      </div>
         <div className="form-group">
           <label>Event Title *</label>
           <input {...register('title', { required: 'Event Title is required' })} />

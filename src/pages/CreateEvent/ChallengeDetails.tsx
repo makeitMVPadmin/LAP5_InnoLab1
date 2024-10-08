@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form';
-import './ChallengeDetailsForm.scss';
+import './ChallengeDetails.scss';
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
