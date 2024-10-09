@@ -5,6 +5,7 @@ import { ReactComponent as Sensors } from "../../assets/images/sensors.svg";
 import { useAuth } from "../../context/AuthContext";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link } from "react-router-dom";
+import EventForm from "../CreateEvent/EventForm";
 import useEvents from "../../hooks/useEvents";
 
 const HackathonEventsPage = () => {
@@ -43,7 +44,6 @@ const HackathonEventsPage = () => {
     if (allCurrentEvents.length === 0) return <div>No Events</div>;
     return displayCards;
   };
-
   return (
     <main className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
       <DashboardNavbar />
@@ -64,7 +64,7 @@ const HackathonEventsPage = () => {
             </span>
           }
         </Link>
-        <Link to="#" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
+        <Link to="/EventForm" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
         <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>

@@ -11,6 +11,8 @@ import ProjectSubmissionPage2 from "./pages/ProjectSubmissionPage/ProjectSubmiss
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EventForm from "./pages/CreateEvent/EventForm";
+import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
 import "./styles/_global.scss";
 
 const App = () => {
@@ -29,6 +31,8 @@ const App = () => {
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/event/:eventId/submit" element={<ProjectSubmissionPage2 />} />
+          <Route path="/EventForm" element={<EventForm />} />
+          <Route path="/ChallengeDetails" element={<ChallengeDetails />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
