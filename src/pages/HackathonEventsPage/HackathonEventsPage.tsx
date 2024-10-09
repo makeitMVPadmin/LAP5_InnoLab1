@@ -39,13 +39,6 @@ const HackathonEventsPage = () => {
     );
   }, [allCurrentEvents]);
 
-          <h1 className="event-page__header">Hackathon Events</h1>
-          <p className="event-page__sub-header">Explore all the hackathon events</p>
-        </div>
-        <div className="event-page__btn">
-          <Link to="#" className="event-page__my-events">My Events</Link>
-          <Link to="/EventForm" className="event-page__create-hackathon">Create Hackathon</Link>
-
   const renderEvents = () => {
     if (isLoading) return <div>Loading...</div>;
     if (allCurrentEvents.length === 0) return <div>No Events</div>;
@@ -71,7 +64,7 @@ const HackathonEventsPage = () => {
             </span>
           }
         </Link>
-        <Link to="#" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
+        <Link to="/EventForm" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
         <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>
