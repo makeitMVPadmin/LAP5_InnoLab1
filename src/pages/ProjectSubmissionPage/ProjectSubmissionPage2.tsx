@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { Link, } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
-import { z } from "zod"
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../Firebase/FirebaseConfig";
 import { useAuth } from "../../context/AuthContext";
+import { submissionSchema } from "../../schema/submissionSchema";
+import { ProjectSubmissionFormValues, ProjectSubmission } from "../../types/submissionTypes"
+import { DEFAULT_FORM_VALUES } from "../../constants/submissionFormDefaults";
 import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
@@ -21,71 +21,15 @@ import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
 
-const formSchema = z.object({
-    teamName: z.string().min(1, { message: "Team name is required." }).max(80),
-    techStack: z.string().min(1, { message: "Tech stack is required." }).max(80),
-    designTools: z.string().min(1, { message: "Design tools are required." }).max(80),
-    problemStatement: z.string().min(1, { message: "Problem statement is required." }).max(500),
-    projectChallenge: z.string().min(1, { message: "Project challenge is required." }).max(500),
-    designFeatures: z.string().min(1, { message: "Design features are required." }).max(500),
-    designImpact: z.string().min(1, { message: "Design impact is required." }).max(500),
-    nextSteps: z.string().min(1, { message: "Next steps are required." }).max(500),
-    file: z.instanceof(File).refine((file) => !!file, {
-        message: "File is required.",
-    }),
-    projectLinks: z.array(
-        z.object({
-            url: z.string().max(64, { message: "Project link url cannot exceed 64 characters." })
-        })
-    )
-        .min(1, { message: "A project link is required." })
-        .refine((links) => links[0]?.url?.length > 0, {
-            message: "The first project link is required.",
-            path: [0, 'url'],
-        }),
-    teamMembers: z
-        .array(
-            z.object({
-                name: z.string().optional(),
-                role: z.string().optional(),
-            })
-        )
-        .refine(
-            (members) => members.length > 0,
-            { message: "At least one team member is required." }
-        )
-        .refine(
-            (members) =>
-                members.every(
-                    (member) =>
-                        (!member.name && !member.role) ||
-                        (member.name && member.role)
-                ),
-            { message: "Each team member must have both a name and a role." }
-        )
-    ,
-});
-
-
-
 const ProjectSubmissionPage2 = () => {
     const [file, setFile] = useState<File | null>(null);
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            teamName: "",
-            techStack: "",
-            designTools: "",
-            problemStatement: "",
-            projectChallenge: "",
-            designFeatures: "",
-            designImpact: "",
-            nextSteps: "",
-            file: null,
-            projectLinks: [{ url: "" }],
-            teamMembers: [{ name: "", role: "Software developer" }]
-        },
-    })
+
+    //Set Default values for form
+    const form = useForm<ProjectSubmissionFormValues>({
+        resolver: zodResolver(submissionSchema),
+        defaultValues: DEFAULT_FORM_VALUES,
+    });
+
 
     const { handleSubmit, register, watch, setValue, formState: { errors } } = form
     const formValues = watch();
@@ -93,11 +37,11 @@ const ProjectSubmissionPage2 = () => {
     const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({ control: form.control, name: "teamMembers", });
     const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({ control: form.control, name: "projectLinks" });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         console.log(values)
         console.log(file)
+    async function onSubmit(values: ProjectSubmissionFormValues) {
     }
 
     const handleFileChange = (file: File) => { setValue('file', file) };
@@ -352,10 +296,10 @@ const ProjectSubmissionPage2 = () => {
                         {/* Upload image */}
                         <div className="w-1/2">
                             <ImageUploadZone onFileChange={handleFileChange} />
-                            {errors.file && (
+                            {errors.imageFile && (
                                 <div className="flex items-center gap--2">
                                     <img src={ErrorIcon} alt="error icon" />
-                                    <p className="text-red-500">{errors.file.message}</p>
+                                    <p className="text-red-500">{errors.imageFile.message}</p>
                                 </div>
                             )}
                         </div>

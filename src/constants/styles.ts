@@ -6,5 +6,5 @@ export const STYLES = {
     "min-h-40 w-full px-4 py-2 rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-black bg-white placeholder:font-thin placeholder:font-poppins font-regular font-poppins",
   counterStyle: "block text-xs text-black text-right mt-1 font-bold",
   primaryButton:
-    "bg-MVP-light-blue text-MVP-black cursor-pointer h-12 justify-center px-6 bg-MVP-light-blue border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black text-xl",
+    "font-gilroy bg-MVP-light-blue text-MVP-black cursor-pointer h-12 justify-center px-6 bg-MVP-light-blue border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black text-xl",
 } as const;
