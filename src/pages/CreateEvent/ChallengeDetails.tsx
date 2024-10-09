@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import './ChallengeDetails.scss';
 import { useNavigate } from 'react-router-dom';
+import { CalendarIcon, ClockIcon } from '@heroicons/react/24/solid';
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
@@ -43,21 +44,31 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="challengeReleaseDate">Challenge Release Date*</label>
-        <Controller
-          name="challengeReleaseDate"
-          control={control}
-          rules={{ required: 'Challenge release date is required' }}
-          render={({ field }) => (
-            <input
-              type="datetime-local"
-              {...field}
-              className={`form-control ${errors.challengeReleaseDate ? 'error' : ''}`}
-            />
-          )}
+  <label htmlFor="challengeReleaseDate">Challenge Release Date*</label>
+  <Controller
+    name="challengeReleaseDate"
+    control={control}
+    rules={{ required: 'Challenge release date is required' }}
+    render={({ field }) => (
+      <div className="date-input-container">
+        <CalendarIcon className="icon" />
+        <input
+          type="date"
+          {...field}
+          className={`form-control ${errors.challengeReleaseDate ? 'error' : ''}`}
         />
-        {errors.challengeReleaseDate && <p className="error-text">{errors.challengeReleaseDate.message}</p>}
+        <span className="divider">|</span>
+        <ClockIcon className="icon" />
+        <input
+          type="time"
+          {...field}
+          className={`form-control ${errors.challengeReleaseDate ? 'error' : ''}`}
+        />
       </div>
+    )}
+  />
+  {errors.challengeReleaseDate && <p className="error-text">{errors.challengeReleaseDate.message}</p>}
+</div>
 
       <div className="form-group">
         <label htmlFor="problemStatement">Problem Statement*</label>

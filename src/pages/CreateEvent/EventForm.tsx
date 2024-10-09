@@ -1,4 +1,3 @@
-// EventForm.tsx
 import { useForm, Controller } from 'react-hook-form';
 import './EventForm.scss';
 import { useNavigate } from 'react-router-dom';
