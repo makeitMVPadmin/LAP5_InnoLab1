@@ -22,7 +22,7 @@ const ImageUploadZone = ({ onFileChange }) => {
                 setErrorMessage("File type not supported. Please upload JPG, PNG, PDF, or SVG files.");
                 return;
             }
-
+            console.log(file)
             setErrorMessage(null); // Reset any previous error message
             onFileChange(file);
             const previewUrl = URL.createObjectURL(file);

@@ -1,19 +1,20 @@
 
-import { useState, useEffect } from "react";
-import { Link, } from "react-router-dom";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { useAuth } from "../../context/AuthContext";
+import { createProjectSubmission } from "../../Firebase/FirebaseStore"
 import { submissionSchema } from "../../schema/submissionSchema";
 import { ProjectSubmissionFormValues, ProjectSubmission } from "../../types/submissionTypes"
 import { DEFAULT_FORM_VALUES } from "../../constants/submissionFormDefaults";
+import { STYLES } from "../../constants/styles"
+import { ROLES } from "../../constants/roles";
+import { PLACEHOLDERS } from "../../constants/placeholders"
 import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
-import { STYLES } from "../../constants/styles"
-import { ROLES } from "../../constants/roles";
-import { PLACEHOLDERS } from "../../constants/placeholders"
 import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import CustomInput from "../../components/CustomInput/CustomInput";
@@ -22,6 +23,9 @@ import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
 
 const ProjectSubmissionPage2 = () => {
+    const { currentUser } = useAuth();
+    const { eventId } = useParams()
+    const [isLoading, setIsLoading] = useState(false)
     const [file, setFile] = useState<File | null>(null);
 
     //Set Default values for form
@@ -37,19 +41,53 @@ const ProjectSubmissionPage2 = () => {
     const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({ control: form.control, name: "teamMembers", });
     const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({ control: form.control, name: "projectLinks" });
 
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
-        console.log(file)
     async function onSubmit(values: ProjectSubmissionFormValues) {
+        setIsLoading(true)
+
+        try {
+            // Validate the form data
+            const parsedData = submissionSchema.safeParse(values);
+            if (!parsedData.success) {
+                console.error("Validation errors:", parsedData.error.errors);
+                return;
+            }
+
+            const formattedTeamMembers = values.teamMembers.filter(
+                (member) => member.name.trim() !== "" && member.role.trim() !== ""
+            );
+
+            const formattedLinks = values.projectLinks.filter(
+                (link) => link.url.trim() !== ""
+            );
+
+            // Create the submission object with the required additional fields
+            const submission: ProjectSubmission = {
+                ...values,
+                teamMembers: formattedTeamMembers,
+                projectLinks: formattedLinks,
+                userId: currentUser.uid,
+                eventId: eventId as string
+            };
+
+
+            await createProjectSubmission(submission);
+            console.log("Form and image submitted successfully!");
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        } finally {
+            setIsLoading(false);
+        }
+
     }
 
-    const handleFileChange = (file: File) => { setValue('file', file) };
+    const handleFileChange = (file: File) => {
+        setFile(file);
+        setValue('imageFile', file, { shouldValidate: true });
+    };
     const handleAddLink = () => { appendLink({ url: "" }); };
     const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleAddMember = () => appendMember({ name: "", role: "" });
     const handleDeleteMember = (index: number) => removeMember(index);
-
 
     return (
         <main className="font-gilroy">
@@ -185,7 +223,6 @@ const ProjectSubmissionPage2 = () => {
                             type="Input"
                         />
 
-
                         {/* Design Tools */}
                         <CustomInput
                             errors={errors?.designTools}
@@ -230,7 +267,6 @@ const ProjectSubmissionPage2 = () => {
                             placeHolder={PLACEHOLDERS.ENTER_DESIGN_FEATURES}
                             type="Textarea"
                         />
-
                         {/* Design Impact */}
                         <CustomInput
                             errors={errors?.designImpact}
@@ -308,7 +344,7 @@ const ProjectSubmissionPage2 = () => {
                                 Cancel
                             </Button>
                             <Button type="submit" className={STYLES.primaryButton}>
-                                Review Submission
+                                {isLoading ? "Loading...." : "Review Submission"}
                             </Button>
                         </div>
                     </form>
