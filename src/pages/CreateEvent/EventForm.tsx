@@ -1,4 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
@@ -34,6 +35,27 @@ const EventForm: React.FC = () => {
       judges: [""],
     },
   });
+
+  const [judges, setJudges] = useState([{ name: "" }]);
+
+  const handleJudgeChange = (index, value) => {
+    const updatedJudges = [...judges];
+    updatedJudges[index].name = value;
+    setJudges(updatedJudges);
+  };
+
+  const handleAddJudge = () => {
+    if (judges.length < 4) {
+      setJudges([...judges, { name: "" }]);
+    }
+  };
+
+  const handleRemoveJudge = (index) => {
+    if (judges.length > 1) {
+      const updatedJudges = judges.filter((_, i) => i !== index);
+      setJudges(updatedJudges);
+    }
+  };
 
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
@@ -330,9 +352,36 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Judges *</label>
-          {/* Handle dynamically adding/removing judges */}
-          <input {...register(`judges.0`)} placeholder="Judge Name" />
+          <label htmlFor="judges">Judges*</label>
+          {judges.map((judge, index) => (
+            <div key={index} className="judge-input-container">
+              <label>Judge #{index + 1}</label>
+              <input
+                type="text"
+                value={judge.name}
+                placeholder="Enter judge name"
+                onChange={(e) => handleJudgeChange(index, e.target.value)}
+              />
+              {index > 0 && (
+                <button
+                  type="button"
+                  className="remove-judge-button"
+                  onClick={() => handleRemoveJudge(index)}
+                >
+                  X
+                </button>
+              )}
+            </div>
+          ))}
+          {judges.length < 4 && (
+            <button
+              type="button"
+              className="add-judge-button"
+              onClick={handleAddJudge}
+            >
+              Add Judge
+            </button>
+          )}
         </div>
 
         <div className="form-group">
