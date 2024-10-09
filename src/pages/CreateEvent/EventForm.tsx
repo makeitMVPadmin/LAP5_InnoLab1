@@ -1,6 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
+import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 
 interface EventFormInputs {
   title: string;
@@ -9,8 +10,11 @@ interface EventFormInputs {
   skillLevel: string;
   theme: string;
   startDate: string;
+  startTime: string;
   endDate: string;
+  endTime: string;
   announcementDate: string;
+  announcementTime: string;
   timezone: string;
   meetingLink: string;
   minParticipants: number;
@@ -154,32 +158,145 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Event Duration *</label>
-          <Controller
-            name="startDate"
-            control={control}
-            rules={{ required: "Start date is required" }}
-            render={({ field }) => <input type="datetime-local" {...field} />}
-          />
+          <label htmlFor="eventDuration">Event Duration*</label>
+
+          <div className="sub-section">
+            <span>Start *</span>
+            <div className="date-time-container">
+              <div className="date-input">
+                <CalendarIcon className="icon" />
+                <Controller
+                  name="startDate"
+                  control={control}
+                  rules={{ required: "Start date is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="date"
+                      {...field}
+                      className={`form-control ${
+                        errors.startDate ? "error" : ""
+                      }`}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="time-input">
+                <ClockIcon className="icon" />
+                <Controller
+                  name="startTime"
+                  control={control}
+                  rules={{ required: "Start time is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="time"
+                      {...field}
+                      className={`form-control ${
+                        errors.startTime ? "error" : ""
+                      }`}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="sub-section">
+            <span>End *</span>
+            <div className="date-time-container">
+              <div className="date-input">
+                <CalendarIcon className="icon" />
+                <Controller
+                  name="endDate"
+                  control={control}
+                  rules={{ required: "End date is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="date"
+                      {...field}
+                      className={`form-control ${
+                        errors.endDate ? "error" : ""
+                      }`}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="time-input">
+                <ClockIcon className="icon" />
+                <Controller
+                  name="endTime"
+                  control={control}
+                  rules={{ required: "End time is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="time"
+                      {...field}
+                      className={`form-control ${
+                        errors.endTime ? "error" : ""
+                      }`}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Error messages */}
           {errors.startDate && (
-            <p className="error">{errors.startDate.message}</p>
+            <p className="error-text">{errors.startDate.message}</p>
           )}
-          <Controller
-            name="endDate"
-            control={control}
-            rules={{ required: "End date is required" }}
-            render={({ field }) => <input type="datetime-local" {...field} />}
-          />
-          {errors.endDate && <p className="error">{errors.endDate.message}</p>}
+          {errors.startTime && (
+            <p className="error-text">{errors.startTime.message}</p>
+          )}
+          {errors.endDate && (
+            <p className="error-text">{errors.endDate.message}</p>
+          )}
+          {errors.endTime && (
+            <p className="error-text">{errors.endTime.message}</p>
+          )}
         </div>
 
         <div className="form-group">
-          <label>Event Announcement Publish Date *</label>
-          <Controller
-            name="announcementDate"
-            control={control}
-            render={({ field }) => <input type="datetime-local" {...field} />}
-          />
+          <label htmlFor="announcementDate">
+            Event Announcement Publish Date*
+          </label>
+          <div className="date-input-container">
+            <CalendarIcon className="icon" />
+            <Controller
+              name="announcementDate"
+              control={control}
+              rules={{ required: "Announcement date is required" }}
+              render={({ field }) => (
+                <input
+                  type="date"
+                  {...field}
+                  className={`form-control ${
+                    errors.announcementDate ? "error" : ""
+                  }`}
+                />
+              )}
+            />
+            <span className="divider">|</span>
+            <ClockIcon className="icon" />
+            <Controller
+              name="announcementTime"
+              control={control}
+              rules={{ required: "Announcement time is required" }}
+              render={({ field }) => (
+                <input
+                  type="time"
+                  {...field}
+                  className={`form-control ${
+                    errors.announcementTime ? "error" : ""
+                  }`}
+                />
+              )}
+            />
+          </div>
+          {errors.announcementDate && (
+            <p className="error-text">{errors.announcementDate.message}</p>
+          )}
         </div>
 
         <div className="form-group">
