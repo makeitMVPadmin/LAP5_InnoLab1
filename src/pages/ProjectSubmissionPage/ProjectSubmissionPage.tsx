@@ -22,7 +22,7 @@ import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
 
-const ProjectSubmissionPage2 = () => {
+const ProjectSubmissionPage = () => {
     const { currentUser } = useAuth();
     const { eventId } = useParams()
     const [isLoading, setIsLoading] = useState(false)
@@ -354,6 +354,6 @@ const ProjectSubmissionPage2 = () => {
     );
 };
 
-export default ProjectSubmissionPage2;
+export default ProjectSubmissionPage;
 
 

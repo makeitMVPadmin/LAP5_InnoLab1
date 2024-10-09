@@ -7,7 +7,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage";
 import JoinEvent from "./pages/JoinEvent/JoinEvent";
 import EventPage from "./pages/EventPage/EventPage";
-import ProjectSubmissionPage2 from "./pages/ProjectSubmissionPage/ProjectSubmissionPage2";
+import ProjectSubmissionPage2 from "./pages/ProjectSubmissionPage/ProjectSubmissionPage";
 
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
