@@ -1,7 +1,6 @@
 .challenge-details-form {
     max-width: 600px;
     margin: 0 auto;
-    font-family: Arial, sans-serif;
   
     h1 {
       font-size: 24px;
@@ -21,8 +20,8 @@
         border-radius: 4px;
   
         &.active {
-          background-color: #007bff;
-          color: #fff;
+          background-color: #FFD22F;
+          color: #000;
         }
       }
     }

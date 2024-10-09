@@ -1,6 +1,6 @@
-import { useForm, Controller } from 'react-hook-form';
-import './EventForm.scss';
-import { useNavigate } from 'react-router-dom';
+import { useForm, Controller } from "react-hook-form";
+import "./EventForm.scss";
+import { useNavigate } from "react-router-dom";
 
 interface EventFormInputs {
   title: string;
@@ -20,24 +20,29 @@ interface EventFormInputs {
 }
 
 const EventForm: React.FC = () => {
-  const { register, handleSubmit, control, formState: { errors } } = useForm<EventFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<EventFormInputs>({
     defaultValues: {
-      judges: [''],
-    }
+      judges: [""],
+    },
   });
 
   const onSubmit = (data: EventFormInputs) => {
-    console.log('Form Data', data);
+    console.log("Form Data", data);
   };
 
   const navigate = useNavigate();
 
   const handleCancelClick = () => {
-    navigate('/hackathons');
+    navigate("/hackathons");
   };
 
   const handleNextClick = () => {
-    navigate('/ChallengeDetails');
+    navigate("/ChallengeDetails");
   };
 
   return (
@@ -45,86 +50,102 @@ const EventForm: React.FC = () => {
       <section className="form-section">
         <h2>Create an Event</h2>
         <div className="steps">
-        <div className="step active">1. Event Details</div>
-        <div className="step">2. Challenge Details</div>
-        <div className="step">3. Review</div>
-      </div>
+          <div className="step active">1. Event Details</div>
+          <div className="step">2. Challenge Details</div>
+          <div className="step">3. Review</div>
+        </div>
         <div className="form-group">
           <label>Event Title *</label>
-          <input {...register('title', { required: 'Event Title is required' })} />
+          <input
+            {...register("title", { required: "Event Title is required" })}
+          />
           {errors.title && <p className="error">{errors.title.message}</p>}
         </div>
 
         <div className="form-group">
           <label>Organized By *</label>
-          <input {...register('organizer', { required: 'Organizer is required' })} />
-          {errors.organizer && <p className="error">{errors.organizer.message}</p>}
+          <input
+            {...register("organizer", { required: "Organizer is required" })}
+          />
+          {errors.organizer && (
+            <p className="error">{errors.organizer.message}</p>
+          )}
         </div>
 
         <div className="form-group">
           <label>Event Description *</label>
-          <textarea {...register('description', { required: 'Event description is required' })} />
-          {errors.description && <p className="error">{errors.description.message}</p>}
+          <textarea
+            {...register("description", {
+              required: "Event description is required",
+            })}
+          />
+          {errors.description && (
+            <p className="error">{errors.description.message}</p>
+          )}
         </div>
 
         <div className="form-group">
-        <label htmlFor="skillLevel">Skill Level *</label>
-        <Controller
-          name="skillLevel"
-          control={control}
-          rules={{ required: 'Skill Level is required' }}
-          render={({ field }) => (
-            <>
-              <div className="radio-group">
-                <label>
-                  <input
-                    {...field}
-                    type="radio"
-                    value="Beginner"
-                    checked={field.value === 'Beginner'}
-                  />
-                  Beginner
-                </label>
+          <label htmlFor="skillLevel">Skill Level *</label>
+          <Controller
+            name="skillLevel"
+            control={control}
+            rules={{ required: "Skill Level is required" }}
+            render={({ field }) => (
+              <>
+                <div className="radio-group">
+                  <label>
+                    <input
+                      {...field}
+                      type="radio"
+                      value="Beginner"
+                      checked={field.value === "Beginner"}
+                    />
+                    Beginner
+                  </label>
 
-                <label>
-                  <input
-                    {...field}
-                    type="radio"
-                    value="Intermediate"
-                    checked={field.value === 'Intermediate'}
-                  />
-                  Intermediate
-                </label>
+                  <label>
+                    <input
+                      {...field}
+                      type="radio"
+                      value="Intermediate"
+                      checked={field.value === "Intermediate"}
+                    />
+                    Intermediate
+                  </label>
 
-                <label>
-                  <input
-                    {...field}
-                    type="radio"
-                    value="Advanced"
-                    checked={field.value === 'Advanced'}
-                  />
-                  Advanced
-                </label>
+                  <label>
+                    <input
+                      {...field}
+                      type="radio"
+                      value="Advanced"
+                      checked={field.value === "Advanced"}
+                    />
+                    Advanced
+                  </label>
 
-                <label>
-                  <input
-                    {...field}
-                    type="radio"
-                    value="Expert"
-                    checked={field.value === 'Expert'}
-                  />
-                  Expert
-                </label>
-              </div>
-            </>
+                  <label>
+                    <input
+                      {...field}
+                      type="radio"
+                      value="Expert"
+                      checked={field.value === "Expert"}
+                    />
+                    Expert
+                  </label>
+                </div>
+              </>
+            )}
+          />
+          {errors.skillLevel && (
+            <p className="error-text">{errors.skillLevel.message}</p>
           )}
-        />
-        {errors.skillLevel && <p className="error-text">{errors.skillLevel.message}</p>}
-      </div>
+        </div>
 
         <div className="form-group">
-          <label>Theme 8</label>
-          <select {...register('theme', { required: 'Select at least one theme' })}>
+          <label>Theme *</label>
+          <select
+            {...register("theme", { required: "Select at least one theme" })}
+          >
             <option value="AI">AI</option>
             <option value="Healthcare">Healthcare</option>
             <option value="Design">Design</option>
@@ -137,14 +158,16 @@ const EventForm: React.FC = () => {
           <Controller
             name="startDate"
             control={control}
-            rules={{ required: 'Start date is required' }}
+            rules={{ required: "Start date is required" }}
             render={({ field }) => <input type="datetime-local" {...field} />}
           />
-          {errors.startDate && <p className="error">{errors.startDate.message}</p>}
+          {errors.startDate && (
+            <p className="error">{errors.startDate.message}</p>
+          )}
           <Controller
             name="endDate"
             control={control}
-            rules={{ required: 'End date is required' }}
+            rules={{ required: "End date is required" }}
             render={({ field }) => <input type="datetime-local" {...field} />}
           />
           {errors.endDate && <p className="error">{errors.endDate.message}</p>}
@@ -161,7 +184,9 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label>Timezone</label>
-          <select {...register('timezone', { required: 'Timezone is required' })}>
+          <select
+            {...register("timezone", { required: "Timezone is required" })}
+          >
             <option value="GMT-0700">PST (GMT-0700)</option>
             <option value="GMT-0500">EST (GMT-0500)</option>
           </select>
@@ -169,13 +194,22 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label>Meeting Link *</label>
-          <input type="url" {...register('meetingLink')} />
+          <input type="url" {...register("meetingLink")} />
         </div>
 
         <div className="form-group">
           <label>Participant Count *</label>
-          <input type="number" {...register('minParticipants', { valueAsNumber: true })} placeholder="Min" /> - 
-          <input type="number" {...register('maxParticipants', { valueAsNumber: true })} placeholder="Max" />
+          <input
+            type="number"
+            {...register("minParticipants", { valueAsNumber: true })}
+            placeholder="Min"
+          />{" "}
+          -
+          <input
+            type="number"
+            {...register("maxParticipants", { valueAsNumber: true })}
+            placeholder="Max"
+          />
         </div>
 
         <div className="form-group">
@@ -186,15 +220,21 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label>Upload a Thumbnail Image</label>
-          <input type="file" {...register('thumbnail')} />
+          <input type="file" {...register("thumbnail")} />
         </div>
         <div className="form-navigation">
-
-        <button type="button" className="btn cancel" onClick={handleCancelClick}>Cancel</button>
-        <button type="button" className="btn next"  onClick={handleNextClick}>Next</button>
+          <button
+            type="button"
+            className="btn cancel"
+            onClick={handleCancelClick}
+          >
+            Cancel
+          </button>
+          <button type="button" className="btn next" onClick={handleNextClick}>
+            Next
+          </button>
         </div>
       </section>
-
     </form>
   );
 };
