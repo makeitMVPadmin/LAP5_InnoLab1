@@ -170,7 +170,7 @@ const EventForm: React.FC = () => {
         <div className="form-group">
           <label>Theme *</label>
           <select
-            {...register("theme", { required: "Select at least one theme" })}
+            {...register("theme", { required: "Select up to 3 themes" })}
           >
             <option value="AI">AI</option>
             <option value="Healthcare">Healthcare</option>
@@ -338,17 +338,25 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label>Participant Count *</label>
-          <input
-            type="number"
-            {...register("minParticipants", { valueAsNumber: true })}
-            placeholder="Min"
-          />{" "}
-          -
-          <input
-            type="number"
-            {...register("maxParticipants", { valueAsNumber: true })}
-            placeholder="Max"
-          />
+          <div className="flex flex-col">
+            <label>Min</label>
+            <input
+              type="number"
+              {...register("minParticipants", { valueAsNumber: true })}
+              placeholder="Min"
+              className="w-2/12 p-1 rounded text-base"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label>-</label>
+            <label>Max</label>
+            <input
+              type="number"
+              {...register("maxParticipants", { valueAsNumber: true })}
+              placeholder="Max"
+              className="w-2/12 p-1 rounded text-base"
+            />
+          </div>
         </div>
 
         <div className="form-group">
