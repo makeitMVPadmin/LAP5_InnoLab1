@@ -36,17 +36,20 @@ const EventForm: React.FC = () => {
     },
   });
 
-  const [judges, setJudges] = useState([{ name: "" }]);
+  const [judges, setJudges] = useState([{ firstName: '', lastName: '' }]);
 
-  const handleJudgeChange = (index, value) => {
-    const updatedJudges = [...judges];
-    updatedJudges[index].name = value;
-    setJudges(updatedJudges);
+  const handleJudgeChange = (index: number, value: string, field: 'firstName' | 'lastName') => {
+    setJudges((prevJudges) => {
+      const updatedJudges = [...prevJudges];
+      updatedJudges[index] = { ...updatedJudges[index], [field]: value };
+      return updatedJudges;
+    });
   };
+  
 
   const handleAddJudge = () => {
     if (judges.length < 4) {
-      setJudges([...judges, { name: "" }]);
+      setJudges([...judges, { firstName: '', lastName: '' }]);
     }
   };
 
@@ -393,18 +396,33 @@ const EventForm: React.FC = () => {
         <div className="form-group">
           <label htmlFor="judges">Judges*</label>
           {judges.map((judge, index) => (
-            <div key={index} className="judge-input-container">
-              <label>Judge #{index + 1}</label>
+            <div
+              key={index}
+              className="judge-input-container flex items-center space-x-4 my-3"
+            >
+              <label className="mr-2">Judge #{index + 1}</label>
               <input
                 type="text"
-                value={judge.name}
-                placeholder="Enter judge name"
-                onChange={(e) => handleJudgeChange(index, e.target.value)}
+                value={judge.firstName}
+                placeholder="Enter first name"
+                onChange={(e) =>
+                  handleJudgeChange(index, e.target.value, "firstName")
+                }
+                className="flex-1 p-2 w-6"
               />
-              {index > 0 && (
+              <input
+                type="text"
+                value={judge.lastName}
+                placeholder="Enter last name"
+                onChange={(e) =>
+                  handleJudgeChange(index, e.target.value, "lastName")
+                }
+                className="flex-1 p-2 w-6"
+              />
+              {(
                 <button
                   type="button"
-                  className="remove-judge-button"
+                  className="ml-2 text-red-500"
                   onClick={() => handleRemoveJudge(index)}
                 >
                   X
@@ -413,13 +431,15 @@ const EventForm: React.FC = () => {
             </div>
           ))}
           {judges.length < 4 && (
-            <button
-              type="button"
-              className="add-judge-button"
-              onClick={handleAddJudge}
-            >
-              Add Judge
-            </button>
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                className="px-4 py-2 add-judge-button"
+                onClick={handleAddJudge}
+              >
+                Add Judge
+              </button>
+            </div>
           )}
         </div>
 
