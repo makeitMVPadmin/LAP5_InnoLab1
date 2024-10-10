@@ -57,8 +57,21 @@ const EventForm: React.FC = () => {
     }
   };
 
+  const [selectedThemes, setSelectedThemes] = useState([]);
+  const allThemes = ["Healthcare", "Design", "AI", "Education", "Finance"];
+
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
+  };
+
+  const handleThemeChange = (event) => {
+    const { value } = event.target;
+    if (selectedThemes.includes(value) || selectedThemes.length >= 3) return;
+    setSelectedThemes([...selectedThemes, value]);
+  };
+
+  const removeTheme = (theme) => {
+    setSelectedThemes(selectedThemes.filter((t) => t !== theme));
   };
 
   const navigate = useNavigate();
@@ -168,15 +181,33 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Theme *</label>
-          <select
-            {...register("theme", { required: "Select up to 3 themes" })}
-          >
-            <option value="AI">AI</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Design">Design</option>
-          </select>
-          {errors.theme && <p className="error">{errors.theme.message}</p>}
+          <label htmlFor="theme">Theme*</label>
+          <div className="border-2 border-black rounded flex items-center p-2 space-x-2">
+            {selectedThemes.map((theme) => (
+              <span
+                key={theme}
+                className="flex items-center bg-yellow-400 px-2 py-1 rounded-full"
+              >
+                {theme}
+                <button
+                  onClick={() => removeTheme(theme)}
+                  className="ml-1 text-black"
+                >
+                  ✕
+                </button>
+              </span>
+            ))}
+            <select onChange={handleThemeChange} className="focus:outline-none">
+              <option value="">Select up to 3 themes</option>
+              {allThemes
+                .filter((theme) => !selectedThemes.includes(theme))
+                .map((theme) => (
+                  <option key={theme} value={theme}>
+                    {theme}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
 
         <div className="form-group">
