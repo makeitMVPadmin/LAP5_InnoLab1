@@ -36,20 +36,23 @@ const EventForm: React.FC = () => {
     },
   });
 
-  const [judges, setJudges] = useState([{ firstName: '', lastName: '' }]);
+  const [judges, setJudges] = useState([{ firstName: "", lastName: "" }]);
 
-  const handleJudgeChange = (index: number, value: string, field: 'firstName' | 'lastName') => {
+  const handleJudgeChange = (
+    index: number,
+    value: string,
+    field: "firstName" | "lastName"
+  ) => {
     setJudges((prevJudges) => {
       const updatedJudges = [...prevJudges];
       updatedJudges[index] = { ...updatedJudges[index], [field]: value };
       return updatedJudges;
     });
   };
-  
 
   const handleAddJudge = () => {
     if (judges.length < 4) {
-      setJudges([...judges, { firstName: '', lastName: '' }]);
+      setJudges([...judges, { firstName: "", lastName: "" }]);
     }
   };
 
@@ -185,7 +188,7 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label htmlFor="theme">Theme*</label>
-          <div className="border-2 border-black rounded flex items-center p-2 space-x-2">
+          <div className="border-black rounded flex items-center p-2 space-x-2">
             {selectedThemes.map((theme) => (
               <span
                 key={theme}
@@ -218,84 +221,82 @@ const EventForm: React.FC = () => {
 
           <div className="sub-section">
             <span>Start *</span>
-            <div className="date-time-container">
-              <div className="date-input">
-                <CalendarIcon className="icon" />
-                <Controller
-                  name="startDate"
-                  control={control}
-                  rules={{ required: "Start date is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="date"
-                      {...field}
-                      className={`form-control ${
-                        errors.startDate ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="time-input">
-                <ClockIcon className="icon" />
-                <Controller
-                  name="startTime"
-                  control={control}
-                  rules={{ required: "Start time is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="time"
-                      {...field}
-                      className={`form-control ${
-                        errors.startTime ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
+            <div className="date-input-container">
+              <CalendarIcon className="icon" />
+              <Controller
+                name="announcementDate"
+                control={control}
+                rules={{ required: "Announcement date is required" }}
+                render={({ field }) => (
+                  <input
+                    type="date"
+                    {...field}
+                    className={`form-control ${
+                      errors.announcementDate ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
+              <span className="divider">|</span>
+              <ClockIcon className="icon" />
+              <Controller
+                name="announcementTime"
+                control={control}
+                rules={{ required: "Announcement time is required" }}
+                render={({ field }) => (
+                  <input
+                    type="time"
+                    {...field}
+                    className={`form-control ${
+                      errors.announcementTime ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
             </div>
+            {errors.announcementDate && (
+              <p className="error-text">{errors.announcementDate.message}</p>
+            )}
           </div>
 
           <div className="sub-section">
             <span>End *</span>
-            <div className="date-time-container">
-              <div className="date-input">
-                <CalendarIcon className="icon" />
-                <Controller
-                  name="endDate"
-                  control={control}
-                  rules={{ required: "End date is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="date"
-                      {...field}
-                      className={`form-control ${
-                        errors.endDate ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="time-input">
-                <ClockIcon className="icon" />
-                <Controller
-                  name="endTime"
-                  control={control}
-                  rules={{ required: "End time is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="time"
-                      {...field}
-                      className={`form-control ${
-                        errors.endTime ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
+            <div className="date-input-container">
+              <CalendarIcon className="icon" />
+              <Controller
+                name="announcementDate"
+                control={control}
+                rules={{ required: "Announcement date is required" }}
+                render={({ field }) => (
+                  <input
+                    type="date"
+                    {...field}
+                    className={`form-control ${
+                      errors.announcementDate ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
+              <span className="divider">|</span>
+              <ClockIcon className="icon" />
+              <Controller
+                name="announcementTime"
+                control={control}
+                rules={{ required: "Announcement time is required" }}
+                render={({ field }) => (
+                  <input
+                    type="time"
+                    {...field}
+                    className={`form-control ${
+                      errors.announcementTime ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
             </div>
+            {errors.announcementDate && (
+              <p className="error-text">{errors.announcementDate.message}</p>
+            )}
           </div>
 
           {/* Error messages */}
@@ -419,7 +420,7 @@ const EventForm: React.FC = () => {
                 }
                 className="flex-1 p-2 w-6"
               />
-              {(
+              {
                 <button
                   type="button"
                   className="ml-2 text-red-500"
@@ -427,7 +428,7 @@ const EventForm: React.FC = () => {
                 >
                   X
                 </button>
-              )}
+              }
             </div>
           ))}
           {judges.length < 4 && (
