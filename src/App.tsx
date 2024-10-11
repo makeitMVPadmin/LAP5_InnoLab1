@@ -6,6 +6,8 @@ import Signup from "./pages/Signup/Signup";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage";
 import JoinEvent from "./pages/JoinEvent/JoinEvent";
+import EventPage from "./pages/EventPage/EventPage";
+import ProjectSubmissionPage2 from "./pages/ProjectSubmissionPage/ProjectSubmissionPage";
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -27,6 +29,8 @@ const App = () => {
           <Route path="/hackathons" element={<HackathonEventsPage />} />
           <Route path="/hackathons/joined" element={<MyEventsPage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
+          <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/event/:eventId/submit" element={<ProjectSubmissionPage2 />} />
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/ChallengeDetails" element={<ChallengeDetails />} />
         </Route>
