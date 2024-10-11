@@ -33,7 +33,7 @@ const HackathonEventsPage = () => {
     console.log(`Setting ${name} to ${value}`);
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value,
+      [name]: prevFilters[name] === value ? "" : value,
     }));
   };
 
@@ -47,33 +47,49 @@ const HackathonEventsPage = () => {
 
   const filteredEvents = hackathonEvents.filter((event) => {
     const duration = calculateDuration(event.startTime, event.endTime);
+
+    const matchesSkillLevel =
+      filters.skillLevel === "" ||
+      (event.skillLevel &&
+        event.skillLevel.toLowerCase() === filters.skillLevel.toLowerCase());
+
+    const matchesDisciplines =
+      filters.disciplines === "" ||
+      (event.disciplines &&
+        Array.isArray(event.disciplines) &&
+        event.disciplines.some(
+          (discipline) =>
+            discipline.toLowerCase() === filters.disciplines.toLowerCase()
+        ));
+
+    const matchesThemes =
+      filters.themes === "" ||
+      (event.themes &&
+        Array.isArray(event.themes) &&
+        event.themes.some(
+          (theme) => theme.toLowerCase() === filters.themes.toLowerCase()
+        ));
+
+    const matchesTimeZone =
+      filters.timeZone === "" ||
+      (event.timeZone &&
+        event.timeZone.toLowerCase() === filters.timeZone.toLowerCase());
+
+    const matchesDuration =
+      filters.duration === "" ||
+      (duration && filters.duration === "24 hours" && duration <= 24) ||
+      (filters.duration === "48 hours" && duration > 24 && duration <= 48) ||
+      (filters.duration === "72 hours" && duration > 48 && duration <= 72);
+
     return (
-      (filters.skillLevel === "" ||
-        (event.skillLevel &&
-          event.skillLevel.toLowerCase() ===
-            filters.skillLevel.toLowerCase())) &&
-      (filters.disciplines === "" ||
-        (event.disciplines &&
-          Array.isArray(event.disciplines) &&
-          event.disciplines.some(
-            (discipline) =>
-              discipline.toLowerCase() === filters.disciplines.toLowerCase()
-          ))) &&
-      (filters.themes === "" ||
-        (event.themes &&
-          Array.isArray(event.themes) &&
-          event.themes.some(
-            (themes) => themes.toLowerCase() === filters.themes.toLowerCase()
-          ))) &&
-      (filters.timeZone === "" ||
-        (event.timeZone &&
-          event.timeZone.toLowerCase() === filters.timeZone.toLowerCase())) &&
-      (filters.duration === "" ||
-        (duration && filters.duration === "24 hours" && duration <= 24) ||
-        (filters.duration === "48 hours" && duration > 24 && duration <= 48) ||
-        (filters.duration === "72 hours" && duration > 48 && duration <= 72))
+      matchesSkillLevel &&
+      matchesDisciplines &&
+      matchesThemes &&
+      matchesTimeZone &&
+      matchesDuration
     );
   });
+
   console.log("Filtered Events: ", filteredEvents);
 
   if (isLoading) {
