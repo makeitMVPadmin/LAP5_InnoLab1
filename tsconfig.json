@@ -1,6 +1,10 @@
 // this file was created so "import React from 'react';" would not be necessary for .tsx files
 {
-    "compilerOptions": {
-      "jsx": "react-jsx",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
     }
+  }
 }
