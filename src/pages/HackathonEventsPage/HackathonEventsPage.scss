@@ -25,7 +25,7 @@
 
   &__header {
     @include LandingPage-Text;
-    font-family: 'Corben';
+    font-family: "Corben";
   }
 
   &__btn {
@@ -36,7 +36,8 @@
     gap: 1.2rem;
   }
 
-  &__my-events, &__create-hackathon {
+  &__my-events,
+  &__create-hackathon {
     padding: 0.5rem 1rem;
     border-radius: 8px;
     border: 3px solid #000;
@@ -61,7 +62,7 @@
 
   &__filters {
     flex: 1 1 20%;
-    border: 3px solid #000;
+    // border: 3px solid #000;
   }
 
   &__event-cards {

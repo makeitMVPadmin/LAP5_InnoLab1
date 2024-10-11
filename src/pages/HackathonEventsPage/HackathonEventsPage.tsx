@@ -12,9 +12,9 @@ const HackathonEventsPage = () => {
   const [filters, setFilters] = useState({
     skillLevel: "",
     disciplines: "",
-    theme: "",
+    themes: "",
     timeZone: "",
-    // duration: "",
+    duration: "",
   });
 
   useEffect(() => {
@@ -37,7 +37,16 @@ const HackathonEventsPage = () => {
     }));
   };
 
+  const calculateDuration = (startTime, endTime) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const durationInHours =
+      (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+    return durationInHours;
+  };
+
   const filteredEvents = hackathonEvents.filter((event) => {
+    const duration = calculateDuration(event.startTime, event.endTime);
     return (
       (filters.skillLevel === "" ||
         (event.skillLevel &&
@@ -49,7 +58,20 @@ const HackathonEventsPage = () => {
           event.disciplines.some(
             (discipline) =>
               discipline.toLowerCase() === filters.disciplines.toLowerCase()
-          )))
+          ))) &&
+      (filters.themes === "" ||
+        (event.themes &&
+          Array.isArray(event.themes) &&
+          event.themes.some(
+            (themes) => themes.toLowerCase() === filters.themes.toLowerCase()
+          ))) &&
+      (filters.timeZone === "" ||
+        (event.timeZone &&
+          event.timeZone.toLowerCase() === filters.timeZone.toLowerCase())) &&
+      (filters.duration === "" ||
+        (duration && filters.duration === "24 hours" && duration <= 24) ||
+        (filters.duration === "48 hours" && duration > 24 && duration <= 48) ||
+        (filters.duration === "72 hours" && duration > 48 && duration <= 72))
     );
   });
   console.log("Filtered Events: ", filteredEvents);

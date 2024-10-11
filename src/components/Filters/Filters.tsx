@@ -52,7 +52,7 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="design"
               name="disciplines"
-              value="Design"
+              value="design"
               className="event-page__input"
               checked={filters.discipline === "Design"}
               onChange={onFilterChange}
@@ -64,7 +64,7 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="software-development"
               name="disciplines"
-              value="Software Development"
+              value="software development"
               className="event-page__input"
               checked={filters.discipline === "Software Development"}
               onChange={onFilterChange}
@@ -76,7 +76,7 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="data-science"
               name="disciplines"
-              value="Data Science and Analytics"
+              value="data science and analytics"
               className="event-page__input"
               checked={filters.discipline === "Data Science and Analytics"}
               onChange={onFilterChange}
@@ -88,7 +88,7 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="web-development"
               name="disciplines"
-              value="Web Development"
+              value="web development"
               className="event-page__input"
               checked={filters.discipline === "Web Development"}
               onChange={onFilterChange}
@@ -98,27 +98,83 @@ export default function Filters({ filters, onFilterChange }) {
         </ul>
       </section>
       <section className="event-page__section">
-        <h4 className="event-page__subheading">Format</h4>
+        <h4 className="event-page__subheading">Themes</h4>
         <ul>
           <li>
             <input
               type="radio"
-              id="online"
-              name="format"
-              value="online"
+              id="sustainability-and-climate"
+              name="themes"
+              value="sustainability & climate"
               className="event-page__input"
+              checked={filters.theme === "Sustainability & Climate"}
+              onChange={onFilterChange}
             />
-            <label htmlFor="online">Online</label>
+            <label htmlFor="sustainability-and-climate">
+              Sustainability & Climate
+            </label>
           </li>
           <li>
             <input
               type="radio"
-              id="in-person"
-              name="format"
-              value="in-person"
+              id="ai-and-machine-learning"
+              name="themes"
+              value="ai & machine learning"
               className="event-page__input"
+              checked={filters.theme === "AI & Machine Learning"}
+              onChange={onFilterChange}
             />
-            <label htmlFor="in-person">In Person</label>
+            <label htmlFor="ai-and-machine-learning">
+              AI & Machine Learning
+            </label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="health-and-wellness"
+              name="themes"
+              value="health & wellness"
+              className="event-page__input"
+              checked={filters.theme === "Health & Wellness"}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="health-and-wellness">Health & Wellness</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="fintech-and-blockchain"
+              name="themes"
+              value="fintech & blockchain"
+              className="event-page__input"
+              checked={filters.theme === "Fintech & Blockchain"}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="fintech-and-blockchain">Fintech & Blockchain</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="gaming-and-vr"
+              name="themes"
+              value="gaming & vr"
+              className="event-page__input"
+              checked={filters.theme === "Gaming & VR"}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="gaming-and-vr">Gaming & VR</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="education-and-learning"
+              name="themes"
+              value="education & learning"
+              className="event-page__input"
+              checked={filters.theme === "Education & Learning"}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="education-and-learning">Education & Learning</label>
           </li>
         </ul>
       </section>
@@ -129,9 +185,11 @@ export default function Filters({ filters, onFilterChange }) {
             <input
               type="radio"
               id="est"
-              name="time-zone"
+              name="timeZone"
               value="est"
               className="event-page__input"
+              checked={filters.timeZone === "EST"}
+              onChange={onFilterChange}
             />
             <label htmlFor="est">EST</label>
           </li>
@@ -139,21 +197,37 @@ export default function Filters({ filters, onFilterChange }) {
             <input
               type="radio"
               id="pst"
-              name="time-zone"
+              name="timeZone"
               value="pst"
               className="event-page__input"
+              checked={filters.timeZone === "PST"}
+              onChange={onFilterChange}
             />
             <label htmlFor="pst">PST</label>
           </li>
           <li>
             <input
               type="radio"
-              id="gmt"
-              name="time-zone"
-              value="gmt"
+              id="cst"
+              name="timeZone"
+              value="cst"
               className="event-page__input"
+              checked={filters.timeZone === "CST"}
+              onChange={onFilterChange}
             />
-            <label htmlFor="gmt">GMT</label>
+            <label htmlFor="cst">CST</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="mst"
+              name="timeZone"
+              value="mst"
+              className="event-page__input"
+              checked={filters.timeZone === "MST"}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="mst">MST</label>
           </li>
         </ul>
       </section>
@@ -165,8 +239,10 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="24-hours"
               name="duration"
-              value="24-hours"
+              value="24 hours"
               className="event-page__input"
+              checked={filters.duration === "24 hours"}
+              onChange={onFilterChange}
             />
             <label htmlFor="24-hours">24 hours</label>
           </li>
@@ -175,8 +251,10 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="48-hours"
               name="duration"
-              value="48-hours"
+              value="48 hours"
               className="event-page__input"
+              checked={filters.duration === "48 hours"}
+              onChange={onFilterChange}
             />
             <label htmlFor="48-hours">48 hours</label>
           </li>
@@ -185,8 +263,10 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="72-hours"
               name="duration"
-              value="72-hours"
+              value="72 hours"
               className="event-page__input"
+              checked={filters.duration === "72 hours"}
+              onChange={onFilterChange}
             />
             <label htmlFor="72-hours">72 hours</label>
           </li>
