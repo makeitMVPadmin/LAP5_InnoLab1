@@ -90,6 +90,27 @@ const EventForm: React.FC = () => {
     navigate("/ChallengeDetails");
   };
 
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="event-form">
       <section className="form-section">
@@ -444,9 +465,47 @@ const EventForm: React.FC = () => {
           )}
         </div>
 
-        <div className="form-group">
-          <label>Upload a Thumbnail Image</label>
-          <input type="file" {...register("thumbnail")} />
+        <div className="file-upload-container">
+          <label className="block font-bold text-lg mb-2">
+            Upload a Thumbnail Image
+          </label>
+          <div className="text-center w-80">
+            <div
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              className="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer hover:border-blue-400"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              <p className="text-sm mb-2">
+                drag and drop file or{" "}
+                <span className="text-blue-500 underline">choose file</span>
+              </p>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*,.pdf,.svg,.zip"
+              />
+            </div>
+            {file && <p className="mt-2 text-sm">Selected file: {file.name}</p>}
+
+          <p className="text-xs text-black mb-1">
+            supported formats: JPG, PNG, PDF, SVG, ZIP
+          </p>
+          <p className="text-xs text-black">maximum size: 10MB</p>
+          </div>
         </div>
         <div className="form-navigation">
           <button
