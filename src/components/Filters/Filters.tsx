@@ -35,12 +35,12 @@ export default function Filters({ filters, onFilterChange }) {
               type="radio"
               id="experienced"
               name="skillLevel"
-              value="experienced"
+              value="advanced"
               className="event-page__input"
               checked={filters.skillLevel === "Advanced"}
               onChange={onFilterChange}
             />
-            <label htmlFor="experienced">Advanced</label>
+            <label htmlFor="advanced">Advanced</label>
           </li>
         </ul>
       </section>
@@ -51,9 +51,11 @@ export default function Filters({ filters, onFilterChange }) {
             <input
               type="radio"
               id="design"
-              name="discipline"
-              value="design"
+              name="disciplines"
+              value="Design"
               className="event-page__input"
+              checked={filters.discipline === "Design"}
+              onChange={onFilterChange}
             />
             <label htmlFor="design">Design</label>
           </li>
@@ -61,21 +63,37 @@ export default function Filters({ filters, onFilterChange }) {
             <input
               type="radio"
               id="software-development"
-              name="discipline"
-              value="software-development"
+              name="disciplines"
+              value="Software Development"
               className="event-page__input"
+              checked={filters.discipline === "Software Development"}
+              onChange={onFilterChange}
             />
             <label htmlFor="software-development">Software Development</label>
           </li>
           <li>
             <input
               type="radio"
-              id="multi-discipline"
-              name="discipline"
-              value="multi-discipline"
+              id="data-science"
+              name="disciplines"
+              value="Data Science and Analytics"
               className="event-page__input"
+              checked={filters.discipline === "Data Science and Analytics"}
+              onChange={onFilterChange}
             />
-            <label htmlFor="multi-discipline">Multi-Discipline</label>
+            <label htmlFor="data-science">Data Science and Analytics</label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              id="web-development"
+              name="disciplines"
+              value="Web Development"
+              className="event-page__input"
+              checked={filters.discipline === "Web Development"}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="web-development">Web Development</label>
           </li>
         </ul>
       </section>

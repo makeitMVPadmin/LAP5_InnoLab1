@@ -11,8 +11,8 @@ const HackathonEventsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     skillLevel: "",
-    discipline: "",
-    format: "",
+    disciplines: "",
+    theme: "",
     timeZone: "",
     // duration: "",
   });
@@ -39,8 +39,17 @@ const HackathonEventsPage = () => {
 
   const filteredEvents = hackathonEvents.filter((event) => {
     return (
-      filters.skillLevel === "" ||
-      event.skillLevel.toLowerCase() === filters.skillLevel.toLowerCase()
+      (filters.skillLevel === "" ||
+        (event.skillLevel &&
+          event.skillLevel.toLowerCase() ===
+            filters.skillLevel.toLowerCase())) &&
+      (filters.disciplines === "" ||
+        (event.disciplines &&
+          Array.isArray(event.disciplines) &&
+          event.disciplines.some(
+            (discipline) =>
+              discipline.toLowerCase() === filters.disciplines.toLowerCase()
+          )))
     );
   });
   console.log("Filtered Events: ", filteredEvents);
