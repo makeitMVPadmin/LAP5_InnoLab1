@@ -1,10 +1,9 @@
 
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { useAuth } from "../../context/AuthContext";
-import { createProjectSubmission } from "../../Firebase/FirebaseStore"
 import { submissionSchema } from "../../schema/submissionSchema";
 import { ProjectSubmissionFormValues, ProjectSubmission } from "../../types/submissionTypes"
 import { DEFAULT_FORM_VALUES } from "../../constants/submissionFormDefaults";
@@ -18,22 +17,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "
 import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import CustomInput from "../../components/CustomInput/CustomInput";
+import ImportCard from "../../components/ImportCard/ImportCard"
 import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
 
 const ProjectSubmissionPage = () => {
+    const navigate = useNavigate();
+
     const { currentUser } = useAuth();
     const { eventId } = useParams()
     const [isLoading, setIsLoading] = useState(false)
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File[]>([]);
 
     //Set Default values for form
     const form = useForm<ProjectSubmissionFormValues>({
         resolver: zodResolver(submissionSchema),
         defaultValues: DEFAULT_FORM_VALUES,
     });
-
 
     const { handleSubmit, register, watch, setValue, formState: { errors } } = form
     const formValues = watch();
@@ -42,32 +43,29 @@ const ProjectSubmissionPage = () => {
     const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({ control: form.control, name: "projectLinks" });
 
     async function onSubmit(values: ProjectSubmissionFormValues) {
-        setIsLoading(true)
 
-        try {
-            // Validate the form data
-            const parsedData = submissionSchema.safeParse(values);
-            if (!parsedData.success) {
-                console.error("Validation errors:", parsedData.error.errors);
-                return;
-            }
+        const parsedData = submissionSchema.safeParse(values);
+        if (!parsedData.success) {
+            console.error("Validation errors:", parsedData.error.errors);
+            return;
+        }
 
-            const formattedTeamMembers = values.teamMembers.filter(
-                (member) => member.name.trim() !== "" && member.role.trim() !== ""
-            );
+        const formattedTeamMembers = values.teamMembers.filter(
+            (member) => member.name.trim() !== "" && member.role.trim() !== ""
+        );
 
-            const formattedLinks = values.projectLinks.filter(
-                (link) => link.url.trim() !== ""
-            );
+        const formattedLinks = values.projectLinks.filter(
+            (link) => link.url.trim() !== ""
+        );
 
-            // Create the submission object with the required additional fields
-            const submission: ProjectSubmission = {
-                ...values,
-                teamMembers: formattedTeamMembers,
-                projectLinks: formattedLinks,
-                userId: currentUser.uid,
-                eventId: eventId as string
-            };
+        const submissionFormData: ProjectSubmission = {
+            ...values,
+            teamMembers: formattedTeamMembers,
+            projectLinks: formattedLinks,
+            userId: currentUser.uid,
+            eventId: eventId as string
+        };
+        console.log(values)
 
 
             await createProjectSubmission(submission);
@@ -80,10 +78,26 @@ const ProjectSubmissionPage = () => {
 
     }
 
-    const handleFileChange = (file: File) => {
-        setFile(file);
-        setValue('imageFile', file, { shouldValidate: true });
+    const handleFileChange = (newFiles: File[]) => {
+        const MAX_FILES = 3
+
+        setFile(prevFiles => {
+            if (prevFiles.length >= MAX_FILES) {
+                return prevFiles
+            }
+
+            const updatedFiles = [...prevFiles, ...newFiles];
+            console.log('Updated files:', updatedFiles);
+            setValue('imageFiles', updatedFiles, { shouldValidate: true });
+            return updatedFiles;
+        });
     };
+
+    const handleDeleteImage = (indexToRemove: Number) => {
+        const newFiles = file.filter((_, index) => index !== indexToRemove);
+        setFile(newFiles)
+    }
+
     const handleAddLink = () => { appendLink({ url: "" }); };
     const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleAddMember = () => appendMember({ name: "", role: "" });
@@ -92,7 +106,7 @@ const ProjectSubmissionPage = () => {
     return (
         <main className="font-gilroy">
             <DashboardNavbar />
-            <section className="h-[3rem] bg-gray-500">
+            <section className="h-[3rem] bg-MVP-">
                 <Link to="/hackathons" className="text-black text-sm inline-block mb-5">
                     ← Back
                 </Link>
@@ -289,6 +303,28 @@ const ProjectSubmissionPage = () => {
                             placeHolder={PLACEHOLDERS.ENTER_NEXT_STEPS}
                             type="Textarea"
                         />
+
+                        {/* Upload image */}
+                        <div className="w-1/2">
+                            <ImageUploadZone onFileChange={handleFileChange}
+                            />
+                        </div>
+                        <div className="pb-6">
+                            <div className="flex gap-4">
+                                {file.length > 0 && file.map((item, index) => {
+                                    return (
+                                        <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteImage(index)} />
+                                    )
+                                })}
+                            </div>
+                            {errors.imageFiles && (
+                                <div className="flex items-center gap-2">
+                                    <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
+                                    <p className="text-red-500">{errors.imageFiles.message}</p>
+                                </div>
+                            )}
+                        </div>
+
                         {/* Project Links */}
                         <div>
                             <FormLabel className={STYLES.label}>Project Links*</FormLabel>
@@ -329,16 +365,6 @@ const ProjectSubmissionPage = () => {
                             </button>
                         </div>
 
-                        {/* Upload image */}
-                        <div className="w-1/2">
-                            <ImageUploadZone onFileChange={handleFileChange} />
-                            {errors.imageFile && (
-                                <div className="flex items-center gap--2">
-                                    <img src={ErrorIcon} alt="error icon" />
-                                    <p className="text-red-500">{errors.imageFile.message}</p>
-                                </div>
-                            )}
-                        </div>
                         <div className="flex justify-end gap-2 mt-5 py-10">
                             <Button type="button" className="h-12 bg-MVP-white font-gilroy text-lg text-MVP-black border-2 border-MVP-black">
                                 Cancel

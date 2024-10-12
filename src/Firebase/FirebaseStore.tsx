@@ -56,7 +56,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
 
   try {
     // Post image to firebase storage and retrieve link
-    const imageURL = await uploadImage(formData.imageFile)
+    const imageURLs = await uploadImages(formData.imageFiles);
 
     // Reformat form data with imageFile link
     const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
@@ -70,7 +70,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       teamName: formData.teamName,
       techStack: formData.techStack,
       userId: formData.userId,
-      imageFile: imageURL,
+      imageFiles: imageURLs,
     });
 
     // Add SubmissionId to Event
@@ -85,7 +85,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
 
 }
 
-export const uploadImage = async (imageFile) => {
+export const uploadImage = async (imageFile: File) => {
   try {
     const storageRef = ref(storage, `images/${imageFile.name}`);
     const snapshot = await uploadBytes(storageRef, imageFile);
@@ -93,6 +93,18 @@ export const uploadImage = async (imageFile) => {
     return downloadURL;
   } catch (error) {
     console.error("Error uploading image:", error);
+    throw error;
+  }
+};
+
+export const uploadImages = async (imageFiles: File[]) => {
+  try {
+    const uploadPromises = imageFiles.map((file) => uploadImage(file));
+
+    const imageURLs = await Promise.all(uploadPromises);
+    return imageURLs;
+  } catch (error) {
+    console.error("Error uploading images:", error);
     throw error;
   }
 };
