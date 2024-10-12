@@ -2,7 +2,7 @@ import { getDocs, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 
-type HackathonEvent = {
+type HackathonEventType = {
   basicProjectSummary: string;
   createdAt: string;
   disciplines: string[];
@@ -22,19 +22,19 @@ type HackathonEvent = {
   title: string;
 };
 
-export const fetchHackathonEvents = async (): Promise<{ events: Record<string, HackathonEvent>; loading: boolean; error: string | null }> => {
+export const fetchHackathonEvents = async (): Promise<{ events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
   let loading = true;
   let error: string | null = null;
-  let events: Record<string, HackathonEvent> = {};
+  let events: Record<string, HackathonEventType> = {};
 
   try {
     const colRef = collection(db, "hackathonEvents");
     const querySnapshot = await getDocs(colRef);
     
     events = querySnapshot.docs.reduce((acc, doc) => {
-      acc[doc.id] = doc.data() as HackathonEvent;
+      acc[doc.id] = doc.data() as HackathonEventType;
       return acc;
-    }, {} as Record<string, HackathonEvent>);
+    }, {} as Record<string, HackathonEventType>);
   } catch (err) {
     error = (err as Error).message;
   } finally {
@@ -42,6 +42,52 @@ export const fetchHackathonEvents = async (): Promise<{ events: Record<string, H
   }
 
   return { events, loading, error };
+};
+type ProjectLinkType = {
+  url: string;
+}
+
+type TeamMembersType = {
+  name: string;
+  role: string;
+}
+
+type HackathonSubmissionType = {
+  designFeatures: string;
+  designTools: string;
+  eventId: string;
+  imageFile: string;
+  nextSteps: string;
+  problemStatement: string;
+  projectLinks: ProjectLinkType[];
+  teamMembers: TeamMembersType[];
+  teamName: string;
+  techStack: string[];
+};
+
+export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {
+  let loading = true;
+  let error: string | null = null;
+  let submissions: Record<string, HackathonSubmissionType> = {};
+
+  try {
+      const colRef = collection(db, "hackathonProjectSubmissions");
+      const querySnapshot = await getDocs(colRef);
+      
+      submissions = querySnapshot.docs.reduce((acc, doc) => {
+          // Check if the document ID matches the provided id
+          if (doc.id === id) {
+              acc[doc.id] = doc.data() as HackathonSubmissionType;
+          }
+          return acc;
+      }, {} as Record<string, HackathonSubmissionType>);
+  } catch (err) {
+      error = (err as Error).message;
+  } finally {
+      loading = false;
+  }
+
+  return { submissions, loading, error };
 };
 
 
@@ -81,3 +127,5 @@ export const useJoinedEvents = (userId: string | undefined): { joinedEvents: str
 
   return { joinedEvents, loading, error };
 };
+
+

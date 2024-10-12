@@ -13,6 +13,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
+import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/event/:eventId/submit" element={<ProjectSubmissionPage2 />} />
+          <Route path="/hackathons/submissions/JxOyxzIBAWChYhsVjcE1" element={<ProjectShowcasePage />}/>
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/ChallengeDetails" element={<ChallengeDetails />} />
         </Route>

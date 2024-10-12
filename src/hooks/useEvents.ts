@@ -1,4 +1,3 @@
-// useEvents.js
 import { useState, useEffect } from "react";
 import { fetchHackathonEvents } from "../Firebase/FirebaseQueries";
 import { sortEventsByStartTime } from "../utils/sortEventsFunctions";
