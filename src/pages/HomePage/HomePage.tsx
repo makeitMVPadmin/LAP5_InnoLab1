@@ -3,7 +3,7 @@ import { MouseEventHandler } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import NavbarAlt from "../../components/NavbarAlt/NavbarAlt";
-import communitiHero from "../../assets/images/communitiHero.svg";
+import { ReactComponent as CommunitiHero } from "../../assets/images/communitiHero.svg";
 import { handleGoogleSignIn } from "../../Firebase/FirebaseAuth";
 
 const HomePage = () => {
@@ -23,11 +23,9 @@ const HomePage = () => {
     <>
       <NavbarAlt />
       <main className="homepage">
-        <img
-          src={communitiHero}
-          alt="Home Icon"
+        <CommunitiHero
           className="homepage__image"
-        ></img>
+        />
         <section className="homepage__content">
           <h1 className="homepage__heading">Welcome to Communiti!</h1>
           <div className="homepage__buttons">
