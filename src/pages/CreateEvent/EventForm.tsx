@@ -208,7 +208,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="theme">Theme*</label>
+          <label htmlFor="theme">Theme *</label>
           <div className="border-black rounded flex items-center p-2 space-x-2">
             {selectedThemes.map((theme) => (
               <span
@@ -238,7 +238,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="eventDuration">Event Duration*</label>
+          <label htmlFor="eventDuration">Event Duration *</label>
 
           <div className="sub-section">
             <span>Start *</span>
@@ -315,9 +315,6 @@ const EventForm: React.FC = () => {
                 )}
               />
             </div>
-            {errors.announcementDate && (
-              <p className="error-text">{errors.announcementDate.message}</p>
-            )}
           </div>
 
           {/* Error messages */}

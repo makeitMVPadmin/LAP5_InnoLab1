@@ -51,32 +51,39 @@ const ChallengeDetailsForm: React.FC = () => {
 
       <div className="form-group">
         <label htmlFor="challengeReleaseDate">Challenge Release Date*</label>
-        <Controller
-          name="challengeReleaseDate"
-          control={control}
-          rules={{ required: "Challenge release date is required" }}
-          render={({ field }) => (
-            <div className="date-input-container">
-              <CalendarIcon className="icon" />
-              <input
-                type="date"
-                {...field}
-                className={`form-control ${
-                  errors.challengeReleaseDate ? "error" : ""
-                }`}
-              />
-              <span className="divider">|</span>
-              <ClockIcon className="icon" />
-              <input
-                type="time"
-                {...field}
-                className={`form-control ${
-                  errors.challengeReleaseDate ? "error" : ""
-                }`}
-              />
-            </div>
-          )}
-        />
+        <div className="date-input-container">
+            <CalendarIcon className="icon" />
+            <Controller
+              name="challengeReleaseDate"
+              control={control}
+              rules={{ required: "Announcement date is required" }}
+              render={({ field }) => (
+                <input
+                  type="date"
+                  {...field}
+                  className={`form-control ${
+                    errors.challengeReleaseDate ? "error" : ""
+                  }`}
+                />
+              )}
+            />
+            <span className="divider">|</span>
+            <ClockIcon className="icon" />
+            <Controller
+              name="challengeReleaseDate"
+              control={control}
+              rules={{ required: "Release time is required" }}
+              render={({ field }) => (
+                <input
+                  type="time"
+                  {...field}
+                  className={`form-control ${
+                    errors.challengeReleaseDate ? "error" : ""
+                  }`}
+                />
+              )}
+            />
+          </div>
         {errors.challengeReleaseDate && (
           <p className="error-text">{errors.challengeReleaseDate.message}</p>
         )}
