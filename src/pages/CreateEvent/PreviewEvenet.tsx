@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface EventDetails {
   title: string;
   organizer: string;
