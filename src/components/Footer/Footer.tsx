@@ -15,7 +15,7 @@ const Footer = () => {
           <Instagram />
         </Link>
         <Link to="#">
-          <XIcon/>
+          <XIcon />
         </Link>
         <Link to="#">
           <Linkedin />

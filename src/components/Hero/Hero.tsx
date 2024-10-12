@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div className="bg-white w-full p-4 lg:flex lg:flex-row-reverse lg:items-center lg:p-8">
       <div className="flex w-full justify-center lg:w-[50%]">
-        <CommunitiHero className="w-[70%] lg:w-[90%]"/>
+        <CommunitiHero className="w-[70%] lg:w-[90%]" />
       </div>
       <div className="h-full w-full lg:w-[60%] flex flex-col">
         <div className="flex flex-col items-start lg:w-full">
@@ -15,13 +15,13 @@ const Hero = () => {
           </h1>
         </div>
         <p className="flex justify-center text-left my-4 lg:w-[56%]">
-        It offers features like event creation, real-time participant tracking,
-        project submission, and collaboration tools
+          It offers features like event creation, real-time participant tracking,
+          project submission, and collaboration tools
         </p>
         <div className="flex flex-col items-start lg:w-full">
-            <Link to='/hackathons'
-              className="text-black rounded-[6vw] border-none font-gilroy font-bold text-[5vw] px-[3vw] py-[2vw] shadow-[0px_0.2rem_0.2rem_rgba(0,0,0,0.25)] cursor-pointer lg:px-[1vw] lg:py-[0.5vw] lg:text-[1.6vw] bg-[#ffd22f]"
-            >Start Your Hackathon Journey →</Link>
+          <Link to='/hackathons'
+            className="text-black rounded-[6vw] border-none font-gilroy font-bold text-[5vw] px-[3vw] py-[2vw] shadow-[0px_0.2rem_0.2rem_rgba(0,0,0,0.25)] cursor-pointer lg:px-[1vw] lg:py-[0.5vw] lg:text-[1.6vw] bg-[#ffd22f]"
+          >Start Your Hackathon Journey →</Link>
         </div>
       </div>
     </div>

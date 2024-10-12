@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/home" className="navbar__link">
-      {windowWidth <= 1023 ? <MiniCommuniti className="navbar__img" /> : <Communiti className="navbar__img" />}
+        {windowWidth <= 1023 ? <MiniCommuniti className="navbar__img" /> : <Communiti className="navbar__img" />}
       </Link>
       <ul className="navbar__links">
         <Link
