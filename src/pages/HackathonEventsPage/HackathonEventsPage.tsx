@@ -7,6 +7,9 @@ import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link } from "react-router-dom";
 import EventForm from "../CreateEvent/EventForm";
 import useEvents from "../../hooks/useEvents";
+import Filters from "../../components/Filters/Filters";
+
+
 
 const HackathonEventsPage = () => {
   const { currentUser } = useAuth();
@@ -14,15 +17,86 @@ const HackathonEventsPage = () => {
   const { events, isLoading, getEndingEvent } = useEvents(joinedEvents);
   const { allCurrentEvents, joinedCurrentEvents } = events || {};
   const [alertEvent, setAlertEvent] = useState(false);
+  const [filters, setFilters] = useState({
+    skillLevel: "",
+    disciplines: "",
+    themes: "",
+    timeZone: "",
+    duration: "",
+  });
 
   useEffect(() => {
     setAlertEvent(getEndingEvent(joinedCurrentEvents));
   }, [joinedCurrentEvents]);
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    console.log(`Setting ${name} to ${value}`);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: prevFilters[name] === value ? "" : value,
+    }));
+  };
+
+  const calculateDuration = (startTime, endTime) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const durationInHours =
+      (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+    return durationInHours;
+  };
+
+
+  const filteredEvents = allCurrentEvents.filter((event) => {
+    const duration = calculateDuration(event.startTime, event.endTime);
+
+    const matchesSkillLevel =
+      filters.skillLevel === "" ||
+      (event.skillLevel &&
+        event.skillLevel.toLowerCase() === filters.skillLevel.toLowerCase());
+
+    const matchesDisciplines =
+      filters.disciplines === "" ||
+      (event.disciplines &&
+        Array.isArray(event.disciplines) &&
+        event.disciplines.some(
+          (discipline) =>
+            discipline.toLowerCase() === filters.disciplines.toLowerCase()
+        ));
+
+    const matchesThemes =
+      filters.themes === "" ||
+      (event.themes &&
+        Array.isArray(event.themes) &&
+        event.themes.some(
+          (theme) => theme.toLowerCase() === filters.themes.toLowerCase()
+        ));
+
+    const matchesTimeZone =
+      filters.timeZone === "" ||
+      (event.timeZone &&
+        event.timeZone.toLowerCase() === filters.timeZone.toLowerCase());
+
+    const matchesDuration =
+      filters.duration === "" ||
+      (duration && filters.duration === "24 hours" && duration <= 24) ||
+      (filters.duration === "48 hours" && duration > 24 && duration <= 48) ||
+      (filters.duration === "72 hours" && duration > 48 && duration <= 72);
+
+    return (
+      matchesSkillLevel &&
+      matchesDisciplines &&
+      matchesThemes &&
+      matchesTimeZone &&
+      matchesDuration
+    );
+  });
+
+  console.log("Filtered Events: ", filteredEvents);
 
   const displayCards = useMemo(() => {
     return (
-      allCurrentEvents.map(event => (
+      filteredEvents.map(event => (
         <EventCard
           key={event.id}
           id={event.id}
@@ -37,11 +111,11 @@ const HackathonEventsPage = () => {
         />
       ))
     );
-  }, [allCurrentEvents]);
+  }, [allCurrentEvents, filteredEvents]);
 
   const renderEvents = () => {
     if (isLoading) return <div>Loading...</div>;
-    if (allCurrentEvents.length === 0) return <div>No Events</div>;
+    if (filteredEvents.length === 0) return <div>No Events</div>;
     return displayCards;
   };
   return (
@@ -67,7 +141,12 @@ const HackathonEventsPage = () => {
         <Link to="/EventForm" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
-        <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>
+        <div className="flex-1 w-[20%]">
+          <div className="event-page__filters flex-1 min-w-20%">
+            <h3 className="event-page__heading">Filters</h3>
+            <Filters filters={filters} onFilterChange={handleFilterChange} />
+          </div>
+        </div>
         <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
           {renderEvents()}
         </div>

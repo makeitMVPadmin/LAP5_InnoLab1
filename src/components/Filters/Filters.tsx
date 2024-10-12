@@ -1,22 +1,24 @@
-import "./Filters.scss";
+// import "./Filters.scss";
 
 export default function Filters({ filters, onFilterChange }) {
+
+  const filterLabels = "font-poppins text-sm"
   return (
     <>
-      <section className="event-page__section">
-        <h4 className="event-page__subheading">Skill-level</h4>
-        <ul>
+      <section className="font-gilroy">
+        <h4 className="font-gilroy">Skill-level</h4>
+        <ul className="font-gilroy">
           <li>
             <input
               type="radio"
               id="beginner"
               name="skillLevel"
               value="beginner"
-              className="event-page__input"
-              checked={filters.skillLevel === "Beginner"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.skillLevel === "beginner"}
               onChange={onFilterChange}
             />
-            <label htmlFor="beginner">Beginner</label>
+            <label htmlFor="beginner" className={`${filterLabels}`}>Beginner</label>
           </li>
           <li>
             <input
@@ -24,11 +26,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="intermediate"
               name="skillLevel"
               value="intermediate"
-              className="event-page__input"
-              checked={filters.skillLevel === "Intermediate"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.skillLevel === "intermediate"}
               onChange={onFilterChange}
             />
-            <label htmlFor="intermediate">Intermediate</label>
+            <label htmlFor="intermediate" className={`${filterLabels}`}>Intermediate</label>
           </li>
           <li>
             <input
@@ -36,16 +38,16 @@ export default function Filters({ filters, onFilterChange }) {
               id="experienced"
               name="skillLevel"
               value="advanced"
-              className="event-page__input"
-              checked={filters.skillLevel === "Advanced"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.skillLevel === "advanced"}
               onChange={onFilterChange}
             />
-            <label htmlFor="advanced">Advanced</label>
+            <label htmlFor="advanced" className={`${filterLabels}`}>Advanced</label>
           </li>
         </ul>
       </section>
       <section className="event-page__section">
-        <h4 className="event-page__subheading">Discipline</h4>
+        <h4 className="font-gilroy text-xl">Discipline</h4>
         <ul>
           <li>
             <input
@@ -53,11 +55,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="design"
               name="disciplines"
               value="design"
-              className="event-page__input"
-              checked={filters.discipline === "Design"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.discipline === "design"}
               onChange={onFilterChange}
             />
-            <label htmlFor="design">Design</label>
+            <label htmlFor="design" className={`${filterLabels}`}>Design</label>
           </li>
           <li>
             <input
@@ -65,11 +67,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="software-development"
               name="disciplines"
               value="software development"
-              className="event-page__input"
-              checked={filters.discipline === "Software Development"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.discipline === "software development"}
               onChange={onFilterChange}
             />
-            <label htmlFor="software-development">Software Development</label>
+            <label htmlFor="software-development" className={`${filterLabels}`}>Software Development</label>
           </li>
           <li>
             <input
@@ -77,11 +79,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="data-science"
               name="disciplines"
               value="data science and analytics"
-              className="event-page__input"
-              checked={filters.discipline === "Data Science and Analytics"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.discipline === "data science and analytics"}
               onChange={onFilterChange}
             />
-            <label htmlFor="data-science">Data Science and Analytics</label>
+            <label htmlFor="data-science" className={`${filterLabels}`}>Data Science and Analytics</label>
           </li>
           <li>
             <input
@@ -89,16 +91,16 @@ export default function Filters({ filters, onFilterChange }) {
               id="web-development"
               name="disciplines"
               value="web development"
-              className="event-page__input"
-              checked={filters.discipline === "Web Development"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.discipline === "web development"}
               onChange={onFilterChange}
             />
-            <label htmlFor="web-development">Web Development</label>
+            <label htmlFor="web-development" className={`${filterLabels}`}>Web Development</label>
           </li>
         </ul>
       </section>
       <section className="event-page__section">
-        <h4 className="event-page__subheading">Themes</h4>
+        <h4 className="font-gilroy text-xl">Themes</h4>
         <ul>
           <li>
             <input
@@ -106,11 +108,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="sustainability-and-climate"
               name="themes"
               value="sustainability & climate"
-              className="event-page__input"
-              checked={filters.theme === "Sustainability & Climate"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.theme === "sustainability & climate"}
               onChange={onFilterChange}
             />
-            <label htmlFor="sustainability-and-climate">
+            <label htmlFor="sustainability-and-climate" className={`${filterLabels}`}>
               Sustainability & Climate
             </label>
           </li>
@@ -120,11 +122,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="ai-and-machine-learning"
               name="themes"
               value="ai & machine learning"
-              className="event-page__input"
-              checked={filters.theme === "AI & Machine Learning"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.theme === "ai & machine learning"}
               onChange={onFilterChange}
             />
-            <label htmlFor="ai-and-machine-learning">
+            <label htmlFor="ai-and-machine-learning" className={`${filterLabels}`}>
               AI & Machine Learning
             </label>
           </li>
@@ -134,11 +136,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="health-and-wellness"
               name="themes"
               value="health & wellness"
-              className="event-page__input"
-              checked={filters.theme === "Health & Wellness"}
+              className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
+              checked={filters.theme === "health & wellness"}
               onChange={onFilterChange}
             />
-            <label htmlFor="health-and-wellness">Health & Wellness</label>
+            <label htmlFor="health-and-wellness" className={`${filterLabels}`}>Health & Wellness</label>
           </li>
           <li>
             <input
@@ -146,11 +148,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="fintech-and-blockchain"
               name="themes"
               value="fintech & blockchain"
-              className="event-page__input"
-              checked={filters.theme === "Fintech & Blockchain"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.theme === "fintech & blockchain"}
               onChange={onFilterChange}
             />
-            <label htmlFor="fintech-and-blockchain">Fintech & Blockchain</label>
+            <label htmlFor="fintech-and-blockchain" className={`${filterLabels}`}>Fintech & Blockchain</label>
           </li>
           <li>
             <input
@@ -158,11 +160,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="gaming-and-vr"
               name="themes"
               value="gaming & vr"
-              className="event-page__input"
-              checked={filters.theme === "Gaming & VR"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.theme === "gaming & vr"}
               onChange={onFilterChange}
             />
-            <label htmlFor="gaming-and-vr">Gaming & VR</label>
+            <label htmlFor="gaming-and-vr" className={`${filterLabels}`}>Gaming & VR</label>
           </li>
           <li>
             <input
@@ -170,28 +172,28 @@ export default function Filters({ filters, onFilterChange }) {
               id="education-and-learning"
               name="themes"
               value="education & learning"
-              className="event-page__input"
-              checked={filters.theme === "Education & Learning"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.theme === "education & learning"}
               onChange={onFilterChange}
             />
-            <label htmlFor="education-and-learning">Education & Learning</label>
+            <label htmlFor="education-and-learning" className={`${filterLabels}`}>Education & Learning</label>
           </li>
         </ul>
       </section>
       <section className="event-page__section">
-        <h4 className="event-page__subheading">Time-Zone</h4>
-        <ul>
+        <h4 className="font-gilroy text-xl">Time-Zone</h4>
+        <ul className="gap-4">
           <li>
             <input
               type="radio"
               id="est"
               name="timeZone"
               value="est"
-              className="event-page__input"
-              checked={filters.timeZone === "EST"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.timeZone === "est"}
               onChange={onFilterChange}
             />
-            <label htmlFor="est">EST</label>
+            <label htmlFor="est" className={`${filterLabels}`}>EST</label>
           </li>
           <li>
             <input
@@ -199,11 +201,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="pst"
               name="timeZone"
               value="pst"
-              className="event-page__input"
-              checked={filters.timeZone === "PST"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.timeZone === "pst"}
               onChange={onFilterChange}
             />
-            <label htmlFor="pst">PST</label>
+            <label htmlFor="pst" className={`${filterLabels}`}>PST</label>
           </li>
           <li>
             <input
@@ -211,11 +213,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="cst"
               name="timeZone"
               value="cst"
-              className="event-page__input"
-              checked={filters.timeZone === "CST"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.timeZone === "cst"}
               onChange={onFilterChange}
             />
-            <label htmlFor="cst">CST</label>
+            <label htmlFor="cst" className={`${filterLabels}`}>CST</label>
           </li>
           <li>
             <input
@@ -223,16 +225,16 @@ export default function Filters({ filters, onFilterChange }) {
               id="mst"
               name="timeZone"
               value="mst"
-              className="event-page__input"
-              checked={filters.timeZone === "MST"}
+              className="h-5 w-5 text-blue-600 border-gray-300"
+              checked={filters.timeZone === "mst"}
               onChange={onFilterChange}
             />
-            <label htmlFor="mst">MST</label>
+            <label htmlFor="mst" className={`${filterLabels}`}>MST</label>
           </li>
         </ul>
       </section>
       <section className="event-page__section">
-        <h4 className="event-page__subheading">Duration</h4>
+        <h4 className="font-gilroy text-xl">Duration</h4>
         <ul>
           <li>
             <input
@@ -240,11 +242,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="24-hours"
               name="duration"
               value="24 hours"
-              className="event-page__input"
+              className="h-5 w-5 text-blue-600 border-gray-300"
               checked={filters.duration === "24 hours"}
               onChange={onFilterChange}
             />
-            <label htmlFor="24-hours">24 hours</label>
+            <label htmlFor="24-hours" className={`${filterLabels}`}>24 hours</label>
           </li>
           <li>
             <input
@@ -252,11 +254,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="48-hours"
               name="duration"
               value="48 hours"
-              className="event-page__input"
+              className="h-5 w-5 text-blue-600 border-gray-300"
               checked={filters.duration === "48 hours"}
               onChange={onFilterChange}
             />
-            <label htmlFor="48-hours">48 hours</label>
+            <label htmlFor="48-hours" className={`${filterLabels}`}>48 hours</label>
           </li>
           <li>
             <input
@@ -264,11 +266,11 @@ export default function Filters({ filters, onFilterChange }) {
               id="72-hours"
               name="duration"
               value="72 hours"
-              className="event-page__input"
+              className="h-5 w-5 text-blue-600 border-gray-300"
               checked={filters.duration === "72 hours"}
               onChange={onFilterChange}
             />
-            <label htmlFor="72-hours">72 hours</label>
+            <label htmlFor="72-hours" className={`${filterLabels}`}>72 hours</label>
           </li>
         </ul>
       </section>
