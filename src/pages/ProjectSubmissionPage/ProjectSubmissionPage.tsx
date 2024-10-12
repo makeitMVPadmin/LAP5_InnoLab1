@@ -22,6 +22,7 @@ import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
 
+
 const ProjectSubmissionPage = () => {
     const navigate = useNavigate();
 
@@ -67,14 +68,7 @@ const ProjectSubmissionPage = () => {
         };
         console.log(values)
 
-
-            await createProjectSubmission(submission);
-            console.log("Form and image submitted successfully!");
-        } catch (error) {
-            console.error("Error submitting form:", error);
-        } finally {
-            setIsLoading(false);
-        }
+        navigate(`/event/${eventId}/review-submit`, { state: { submissionFormData } })
 
     }
 
@@ -303,6 +297,7 @@ const ProjectSubmissionPage = () => {
                             placeHolder={PLACEHOLDERS.ENTER_NEXT_STEPS}
                             type="Textarea"
                         />
+
 
                         {/* Upload image */}
                         <div className="w-1/2">
