@@ -28,42 +28,45 @@ export function convertToTimeZone(
   return formattedDate;
 }
 
-export const getEventStatus = (
-  startTime: string | Date,
-  endTime: string | Date
-) => {
-  const currentTime = new Date();
-  const eventStartTime = new Date(startTime);
-  const eventEndTime = new Date(endTime);
+export function calculateDuration(
+  startTime: string | number | Date,
+  endTime: string | number | Date
+) {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
 
-  const timeDifferenceInMs = eventStartTime.getTime() - currentTime.getTime();
-  const hoursRemaining = Math.floor(timeDifferenceInMs / (1000 * 60 * 60));
-  const daysRemaining = Math.floor(
-    (eventStartTime.getTime() - currentTime.getTime()) / (1000 * 60 * 60 * 24)
-  );
+  const durationMs = end.getTime() - start.getTime();
 
-  if (currentTime < eventStartTime) {
-    if (hoursRemaining < 25) {
-      return {
-        text: `In ${hoursRemaining} hours`,
-        style: "border-2 border-MVP-black bg-MVP-white text-MVP-black", // Style for event starting within 25 hours
-      };
-    } else {
-      return {
-        text: `In ${daysRemaining} days`,
-        style: "border-2 border-MVP-black bg-MVP-white text-MVP-black", // Default style
-      };
-    }
-  } else if (currentTime >= eventStartTime && currentTime <= eventEndTime) {
-    return {
-      text: "On-going",
-      style: "bg-yellow-500 text-black", // Active style
-    };
+  const hours = Math.ceil(durationMs / (1000 * 60 * 60));
+
+  if (hours <= 24) {
+    return `24 hrs`;
+  } else if (hours < 48) {
+    return `${hours} hrs`;
   } else {
-    return {
-      text: "Event-ended",
-      style: "bg-MVP-gray text-MVP-white", // Inactive style
-    };
+    const days = Math.ceil(hours / 24);
+    return `${days} day(s)`;
   }
-};
+}
 
+export function countDown(
+  startTime: string | number | Date,
+  eventType: string
+) {
+  const countDownDate = new Date(startTime).getTime();
+  const now = new Date().getTime();
+  const distance = countDownDate - now;
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  if (days === 0) {
+    return `${hours}h till begin`;
+  } else if (1 < days && days < 2) {
+    return `${days} days till begin`;
+  } else if (2 < days && days < 3) {
+    return `${days} days till begin`;
+  } else {
+    return `${eventType}`;
+  }
+}

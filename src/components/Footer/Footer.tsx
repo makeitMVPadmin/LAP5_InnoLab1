@@ -1,27 +1,27 @@
 import "./Footer.scss";
 import { Link } from "react-router-dom";
-import { ReactComponent as Instagram } from "../../assets/logos/instagramIconBlack.svg";
-import { ReactComponent as XIcon } from "../../assets/logos/xIconBlack.svg";
-import { ReactComponent as Linkedin } from "../../assets/logos/linkedinIconBlack.svg";
-import { ReactComponent as Communiti2 } from "../../assets/logos/communiti2.svg";
+import instagram from "../../assets/logos/instagramIconBlack.svg";
+import xIcon from "../../assets/logos/xIconBlack.svg";
+import linkedin from "../../assets/logos/linkedinIconBlack.svg";
+import communiti2 from "../../assets/logos/communiti2.svg";
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <Communiti2 className="logo" />
+    <div className="footer">
+      <img className="logo" src={communiti2} alt="communiti in black font" />
       <div className="separator"></div>
       <div className="icon-row">
         <Link to="#">
-          <Instagram />
+          <img src={instagram} alt="instagram" />
         </Link>
         <Link to="#">
-          <XIcon />
+          <img src={xIcon} alt="X" />
         </Link>
         <Link to="#">
-          <Linkedin />
+          <img src={linkedin} alt="linkedin" />
         </Link>
       </div>
-    </footer>
+    </div>
   );
 }
 export default Footer;

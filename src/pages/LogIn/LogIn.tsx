@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Button from "../../components/Button/Button";
 import NavbarAlt from "../../components/NavbarAlt/NavbarAlt";
-import { ReactComponent as CommunitiHero } from "../../assets//images/communitiHero.svg";
+import communitiHero from "../../assets//images/communitiHero.svg";
 import { handleSignIn, handleGoogleSignIn } from "../../Firebase/FirebaseAuth";
 
 const LogIn = () => {
@@ -45,9 +45,11 @@ const LogIn = () => {
     <>
       <NavbarAlt />
       <main className="loginpage">
-      <CommunitiHero
+        <img
+          src={communitiHero}
+          alt="Home Icon"
           className="loginpage__image"
-        />
+        ></img>
         <section className="loginpage__content">
           <h1 className="loginpage__heading">Log in to Communiti!</h1>
           <form

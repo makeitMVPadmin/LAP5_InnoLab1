@@ -22,7 +22,10 @@ export const updateUserInFirestore = async (
       await setDoc(userDocRef, {
         email: email || user.email,
         fullName: fullName || user.displayName,
+        userID: user.uid,
         createdAt: serverTimestamp(),
+        CommunitiesJoined: [],
+        CommunitiesManage: [],
         profilePhoto: photoURL || "", // You may set this value during signup
       });
     } else {
@@ -32,6 +35,7 @@ export const updateUserInFirestore = async (
         {
           email: email || user.email,
           fullName: fullName || user.displayName,
+          userID: user.uid,
         },
         { merge: true }
       );
