@@ -31,7 +31,7 @@ const ProjectSubmissionPage = () => {
     const { eventId } = useParams()
     const [file, setFile] = useState<File[]>([]);
 
-    //Set Default values for form
+    //Set default values for form
     const form = useForm<ProjectSubmissionFormValues>({
         resolver: zodResolver(submissionSchema),
         defaultValues: DEFAULT_FORM_VALUES,
@@ -41,6 +41,7 @@ const ProjectSubmissionPage = () => {
     const formValues = watch();
 
     useEffect(() => {
+        //To set the data if the user goes back from the review page
         if (formData) {
             setValue("teamName", formData.teamName)
             setValue("techStack", formData.techStack)
@@ -65,11 +66,9 @@ const ProjectSubmissionPage = () => {
             console.error("Validation errors:", parsedData.error.errors);
             return;
         }
-
         const formattedTeamMembers = values.teamMembers.filter(
             (member) => member.name.trim() !== "" && member.role.trim() !== ""
         );
-
         const formattedLinks = values.projectLinks.filter(
             (link) => link.url.trim() !== ""
         );
@@ -83,7 +82,6 @@ const ProjectSubmissionPage = () => {
         };
         console.log(submissionFormData)
         navigate(`/event/${eventId}/review-submit`, { state: { submissionFormData } })
-
     }
 
     const handleFileChange = (newFiles: File[]) => {
@@ -98,15 +96,15 @@ const ProjectSubmissionPage = () => {
         });
     };
 
+
+    const handleAddLink = () => { appendLink({ url: "" }); };
+    const handleAddMember = () => appendMember({ name: "", role: "" });
+    const handleDeleteLink = (index: number) => { removeLink(index) }
+    const handleDeleteMember = (index: number) => removeMember(index);
     const handleDeleteImage = (indexToRemove: Number) => {
         const newFiles = file.filter((_, index) => index !== indexToRemove);
         setFile(newFiles)
     }
-
-    const handleAddLink = () => { appendLink({ url: "" }); };
-    const handleDeleteLink = (index: number) => { removeLink(index) }
-    const handleAddMember = () => appendMember({ name: "", role: "" });
-    const handleDeleteMember = (index: number) => removeMember(index);
     const handleBack = () => { navigate(-1) }
 
     return (
@@ -304,7 +302,6 @@ const ProjectSubmissionPage = () => {
                             placeHolder={PLACEHOLDERS.ENTER_NEXT_STEPS}
                             type="Textarea"
                         />
-
 
                         {/* Upload image */}
                         <div className="w-1/2">

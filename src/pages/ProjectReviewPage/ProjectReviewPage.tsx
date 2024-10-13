@@ -161,7 +161,7 @@ const ProjectReviewPage = () => {
 
             await createProjectSubmission(submissionFormData);
             // TO DO add navigation after the form has submitted 
-            // set a alert modal
+            // set a alert model
             // navigate('/hackathons')
 
 

@@ -1,9 +1,6 @@
 import { TeamMember, ProjectLink } from "../types/submissionTypes"
 import { STYLES } from "../constants/styles";
 import { Input } from "../components/ui/input";
-import { Textarea } from '../components/ui/textarea';
-import { Button } from '../components/ui/button';
-import { formatTextSections } from '../utils/formatTextFunctions'
 import ImportCard from '../components/ImportCard/ImportCard';
 import ImageUploadZone from "../components/ImageUploadZone/ImageUploadZone"
 import CloseIcon from "../assets/images/Close.svg"
@@ -126,78 +123,7 @@ export const renderObjectArrayContent = (
   );
 };
 
-
-
-interface RenderEditableContentProps {
-  sectionId: string;
-  content: string;
-  type?: 'text' | 'array';
-  isEditing: boolean;
-  formData: Record<string, any>;
-  onSave: (sectionId: string, newValue: any) => void;
-  onCancel: () => void;
-  onUpdate: (sectionId: string, newValue: string) => void;
-}
-
-// export const renderEditableContent = ({
-//   sectionId,
-//   content,
-//   type = 'text',
-//   isEditing,
-//   formData,
-//   onSave,
-//   onCancel,
-//   onUpdate,
-// }: RenderEditableContentProps): JSX.Element => {
-//   const [tempContent, setTempContent] = useState(content);
-
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setTempContent(e.target.value); // Update temp state without triggering save
-//   };
-
-//   const handleSaveClick = () => {
-//     onSave(sectionId, tempContent); // Commit changes only when "Save" is clicked
-//   };
-
-//   if (!isEditing) {
-//     return (
-//       <div className="">
-//         {type === "array" ? (
-//           <ul className="space-y-0 list-disc">
-//             {Array.isArray(content)
-//               ? content.map((item, i) => (
-//                 <li key={i} className="text-gray-700 font-poppins ml-6">{item.trim()}</li>
-//               ))
-//               : typeof content === 'string'
-//                 ? content.split(',').map((str, i) => (
-//                   <li key={i} className="text-gray-700 font-poppins ml-6">{str.trim()}</li>
-//                 ))
-//                 : null
-//             }
-//           </ul>
-//         ) : (
-//           <p className="text-gray-700">{content}</p>
-//         )}
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div>
-//       <input
-//         type="text"
-//         value={tempContent}
-//         onChange={handleInputChange} // Update local state on input change
-//         className="border rounded p-2"
-//       />
-//       <button onClick={handleSaveClick} className="text-blue-500 ml-2">Save</button>
-//       <button onClick={onCancel} className="text-red-500 ml-2">Cancel</button>
-//     </div>
-//   );
-// };
-
-export const renderEditableImages = ({
-  sectionId,
+export const renderEditableImages = ({ sectionId,
   content,
   isEditing,
   handleSaveSection,
