@@ -128,9 +128,12 @@ const EventForm: React.FC = () => {
           <div className="step">3. Review</div>
         </div>
         <div className="form-group">
-          <label>Event Title *</label>
+          <label htmlFor="title">Event Title *</label>
           <input
             {...register("title", { required: "Event Title is required" })}
+            className={`form-control${
+              errors.title ? "error" : ""
+            }`}
           />
           {errors.title && <p className="error">{errors.title.message}</p>}
         </div>

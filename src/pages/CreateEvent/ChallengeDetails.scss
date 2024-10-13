@@ -104,19 +104,22 @@
   
       .btn {
         padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
+        border:5px solid #000;
+        border-radius: 9px;
         cursor: pointer;
+        color: #000;
       }
   
       .prev {
         background-color: #ccc;
-        color: #000;
       }
   
       .next {
         background-color: #007bff;
-        color: #fff;
+
+        &:hover {
+          background-color: #0056b3;
+        }
       }
     }
   }
