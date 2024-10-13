@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { ProjectSubmission, TeamMember, ProjectLink, SectionProps } from "../../types/submissionTypes"
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { ProjectSubmission, SectionProps } from "../../types/submissionTypes"
 import { createProjectSubmission } from "../../Firebase/FirebaseStore"
 import { submissionSchema } from "../../schema/submissionSchema";
 import { formatTextSections } from "../../utils/formatTextFunctions"
+import { renderObjectArrayContent, renderEditableImages } from "../../utils/renderHelpers"
 import { STYLES } from "../../constants/styles";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Button } from "../../components/ui/button";
@@ -12,115 +13,7 @@ import { Input } from "../../components/ui/input";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import EditButton from "../../components/EditButton/EditButton";
 import ImportCard from "../../components/ImportCard/ImportCard";
-import BackArrow from "../../assets/images/back.svg"
 import Clock2 from "../../assets/images/clock-type2.svg"
-import CloseIcon from "../../assets/images/Close.svg"
-
-
-const renderObjectArrayContent = (
-    sectionId: "teamMembers" | "projectLinks",
-    content: TeamMember[] | ProjectLink[],
-    isEditing: boolean,
-    onUpdate: (newValue: any) => void
-) => {
-    if (!isEditing) {
-        return (
-            <ul className="space-y-2">
-                {sectionId === "teamMembers" ? (
-                    (content as TeamMember[]).map((member, i) => (
-                        <li key={i} className="text-gray-700 font-poppins">
-                            {member.name} - {member.role}
-                        </li>
-                    ))
-                ) : (
-                    (content as ProjectLink[]).map((link, i) => (
-                        <li key={i} className="text-gray-700 font-poppins font-semibold underline decoration-2">
-                            <a href={link.url}> {link.url}</a>
-                        </li>
-                    ))
-                )}
-            </ul>
-        );
-    }
-
-    const handleRemoveItem = (index: number) => {
-        const newContent = [...content];
-        newContent.splice(index, 1);
-        onUpdate(newContent);
-    };
-
-    const handleAddItem = () => {
-        const newItem = sectionId === "teamMembers"
-            ? { name: "", role: "" }
-            : { url: "" };
-        onUpdate([...content, newItem]);
-    };
-
-    const handleInputChange = (index: number, field: string, value: string) => {
-        const newContent = [...content];
-        if (sectionId === "teamMembers") {
-            (newContent[index] as TeamMember)[field as keyof TeamMember] = value;
-        } else {
-            (newContent[index] as ProjectLink)[field as keyof ProjectLink] = value;
-        }
-        onUpdate(newContent);
-    };
-
-    return (
-        <div className="space-y-4">
-            {sectionId === "teamMembers" ? (
-                (content as TeamMember[]).map((member, index) => (
-                    <div key={index} className="flex gap-4">
-                        <Input
-                            value={member.name}
-                            className={`${STYLES.input} font-poppins`}
-                            placeholder="Member name"
-                            onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-                        />
-                        <Input
-                            value={member.role}
-                            className={`${STYLES.input} font-poppins`}
-                            placeholder="Member role"
-                            onChange={(e) => handleInputChange(index, 'role', e.target.value)}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => handleRemoveItem(index)}
-                            className=""
-                        >
-                            <img className="w-6 h-6" src={CloseIcon} alt="delete item icon" />
-                        </button>
-                    </div>
-                ))
-            ) : (
-                (content as ProjectLink[]).map((link, index) => (
-                    <div key={index} className="flex gap-4">
-                        <Input
-                            value={link.url}
-                            className={`${STYLES.input} font-poppins`}
-                            placeholder="Project URL"
-                            onChange={(e) => handleInputChange(index, 'url', e.target.value)}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => handleRemoveItem(index)}
-                            className="p-2  hover:bg-red-50 rounded-md"
-                        >
-                            <img className="w-4 h-4" src={CloseIcon} alt="delete item icon" />
-                        </button>
-                    </div>
-                ))
-            )}
-            <button
-                type="button"
-                onClick={handleAddItem}
-                className={`${STYLES.secondaryButton} px-4 py-2 rounded-md`}
-            >
-                Add {sectionId === "teamMembers" ? "Team Member" : "Project Link"}
-            </button>
-        </div>
-    );
-};
 
 
 const Section = ({ title, children, required, editButton }: SectionProps) => (
@@ -135,6 +28,9 @@ const Section = ({ title, children, required, editButton }: SectionProps) => (
 
 const ProjectReviewPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { eventId } = useParams()
+
     const { submissionFormData } = location.state || {};
     const [formData, setFormData] = useState(submissionFormData);
     const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
@@ -143,17 +39,32 @@ const ProjectReviewPage = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     const handleEditSection = (sectionId: string) => { setEditingSectionId(sectionId); };
-    const handleSaveSection = (sectionId: string, newValue) => {
-        setFormData(prev => ({
-            ...prev,
-            [sectionId]: newValue
-        }));
+    const handleSaveSection = (sectionId: string, newValue: any) => {
+        setFormData(prev => {
+            if (sectionId === "imageFiles") {
+                let updatedFiles;
+                if (newValue instanceof File) {
+                    updatedFiles = [...prev.imageFiles, newValue];
+                } else if (Array.isArray(newValue) && newValue.every(item => item instanceof File)) {
+                    updatedFiles = [...prev.imageFiles, ...newValue];
+                } else {
+                    console.error('Unexpected newValue type for imageFiles:', newValue);
+                    return prev;
+                }
+                return {
+                    ...prev,
+                    imageFiles: updatedFiles
+                };
+            }
+            return {
+                ...prev,
+                [sectionId]: newValue
+            };
+        });
         setEditingSectionId(null);
         setShowAlert(true);
         setTimeout(() => setShowAlert(false), 3000);
     };
-    const handleCancelEdit = () => { setEditingSectionId(null); };
-    const handleEditMode = () => { setIsEditMode(true) }
 
 
     const renderEditableContent = (sectionId: string, content: string, type: "text" | "array" = "text") => {
@@ -214,6 +125,9 @@ const ProjectReviewPage = () => {
             </div>
         );
     };
+    const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
+    const handleCancelEdit = () => { setEditingSectionId(null); };
+    const handleEditMode = () => { setIsEditMode(true) }
     const handleDeleteImage = (indexToRemove: Number) => {
         const newFiles = formData.imageFiles.filter((_, index: Number) => index !== indexToRemove);
         setFormData(prev => ({
@@ -221,7 +135,6 @@ const ProjectReviewPage = () => {
             imageFiles: newFiles
         }))
     }
-
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         setIsLoading(true)
@@ -247,7 +160,9 @@ const ProjectReviewPage = () => {
             };
 
             await createProjectSubmission(submissionFormData);
-            console.log("Form and image submitted successfully!");
+            // TO DO add navigation after the form has submitted 
+            // set a alert modal
+            // navigate('/hackathons')
 
 
         } catch (error) {
@@ -292,11 +207,8 @@ const ProjectReviewPage = () => {
                         handleClick={handleEditMode}
                         isEditing={false}
                         isEditMode={!isEditMode}
-
                     />
                 </section>
-
-
                 <article className="mt-8 flex flex-col gap-10">
                     <Section
                         title="Team Name"
@@ -358,6 +270,7 @@ const ProjectReviewPage = () => {
                         {renderEditableContent("problemChallenge", formData.projectChallenge
                         )}
                     </Section>
+
                     <Section
                         title="Problem Statement"
                         required={true}
@@ -414,17 +327,17 @@ const ProjectReviewPage = () => {
                         title="Upload project files"
                         editButton={
                             <EditButton
-                                handleClick={() => handleEditSection("nextSteps")}
+                                handleClick={() => handleEditSection("imageFiles")}
                                 isEditing={false}
-                                isEditMode={isEditMode}
-                            />
-                        }
+                                isEditMode={isEditMode} />}
                     >
-                        <div className="flex gap-4">{formData.imageFiles.map((file, index) => {
-                            return (
-                                <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteImage(index)} />
-                            )
-                        })}</div>
+                        {renderEditableImages({
+                            sectionId: "imageFiles",
+                            content: formData.imageFiles,
+                            isEditing: editingSectionId === "imageFiles",
+                            handleSaveSection,
+                            handleDeleteImage,
+                        })}
                     </Section>
 
                     <Section
@@ -449,12 +362,15 @@ const ProjectReviewPage = () => {
                     <div className="flex justify-end gap-2 mt-5 py-10">
                         <Button
                             className={`${STYLES.secondaryButton}`}
+                            onClick={handleBack}
+                            aria-label="Back button to go back"
                         >
                             Back
                         </Button>
                         <Button
                             className={`${STYLES.primaryButton}`}
                             onClick={handleSubmit}
+                            aria-label="submit button to submit project"
                         >
                             Submit Project
                         </Button>
