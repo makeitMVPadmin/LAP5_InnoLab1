@@ -1,15 +1,13 @@
+import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import UploadBox from "../../assets/images/uploadBox.svg";
-import { useState } from 'react';
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'];
 
 const ImageUploadZone = ({ onFileChange }) => {
     const [errorMessage, setErrorMessage] = useState(null);
-
     const onDrop = (acceptedFiles) => {
-
 
         const validFiles = acceptedFiles.filter(file => {
             if (file.size > MAX_SIZE) {
@@ -25,17 +23,16 @@ const ImageUploadZone = ({ onFileChange }) => {
 
         if (validFiles.length > 0) {
             setErrorMessage(null);
-            onFileChange(validFiles); // Passing array of valid files to parent
-            console.log('Files being passed to parent:', validFiles); // Debugging log
+            onFileChange(validFiles);
+            console.log('Files being passed to parent:', validFiles);
         }
     };
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         multiple: true,
         accept: ACCEPTED_TYPES.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
     });
-
     return (
         <div {...getRootProps()} className="dropzone">
             <input {...getInputProps()} />
