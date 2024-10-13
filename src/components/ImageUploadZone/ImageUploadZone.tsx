@@ -1,59 +1,45 @@
+import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import UploadBox from "../../assets/images/uploadBox.svg"
-import { useState, useEffect } from 'react';
-import { STYLES } from '../../constants/styles';
+import UploadBox from "../../assets/images/uploadBox.svg";
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'];
 
 const ImageUploadZone = ({ onFileChange }) => {
-    const [preview, setPreview] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-
-
     const onDrop = (acceptedFiles) => {
-        const file = acceptedFiles[0];
-        if (file) {
+
+        const validFiles = acceptedFiles.filter(file => {
             if (file.size > MAX_SIZE) {
-                setErrorMessage("File size exceeds 10MB");
-                return;
+                setErrorMessage(`File size exceeds 10MB: ${file.name}`);
+                return false;
             }
             if (!ACCEPTED_TYPES.includes(file.type)) {
-                setErrorMessage("File type not supported. Please upload JPG, PNG, PDF, or SVG files.");
-                return;
+                setErrorMessage(`File type not supported: ${file.name}. Please upload JPG, PNG, PDF, or SVG files.`);
+                return false;
             }
-            console.log(file)
-            setErrorMessage(null); // Reset any previous error message
-            onFileChange(file);
-            const previewUrl = URL.createObjectURL(file);
-            setPreview(previewUrl);
+            return true;
+        });
+
+        if (validFiles.length > 0) {
+            setErrorMessage(null);
+            onFileChange(validFiles);
+            console.log('Files being passed to parent:', validFiles);
         }
     };
 
-    useEffect(() => {
-        return () => {
-            if (preview) {
-                URL.revokeObjectURL(preview);
-            }
-        };
-    }, [preview]);
-
-
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        multiple: true,
+        accept: ACCEPTED_TYPES.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
+    });
     return (
         <div {...getRootProps()} className="dropzone">
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <input {...getInputProps()} />
-            {preview ? (
-                <div className="mt-4">
-                    <h3 className={STYLES.label}>Upload Project Files </h3>
-                    <img src={preview} alt="File Preview" className="max-w-xs border rounded-[10px]" />
-                </div>
-            ) : <img className="pt-10" src={UploadBox} alt="upload icon" />
-            }
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            <img className="pt-10" src={UploadBox} alt="upload icon" />
         </div>
-    )
-}
+    );
+};
 
-
-export default ImageUploadZone
+export default ImageUploadZone;
