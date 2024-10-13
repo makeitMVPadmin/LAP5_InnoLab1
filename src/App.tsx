@@ -13,6 +13,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
+// import PreviewEvent from "./pages/CreateEvent/PreviewEvent";
 import "./styles/_global.scss";
 
 const App = () => {

@@ -40,6 +40,14 @@ const ChallengeDetailsForm: React.FC = () => {
     navigate("/EventForm");
   };
 
+  /*
+
+  const handleNextClick = () => {
+    navigate("/PreviewEvent");
+  };
+
+  */
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="challenge-details-form">
       <h1>Create an Event</h1>
@@ -50,9 +58,9 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="challengeReleaseDate">Challenge Release Date*</label>
+        <label htmlFor="challengeReleaseDate">Challenge Release Date *</label>
         <div className="date-input-container">
-            <CalendarIcon className="icon" />
+            <CalendarIcon className="icon w-16" />
             <Controller
               name="challengeReleaseDate"
               control={control}
@@ -61,14 +69,14 @@ const ChallengeDetailsForm: React.FC = () => {
                 <input
                   type="date"
                   {...field}
-                  className={`form-control ${
+                  className={`form-control${
                     errors.challengeReleaseDate ? "error" : ""
                   }`}
                 />
               )}
             />
             <span className="divider">|</span>
-            <ClockIcon className="icon" />
+            <ClockIcon className="icon w-16" />
             <Controller
               name="challengeReleaseDate"
               control={control}
@@ -90,7 +98,7 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="problemStatement">Problem Statement*</label>
+        <label htmlFor="problemStatement">Problem Statement *</label>
         <textarea
           {...register("problemStatement", {
             required: "Problem statement is required",
@@ -109,7 +117,7 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="objectivesGoals">Objectives/Goals*</label>
+        <label htmlFor="objectivesGoals">Objectives/Goals *</label>
         <textarea
           {...register("objectivesGoals", {
             required: "Objectives/Goals are required",

@@ -334,7 +334,7 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label htmlFor="announcementDate">
-            Event Announcement Publish Date*
+            Event Announcement Publish Date *
           </label>
           <div className="date-input-container">
             <CalendarIcon className="icon" />
