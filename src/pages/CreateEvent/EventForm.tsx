@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
@@ -90,25 +90,32 @@ const EventForm: React.FC = () => {
     navigate("/ChallengeDetails");
   };
 
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
       setFile(droppedFile);
     }
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleFileChange = (e) => {
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+      setFile(chosenFile);
+    }
+  };
+
+  const handleFileClick = () => {
+    fileInputRef.current.click(); // Trigger the click event on the hidden file input
   };
 
   return (
@@ -479,18 +486,24 @@ const EventForm: React.FC = () => {
                 className="size-6"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
 
               <p className="text-sm mb-2">
                 drag and drop file or{" "}
-                <span className="text-blue-500 underline">choose file</span>
+                <span
+                  className="text-blue-500 underline cursor-pointer"
+                  onClick={handleFileClick}
+                >
+                  choose file
+                </span>
               </p>
               <input
                 type="file"
+                ref={fileInputRef}
                 onChange={handleFileChange}
                 className="hidden"
                 accept="image/*,.pdf,.svg,.zip"
@@ -498,10 +511,10 @@ const EventForm: React.FC = () => {
             </div>
             {file && <p className="mt-2 text-sm">Selected file: {file.name}</p>}
 
-          <p className="text-xs text-black mb-1">
-            supported formats: JPG, PNG, PDF, SVG, ZIP
-          </p>
-          <p className="text-xs text-black">maximum size: 10MB</p>
+            <p className="text-xs text-black mb-1">
+              supported formats: JPG, PNG, PDF, SVG, ZIP
+            </p>
+            <p className="text-xs text-black">maximum size: 10MB</p>
           </div>
         </div>
         <div className="form-navigation">
