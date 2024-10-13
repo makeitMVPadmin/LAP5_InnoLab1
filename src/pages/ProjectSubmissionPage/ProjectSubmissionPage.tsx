@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { useAuth } from "../../context/AuthContext";
 import { submissionSchema } from "../../schema/submissionSchema";
-import { ProjectSubmissionFormValues, ProjectSubmission } from "../../types/submissionTypes"
+import { ProjectSubmissionFormValues, ProjectSubmission, TeamMember, ProjectLink } from "../../types/submissionTypes"
 import { DEFAULT_FORM_VALUES } from "../../constants/submissionFormDefaults";
 import { STYLES } from "../../constants/styles"
 import { ROLES } from "../../constants/roles";
@@ -43,16 +43,29 @@ const ProjectSubmissionPage = () => {
     useEffect(() => {
         //To set the data if the user goes back from the review page
         if (formData) {
-            setValue("teamName", formData.teamName)
-            setValue("techStack", formData.techStack)
-            setValue("designTools", formData.designTools)
-            setValue("designFeatures", formData.designFeatures)
-            setValue("problemStatement", formData.problemStatement)
-            setValue("teamMembers", formData.TeamMember)
-            setValue("designImpact", formData.designImpact)
-            setValue("nextSteps", formData.nextSteps)
-            setValue("imageFiles", formData.imageFiles)
-            setValue("projectLinks", formData.projectLinks)
+            setValue("teamName", formData.teamName);
+            setValue("techStack", formData.techStack);
+            setValue("designTools", formData.designTools);
+            setValue("designFeatures", formData.designFeatures);
+            setValue("problemStatement", formData.problemStatement);
+            setValue("designImpact", formData.designImpact);
+            setValue("nextSteps", formData.nextSteps);
+
+            // Handle array fields
+            if (Array.isArray(formData.teamMembers)) {
+                setValue("teamMembers", formData.teamMembers.map((member: TeamMember) => ({
+                    name: member.name || '',
+                    role: member.role || ''
+                })));
+            }
+            if (Array.isArray(formData.projectLinks)) {
+                setValue("projectLinks", formData.projectLinks.map((link: ProjectLink) => ({
+                    url: link.url || ''
+                })));
+            }
+            if (Array.isArray(formData.imageFiles)) {
+                setValue("imageFiles", formData.imageFiles);
+            }
         }
     }, [formData, setValue])
 

@@ -248,18 +248,17 @@ const ProjectReviewPage = () => {
                     </Section>
 
                     <Section
-                        title="Problem Challenge"
+                        title="Project Challenge"
                         required={true}
                         editButton={
                             <EditButton
-                                handleClick={() => handleEditSection("problemChallenge")}
+                                handleClick={() => handleEditSection("projectChallenge")}
                                 isEditing={false}
                                 isEditMode={isEditMode}
                             />
                         }
                     >
-                        {renderEditableContent("problemChallenge", formData.projectChallenge
-                        )}
+                        {renderEditableContent("projectChallenge", formData.projectChallenge)}
                     </Section>
 
                     <Section
