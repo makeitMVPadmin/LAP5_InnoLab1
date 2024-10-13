@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { useAuth } from "../../context/AuthContext";
@@ -14,8 +14,8 @@ import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
+import Header from "../../components/Header/Header";
 import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import ImportCard from "../../components/ImportCard/ImportCard"
 import Clock from "../../assets/images/clock-type2.svg"
@@ -25,10 +25,10 @@ import ErrorIcon from "../../assets/images/error.svg"
 
 const ProjectSubmissionPage = () => {
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const { formData } = location.state || {};
     const { currentUser } = useAuth();
     const { eventId } = useParams()
-    const [isLoading, setIsLoading] = useState(false)
     const [file, setFile] = useState<File[]>([]);
 
     //Set Default values for form
@@ -39,6 +39,21 @@ const ProjectSubmissionPage = () => {
 
     const { handleSubmit, register, watch, setValue, formState: { errors } } = form
     const formValues = watch();
+
+    useEffect(() => {
+        if (formData) {
+            setValue("teamName", formData.teamName)
+            setValue("techStack", formData.techStack)
+            setValue("designTools", formData.designTools)
+            setValue("designFeatures", formData.designFeatures)
+            setValue("problemStatement", formData.problemStatement)
+            setValue("teamMembers", formData.TeamMember)
+            setValue("designImpact", formData.designImpact)
+            setValue("nextSteps", formData.nextSteps)
+            setValue("imageFiles", formData.imageFiles)
+            setValue("projectLinks", formData.projectLinks)
+        }
+    }, [formData, setValue])
 
     const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({ control: form.control, name: "teamMembers", });
     const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({ control: form.control, name: "projectLinks" });
@@ -66,22 +81,18 @@ const ProjectSubmissionPage = () => {
             userId: currentUser.uid,
             eventId: eventId as string
         };
-        console.log(values)
-
+        console.log(submissionFormData)
         navigate(`/event/${eventId}/review-submit`, { state: { submissionFormData } })
 
     }
 
     const handleFileChange = (newFiles: File[]) => {
         const MAX_FILES = 3
-
         setFile(prevFiles => {
             if (prevFiles.length >= MAX_FILES) {
                 return prevFiles
             }
-
             const updatedFiles = [...prevFiles, ...newFiles];
-            console.log('Updated files:', updatedFiles);
             setValue('imageFiles', updatedFiles, { shouldValidate: true });
             return updatedFiles;
         });
@@ -96,15 +107,11 @@ const ProjectSubmissionPage = () => {
     const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleAddMember = () => appendMember({ name: "", role: "" });
     const handleDeleteMember = (index: number) => removeMember(index);
+    const handleBack = () => { navigate(-1) }
 
     return (
         <main className="font-gilroy">
-            <DashboardNavbar />
-            <section className="h-[3rem] bg-MVP-">
-                <Link to="/hackathons" className="text-black text-sm inline-block mb-5">
-                    ← Back
-                </Link>
-            </section>
+            <Header handleClick={handleBack} />
             <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
                 <div className="flex py-12 justify-end gap-2 items-center">
@@ -361,11 +368,11 @@ const ProjectSubmissionPage = () => {
                         </div>
 
                         <div className="flex justify-end gap-2 mt-5 py-10">
-                            <Button type="button" className="h-12 bg-MVP-white font-gilroy text-lg text-MVP-black border-2 border-MVP-black">
+                            <Button type="button" className={STYLES.secondaryButton} onClick={handleBack}>
                                 Cancel
                             </Button>
                             <Button type="submit" className={STYLES.primaryButton}>
-                                {isLoading ? "Loading...." : "Review Submission"}
+                                Review Submission
                             </Button>
                         </div>
                     </form>

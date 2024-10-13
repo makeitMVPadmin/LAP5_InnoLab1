@@ -10,9 +10,8 @@ import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Button } from "../../components/ui/button";
 import { Textarea } from "../../components/ui/textarea";
 import { Input } from "../../components/ui/input";
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import EditButton from "../../components/EditButton/EditButton";
-import ImportCard from "../../components/ImportCard/ImportCard";
+import Header from "../../components/Header/Header";
 import Clock2 from "../../assets/images/clock-type2.svg"
 
 
@@ -125,6 +124,7 @@ const ProjectReviewPage = () => {
             </div>
         );
     };
+
     const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
@@ -179,16 +179,7 @@ const ProjectReviewPage = () => {
 
     return (
         <div className="font-gilroy">
-            <header >
-                <DashboardNavbar />
-                <section className="h-[3rem] bg-MVP-soft-blue px-10">
-                    <button className="flex items-center w-11 h-11 gap-2" aria-label="Go back to the previous page">
-                        <img className="w-7 h-6" src={BackArrow} alt="Back Arrow" />
-                        <span className="text-black text-lg inline-block">Back</span>
-                    </button>
-                </section>
-            </header>
-
+            <Header handleClick={handleBack} />
             <main className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-bold mb-5 pt-14">Review Submission</h1>
                 <section className="flex py-12 justify-end gap-2 items-center">
