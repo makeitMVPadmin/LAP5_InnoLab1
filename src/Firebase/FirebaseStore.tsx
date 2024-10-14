@@ -7,11 +7,11 @@ import {
   getDoc,
   addDoc,
   updateDoc,
-  arrayUnion
+  arrayUnion,
+  Timestamp
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ProjectSubmission } from "../types/submissionTypes"
-
 
 // Function to create or update user in Firestore
 export const updateUserInFirestore = async (
@@ -19,7 +19,7 @@ export const updateUserInFirestore = async (
   { email, photoURL, fullName }
 ) => {
   try {
-    const usersRef = collection(db, "Users");
+    const usersRef = collection(db, "hackathonUsers");
     const userDocRef = doc(usersRef, user.uid);
     const userDoc = await getDoc(userDocRef);
 
@@ -97,6 +97,33 @@ export const uploadImage = async (imageFile: File) => {
   }
 };
 
+export const addCommentToSubmission = async (data) => {
+  const { submissionId, commentEntry, fullName } = data;
+  if (!submissionId || !commentEntry) {
+    return { success: false, message: 'All fields are required.' };
+  }
+  const docRef = doc(db, "hackathonProjectSubmissions", submissionId);
+  try {
+    const comment = {
+      commenterName: fullName,
+      commentEntry,
+      commentTimestamp: Timestamp.now()
+    };
+    await updateDoc(docRef, {
+      comments: arrayUnion(comment)
+    });
+    return {
+      success: true,
+      commenterName: comment.commenterName,
+      commentEntry: comment.commentEntry,
+      commentTimestamp: comment.commentTimestamp
+    };
+  } catch (error) {
+    console.error("Error adding comment: ", error);
+    return { success: false };
+  }
+}
+  
 export const uploadImages = async (imageFiles: File[]) => {
   try {
     const uploadPromises = imageFiles.map((file) => uploadImage(file));
@@ -108,3 +135,4 @@ export const uploadImages = async (imageFiles: File[]) => {
     throw error;
   }
 };
+

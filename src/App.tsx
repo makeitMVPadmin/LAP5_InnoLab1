@@ -14,6 +14,7 @@ import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage"
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
+import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/hackathons/joined" element={<MyEventsPage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
           <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/hackathons/submissions/:submissionId" element={<ProjectShowcasePage />}/>
           <Route path="/event/:eventId/submit" element={<ProjectSubmissionPage />} />
           <Route path="/event/:eventId/review-submit" element={<ProjectReviewPage />} />
           <Route path="/EventForm" element={<EventForm />} />
