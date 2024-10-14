@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/event/:eventId/submit" element={<ProjectSubmissionPage2 />} />
-          <Route path="/hackathons/submissions/JxOyxzIBAWChYhsVjcE1" element={<ProjectShowcasePage />}/>
+          <Route path="/hackathons/submissions/:submissionId" element={<ProjectShowcasePage />}/>
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/ChallengeDetails" element={<ChallengeDetails />} />
         </Route>

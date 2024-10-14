@@ -22,9 +22,10 @@ type HackathonEventType = {
   title: string;
 };
 
-export const fetchHackathonEvents = async (): Promise<{ events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
+export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ event?: HackathonEventType; events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
   let loading = true;
   let error: string | null = null;
+  let event: HackathonEventType | undefined;
   let events: Record<string, HackathonEventType> = {};
 
   try {
@@ -35,13 +36,19 @@ export const fetchHackathonEvents = async (): Promise<{ events: Record<string, H
       acc[doc.id] = doc.data() as HackathonEventType;
       return acc;
     }, {} as Record<string, HackathonEventType>);
+    if (hackathonId) {
+      event = events[hackathonId];
+      if (!event) {
+        error = "Event not found";
+      }
+    }
   } catch (err) {
     error = (err as Error).message;
   } finally {
     loading = false;
   }
 
-  return { events, loading, error };
+  return { event, events, loading, error };
 };
 type ProjectLinkType = {
   url: string;
@@ -128,4 +135,40 @@ export const useJoinedEvents = (userId: string | undefined): { joinedEvents: str
   return { joinedEvents, loading, error };
 };
 
+export const useFetchHackathonUser = (userUid) => {
+  const [hackathonUser, setHackathonUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const userDocRef = doc(db, "hackathonUsers", userUid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+          setError("User not found");
+          setHackathonUser(null);
+        } else {
+          setHackathonUser(userDoc.data());
+        }
+      } catch (err) {
+        setError("Failed to fetch user");
+        console.error("Error fetching user:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userUid) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, [userUid]);
+
+  return { hackathonUser, loading, error };
+};
