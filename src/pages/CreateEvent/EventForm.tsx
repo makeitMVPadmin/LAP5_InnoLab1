@@ -113,7 +113,7 @@ const EventForm: React.FC = () => {
   };
 
   const handleFileClick = () => {
-    fileInputRef.current.click(); // Trigger the click event on the hidden file input
+    fileInputRef.current.click();
   };
 
   return (
@@ -232,7 +232,7 @@ const EventForm: React.FC = () => {
                 </button>
               </span>
             ))}
-            <select onChange={handleThemeChange} className="focus:outline-none">
+            <select onChange={handleThemeChange} className="focus:outline-none w-fulll">
               <option value="">Select up to 3 themes</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
@@ -253,15 +253,15 @@ const EventForm: React.FC = () => {
             <div className="date-input-container">
               <CalendarIcon className="icon" />
               <Controller
-                name="announcementDate"
+                name="startDate"
                 control={control}
-                rules={{ required: "Announcement date is required" }}
+                rules={{ required: "Start date is required" }}
                 render={({ field }) => (
                   <input
                     type="date"
                     {...field}
                     className={`form-control ${
-                      errors.announcementDate ? "error" : ""
+                      errors.startDate ? "error" : ""
                     }`}
                   />
                 )}
@@ -269,22 +269,22 @@ const EventForm: React.FC = () => {
               <span className="divider">|</span>
               <ClockIcon className="icon" />
               <Controller
-                name="announcementTime"
+                name="startTime"
                 control={control}
-                rules={{ required: "Announcement time is required" }}
+                rules={{ required: "Start time is required" }}
                 render={({ field }) => (
                   <input
                     type="time"
                     {...field}
                     className={`form-control ${
-                      errors.announcementTime ? "error" : ""
+                      errors.startTime ? "error" : ""
                     }`}
                   />
                 )}
               />
             </div>
-            {errors.announcementDate && (
-              <p className="error-text">{errors.announcementDate.message}</p>
+            {errors.startTime && (
+              <p className="error-text">{errors.startTime.message}</p>
             )}
           </div>
 
@@ -293,15 +293,15 @@ const EventForm: React.FC = () => {
             <div className="date-input-container">
               <CalendarIcon className="icon" />
               <Controller
-                name="announcementDate"
+                name="endDate"
                 control={control}
-                rules={{ required: "Announcement date is required" }}
+                rules={{ required: "End date is required" }}
                 render={({ field }) => (
                   <input
                     type="date"
                     {...field}
                     className={`form-control ${
-                      errors.announcementDate ? "error" : ""
+                      errors.startTime ? "error" : ""
                     }`}
                   />
                 )}
@@ -309,15 +309,15 @@ const EventForm: React.FC = () => {
               <span className="divider">|</span>
               <ClockIcon className="icon" />
               <Controller
-                name="announcementTime"
+                name="endTime"
                 control={control}
-                rules={{ required: "Announcement time is required" }}
+                rules={{ required: "End time is required" }}
                 render={({ field }) => (
                   <input
                     type="time"
                     {...field}
                     className={`form-control ${
-                      errors.announcementTime ? "error" : ""
+                      errors.endTime ? "error" : ""
                     }`}
                   />
                 )}
