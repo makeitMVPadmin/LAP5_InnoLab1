@@ -1,6 +1,7 @@
 import { getDocs, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
+import { Timestamp } from "firebase/firestore";
 
 type HackathonEventType = {
   basicProjectSummary: string;
@@ -50,13 +51,18 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
 
   return { event, events, loading, error };
 };
-type ProjectLinkType = {
-  url: string;
+
+type JudgeCommentType = {
+  comment: string;
+  judgeName: string;
+  rating: number;
+  suggestions: string;
 }
 
-type TeamMembersType = {
-  name: string;
-  role: string;
+type CommunityCommentType = {
+  commentEntry: string;
+  commentTimestamp: Timestamp;
+  commenterName: string;
 }
 
 type HackathonSubmissionType = {
@@ -66,10 +72,12 @@ type HackathonSubmissionType = {
   imageFile: string;
   nextSteps: string;
   problemStatement: string;
-  projectLinks: ProjectLinkType[];
-  teamMembers: TeamMembersType[];
+  projectLinks: {url: string}[];
+  teamMembers: {name: string, role: string}[];
   teamName: string;
   techStack: string[];
+  judgesComments: JudgeCommentType[];
+  comments: CommunityCommentType[];
 };
 
 export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {
@@ -82,7 +90,6 @@ export const fetchHackathonSubmissions = async (id: string): Promise<{ submissio
       const querySnapshot = await getDocs(colRef);
       
       submissions = querySnapshot.docs.reduce((acc, doc) => {
-          // Check if the document ID matches the provided id
           if (doc.id === id) {
               acc[doc.id] = doc.data() as HackathonSubmissionType;
           }
@@ -135,7 +142,7 @@ export const useJoinedEvents = (userId: string | undefined): { joinedEvents: str
   return { joinedEvents, loading, error };
 };
 
-export const useFetchHackathonUser = (userUid) => {
+export const useFetchHackathonUser = (userUid: string | undefined) => {
   const [hackathonUser, setHackathonUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

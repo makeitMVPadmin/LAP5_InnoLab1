@@ -9,7 +9,7 @@ import {
     CarouselNext,
     CarouselPrevious
 } from '../../components/ui/carousel';
-import CommunityCommentSection from '../../components/CommuntiCommentSection/CommuntiCommentSection';
+import CommunityCommentSection from '../../components/CommunityCommentSection/CommunityCommentSection';
 import JudgesCommentSection from '../../components/JudgesCommentSection/JudgesCommentSection';
 
 const ProjectShowcasePage = () => {
