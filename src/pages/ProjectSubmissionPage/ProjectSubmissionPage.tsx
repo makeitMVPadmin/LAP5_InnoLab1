@@ -1,12 +1,11 @@
 
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { useAuth } from "../../context/AuthContext";
-import { createProjectSubmission } from "../../Firebase/FirebaseStore"
 import { submissionSchema } from "../../schema/submissionSchema";
-import { ProjectSubmissionFormValues, ProjectSubmission } from "../../types/submissionTypes"
+import { ProjectSubmissionFormValues, ProjectSubmission, TeamMember, ProjectLink } from "../../types/submissionTypes"
 import { DEFAULT_FORM_VALUES } from "../../constants/submissionFormDefaults";
 import { STYLES } from "../../constants/styles"
 import { ROLES } from "../../constants/roles";
@@ -15,88 +14,115 @@ import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
+import Header from "../../components/Header/Header";
 import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import CustomInput from "../../components/CustomInput/CustomInput";
+import ImportCard from "../../components/ImportCard/ImportCard"
 import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
 
+
 const ProjectSubmissionPage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { formData } = location.state || {};
     const { currentUser } = useAuth();
     const { eventId } = useParams()
-    const [isLoading, setIsLoading] = useState(false)
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File[]>([]);
 
-    //Set Default values for form
+    //Set default values for form
     const form = useForm<ProjectSubmissionFormValues>({
         resolver: zodResolver(submissionSchema),
         defaultValues: DEFAULT_FORM_VALUES,
     });
 
-
     const { handleSubmit, register, watch, setValue, formState: { errors } } = form
     const formValues = watch();
+
+    useEffect(() => {
+        //To set the data if the user goes back from the review page
+        if (formData) {
+            setValue("teamName", formData.teamName);
+            setValue("techStack", formData.techStack);
+            setValue("designTools", formData.designTools);
+            setValue("designFeatures", formData.designFeatures);
+            setValue("problemStatement", formData.problemStatement);
+            setValue("designImpact", formData.designImpact);
+            setValue("nextSteps", formData.nextSteps);
+
+            // Handle array fields
+            if (Array.isArray(formData.teamMembers)) {
+                setValue("teamMembers", formData.teamMembers.map((member: TeamMember) => ({
+                    name: member.name || '',
+                    role: member.role || ''
+                })));
+            }
+            if (Array.isArray(formData.projectLinks)) {
+                setValue("projectLinks", formData.projectLinks.map((link: ProjectLink) => ({
+                    url: link.url || ''
+                })));
+            }
+            if (Array.isArray(formData.imageFiles)) {
+                setValue("imageFiles", formData.imageFiles);
+            }
+        }
+    }, [formData, setValue])
 
     const { fields: memberFields, append: appendMember, remove: removeMember } = useFieldArray({ control: form.control, name: "teamMembers", });
     const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({ control: form.control, name: "projectLinks" });
 
     async function onSubmit(values: ProjectSubmissionFormValues) {
-        setIsLoading(true)
 
-        try {
-            // Validate the form data
-            const parsedData = submissionSchema.safeParse(values);
-            if (!parsedData.success) {
-                console.error("Validation errors:", parsedData.error.errors);
-                return;
-            }
-
-            const formattedTeamMembers = values.teamMembers.filter(
-                (member) => member.name.trim() !== "" && member.role.trim() !== ""
-            );
-
-            const formattedLinks = values.projectLinks.filter(
-                (link) => link.url.trim() !== ""
-            );
-
-            // Create the submission object with the required additional fields
-            const submission: ProjectSubmission = {
-                ...values,
-                teamMembers: formattedTeamMembers,
-                projectLinks: formattedLinks,
-                userId: currentUser.uid,
-                eventId: eventId as string
-            };
-
-
-            await createProjectSubmission(submission);
-            console.log("Form and image submitted successfully!");
-        } catch (error) {
-            console.error("Error submitting form:", error);
-        } finally {
-            setIsLoading(false);
+        const parsedData = submissionSchema.safeParse(values);
+        if (!parsedData.success) {
+            console.error("Validation errors:", parsedData.error.errors);
+            return;
         }
+        const formattedTeamMembers = values.teamMembers.filter(
+            (member) => member.name.trim() !== "" && member.role.trim() !== ""
+        );
+        const formattedLinks = values.projectLinks.filter(
+            (link) => link.url.trim() !== ""
+        );
 
+        const submissionFormData: ProjectSubmission = {
+            ...values,
+            teamMembers: formattedTeamMembers,
+            projectLinks: formattedLinks,
+            userId: currentUser.uid,
+            eventId: eventId as string
+        };
+        console.log(submissionFormData)
+        navigate(`/event/${eventId}/review-submit`, { state: { submissionFormData } })
     }
 
-    const handleFileChange = (file: File) => {
-        setFile(file);
-        setValue('imageFile', file, { shouldValidate: true });
+    const handleFileChange = (newFiles: File[]) => {
+        const MAX_FILES = 3
+        setFile(prevFiles => {
+            if (prevFiles.length >= MAX_FILES) {
+                return prevFiles
+            }
+            const updatedFiles = [...prevFiles, ...newFiles];
+            setValue('imageFiles', updatedFiles, { shouldValidate: true });
+            return updatedFiles;
+        });
     };
+
+
     const handleAddLink = () => { appendLink({ url: "" }); };
-    const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleAddMember = () => appendMember({ name: "", role: "" });
+    const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleDeleteMember = (index: number) => removeMember(index);
+    const handleDeleteImage = (indexToRemove: Number) => {
+        const newFiles = file.filter((_, index) => index !== indexToRemove);
+        setFile(newFiles)
+    }
+    const handleBack = () => { navigate(-1) }
 
     return (
         <main className="font-gilroy">
-            <DashboardNavbar />
-            <section className="h-[3rem] bg-gray-500">
-                <Link to="/hackathons" className="text-black text-sm inline-block mb-5">
-                    ← Back
-                </Link>
-            </section>
+            <Header handleClick={handleBack} />
             <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
                 <div className="flex py-12 justify-end gap-2 items-center">
@@ -289,6 +315,28 @@ const ProjectSubmissionPage = () => {
                             placeHolder={PLACEHOLDERS.ENTER_NEXT_STEPS}
                             type="Textarea"
                         />
+
+                        {/* Upload image */}
+                        <div className="w-1/2">
+                            <ImageUploadZone onFileChange={handleFileChange}
+                            />
+                        </div>
+                        <div className="pb-6">
+                            <div className="flex gap-4">
+                                {file.length > 0 && file.map((item, index) => {
+                                    return (
+                                        <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteImage(index)} />
+                                    )
+                                })}
+                            </div>
+                            {errors.imageFiles && (
+                                <div className="flex items-center gap-2">
+                                    <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
+                                    <p className="text-red-500">{errors.imageFiles.message}</p>
+                                </div>
+                            )}
+                        </div>
+
                         {/* Project Links */}
                         <div>
                             <FormLabel className={STYLES.label}>Project Links*</FormLabel>
@@ -329,22 +377,12 @@ const ProjectSubmissionPage = () => {
                             </button>
                         </div>
 
-                        {/* Upload image */}
-                        <div className="w-1/2">
-                            <ImageUploadZone onFileChange={handleFileChange} />
-                            {errors.imageFile && (
-                                <div className="flex items-center gap--2">
-                                    <img src={ErrorIcon} alt="error icon" />
-                                    <p className="text-red-500">{errors.imageFile.message}</p>
-                                </div>
-                            )}
-                        </div>
                         <div className="flex justify-end gap-2 mt-5 py-10">
-                            <Button type="button" className="h-12 bg-MVP-white font-gilroy text-lg text-MVP-black border-2 border-MVP-black">
+                            <Button type="button" className={STYLES.secondaryButton} onClick={handleBack}>
                                 Cancel
                             </Button>
                             <Button type="submit" className={STYLES.primaryButton}>
-                                {isLoading ? "Loading...." : "Review Submission"}
+                                Review Submission
                             </Button>
                         </div>
                     </form>
