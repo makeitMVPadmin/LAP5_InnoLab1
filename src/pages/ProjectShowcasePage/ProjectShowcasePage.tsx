@@ -13,7 +13,7 @@ import CommunityCommentSection from '../../components/CommunityCommentSection/Co
 import JudgesCommentSection from '../../components/JudgesCommentSection/JudgesCommentSection';
 
 const ProjectShowcasePage = () => {
-    const { submissionId } = useParams();
+    const { submissionId } = useParams<{ submissionId: string }>();
     const { submission, event, isLoading, error } = useSubmissions(submissionId);
     const [imageUrls, setImageUrls] = useState<string[]>([]);
 
@@ -31,7 +31,7 @@ const ProjectShowcasePage = () => {
                     );
                     setImageUrls(urls);
                 } catch (error) {
-                    console.error(error);
+                    console.error('Failed to fetch images: ', error);
                 }
             }
         };
@@ -60,23 +60,36 @@ const ProjectShowcasePage = () => {
                 <CarouselContent>
                     {imageUrls.map((imageUrl, index) => (
                         <CarouselItem key={index} className='w-[50%] h-[50%]'>
-                            <img src={imageUrl} alt={`Image ${index}`} />
+                            <img src={imageUrl} alt={`Submission Image ${index + 1}`} />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                <CarouselPrevious aria-label='Previous image'/>
+                <CarouselNext aria-label='Next image'/>
             </Carousel>
-            <p>Design Features: {designFeatures}</p>
-            <p>Design Tools: {designTools}</p>
-            <p>Next Steps: {nextSteps}</p>
-            <p>Problem Statement: {problemStatement}</p>
-            <p>Tech Stack: {techStack}</p>
+            <section>
+                <h2>Design Features</h2>
+                <p>{designFeatures}</p>
+
+                <h2>Design Tools</h2>
+                <p>{designTools}</p>
+
+                <h2>Next Steps</h2>
+                <p>{nextSteps}</p>
+
+                <h2>Problem Statement</h2>
+                <p>{problemStatement}</p>
+
+                <h2>Tech Stack</h2>
+                <p>{techStack}</p>
+            </section>
+            <h2>Project Links:</h2>
             {projectLinks.map((projectLink: { url: string }, index: number) => 
-                <p key={index}>Project Links: {projectLink.url}</p>
+                <p key={index}>{projectLink.url}</p>
             )}
+            <h2>Team Members:</h2>
             {teamMembers.map((teamMember: { name: string, role: string }, index: number) =>
-                <p key={index}>Team Members: {teamMember.name} as {teamMember.role}</p>
+                <p key={index}> {teamMember.name} as {teamMember.role}</p>
             )}
             <JudgesCommentSection submissionId={submissionId} />
             <CommunityCommentSection submissionId={submissionId}/>
