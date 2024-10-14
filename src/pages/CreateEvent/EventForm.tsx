@@ -14,8 +14,6 @@ interface EventFormInputs {
   startTime: string;
   endDate: string;
   endTime: string;
-  announcementDate: string;
-  announcementTime: string;
   timezone: string;
   meetingLink: string;
   minParticipants: number;
@@ -339,48 +337,6 @@ const EventForm: React.FC = () => {
           )}
           {errors.endTime && (
             <p className="error-text">{errors.endTime.message}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="announcementDate">
-            Event Announcement Publish Date *
-          </label>
-          <div className="date-input-container">
-            <CalendarIcon className="icon" />
-            <Controller
-              name="announcementDate"
-              control={control}
-              rules={{ required: "Announcement date is required" }}
-              render={({ field }) => (
-                <input
-                  type="date"
-                  {...field}
-                  className={`form-control ${
-                    errors.announcementDate ? "error" : ""
-                  }`}
-                />
-              )}
-            />
-            <span className="divider">|</span>
-            <ClockIcon className="icon" />
-            <Controller
-              name="announcementTime"
-              control={control}
-              rules={{ required: "Announcement time is required" }}
-              render={({ field }) => (
-                <input
-                  type="time"
-                  {...field}
-                  className={`form-control ${
-                    errors.announcementTime ? "error" : ""
-                  }`}
-                />
-              )}
-            />
-          </div>
-          {errors.announcementDate && (
-            <p className="error-text">{errors.announcementDate.message}</p>
           )}
         </div>
 
