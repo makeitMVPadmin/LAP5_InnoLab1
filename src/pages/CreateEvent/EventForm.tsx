@@ -233,11 +233,11 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label htmlFor="theme">Theme *</label>
-          <div className="border-black rounded flex items-center p-2 space-x-2">
+          <div className="border-black rounded-lg border-solid flex gap-4 p-2 space-x-2">
             {selectedThemes.map((theme) => (
               <div
                 key={theme}
-                className="flex items-center bg-yellow-400 px-2 py-1 rounded-full"
+                className= "bg-yellow-400 flex items-center px-2 py-1 rounded-full"
               >
                 {theme}
                 <button
@@ -248,7 +248,7 @@ const EventForm: React.FC = () => {
                 </button>
               </div>
             ))}
-            <select onChange={handleThemeChange} className="focus:outline-none w-full">
+            <select onChange={handleThemeChange} className="focus:outline-none w-full theme-select">
               <option value="">Select up to 3 themes</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
