@@ -42,7 +42,7 @@ const HackathonEventsPage = () => {
           <div className="event-page__filters">FILTER CONTAINER</div>
           <div className="event-page__event-cards">
           {hackathonEvents.map((event, index) => (
-            <Link to={`/join-event/${event.id}`} key={index}>
+            <Link to={`/details/${event.id}`} key={index}>
             <EventCard
               imageUrl={event.imageUrl}
               title={event.title}

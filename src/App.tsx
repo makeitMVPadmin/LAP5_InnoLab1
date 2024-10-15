@@ -9,6 +9,7 @@ import JoinEvent from "./pages/JoinEvent/JoinEvent";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/_global.scss";
+import EventDetailsPage from "./pages/EventDetails/EventDetailsPage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/hackathons" element={<HackathonEventsPage />} />
+          <Route path="/details/:eventId" element={<EventDetailsPage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
