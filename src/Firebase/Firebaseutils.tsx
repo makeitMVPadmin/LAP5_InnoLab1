@@ -1,5 +1,5 @@
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "./firebaseConfig";
+import { db } from "../Firebase/FirebaseConfig";
 
 export const saveEventToFirestore = async (eventData: any) => {
   try {

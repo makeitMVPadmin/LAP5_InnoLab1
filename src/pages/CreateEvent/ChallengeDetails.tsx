@@ -2,7 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import "./ChallengeDetails.scss";
 import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
-import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
+// import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
@@ -32,11 +32,9 @@ const ChallengeDetailsForm: React.FC = () => {
   });
 
   const onSubmit = (data: ChallengeDetailsFormInputs) => {
-    const combinedData = {
-      ...data,
-    };
-    await saveEventToFirestore(combinedData);
+    console.log(data);
   };
+  
 
   const navigate = useNavigate();
 

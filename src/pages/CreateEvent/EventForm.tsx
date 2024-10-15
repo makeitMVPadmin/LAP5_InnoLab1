@@ -2,7 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useState, useRef } from "react";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
-import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
+// import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 
 interface EventFormInputs {
   title: string;
@@ -267,7 +267,6 @@ const EventForm: React.FC = () => {
           <div className="sub-section">
             <span>Start *</span>
             <div className="date-input-container">
-              <CalendarIcon className="icon" />
               <Controller
                 name="startDate"
                 control={control}
@@ -283,7 +282,6 @@ const EventForm: React.FC = () => {
                 )}
               />
               <span className="divider">|</span>
-              <ClockIcon className="icon" />
               <Controller
                 name="startTime"
                 control={control}
@@ -307,7 +305,6 @@ const EventForm: React.FC = () => {
           <div className="sub-section">
             <span>End *</span>
             <div className="date-input-container">
-              <CalendarIcon className="icon" />
               <Controller
                 name="endDate"
                 control={control}
@@ -323,7 +320,6 @@ const EventForm: React.FC = () => {
                 )}
               />
               <span className="divider">|</span>
-              <ClockIcon className="icon" />
               <Controller
                 name="endTime"
                 control={control}

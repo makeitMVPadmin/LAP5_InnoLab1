@@ -70,15 +70,10 @@
     }
     
     .date-input-container {
-      display: flex;
-      align-items: center;
       border: 3px solid #000;
-      flex-direction: row;
       border-radius: 6px;
       padding: 0.5rem;
-      font-size: 1rem;
-      gap: 0.5rem;
-      width: 80%;
+      width: 66%;
 
       input {
         background: transparent;
