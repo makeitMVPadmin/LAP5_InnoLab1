@@ -9,7 +9,7 @@ interface EventFormInputs {
   organizer: string;
   description: string;
   skillLevel: string;
-  theme: string;
+  themes: string[];
   startDate: string;
   startTime: string;
   endDate: string;
@@ -30,6 +30,19 @@ const EventForm: React.FC = () => {
     formState: { errors },
   } = useForm<EventFormInputs>({
     defaultValues: {
+      title: "",
+      organizer: "",
+      description: "",
+      skillLevel: "",
+      themes: [""],
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+      timezone: "",
+      meetingLink: "",
+      minParticipants: 4,
+      maxParticipants: 100,
       judges: [""],
     },
   });
@@ -68,12 +81,15 @@ const EventForm: React.FC = () => {
     console.log("Form Data", data);
   };
 
-  const handleThemeChange = (event) => {
-    const { value } = event.target;
-    if (selectedThemes.includes(value) || selectedThemes.length >= 3) return;
-    setSelectedThemes([...selectedThemes, value]);
+  const handleThemeChange = (e) => {
+    const value = e.target.value;
+    if (value && selectedThemes.length < 3 && !selectedThemes.includes(value)) {
+      setSelectedThemes([...selectedThemes, value]);
+    } else if (selectedThemes.length >= 3) {
+      alert("You can select up to 3 themes only.");
+    }
   };
-
+  
   const removeTheme = (theme) => {
     setSelectedThemes(selectedThemes.filter((t) => t !== theme));
   };
@@ -219,7 +235,7 @@ const EventForm: React.FC = () => {
           <label htmlFor="theme">Theme *</label>
           <div className="border-black rounded flex items-center p-2 space-x-2">
             {selectedThemes.map((theme) => (
-              <span
+              <div
                 key={theme}
                 className="flex items-center bg-yellow-400 px-2 py-1 rounded-full"
               >
@@ -230,9 +246,9 @@ const EventForm: React.FC = () => {
                 >
                   ✕
                 </button>
-              </span>
+              </div>
             ))}
-            <select onChange={handleThemeChange} className="focus:outline-none w-fulll">
+            <select onChange={handleThemeChange} className="focus:outline-none w-full">
               <option value="">Select up to 3 themes</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
@@ -258,12 +274,12 @@ const EventForm: React.FC = () => {
                 rules={{ required: "Start date is required" }}
                 render={({ field }) => (
                   <input
-                    type="date"
-                    {...field}
-                    className={`form-control ${
-                      errors.startDate ? "error" : ""
-                    }`}
-                  />
+                  type="date"
+                  {...field}
+                  className={`form-control flex-1 ${
+                    errors.startDate ? "error" : ""
+                  }`}
+                />
                 )}
               />
               <span className="divider">|</span>
