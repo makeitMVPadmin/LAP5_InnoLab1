@@ -23,6 +23,7 @@ export const handleSignUp = async (
       email,
       password
     );
+
     const { user } = userCredential;
     const photoURL = user.photoURL || null;
 
