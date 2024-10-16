@@ -1,12 +1,20 @@
 import { z } from "zod";
 import { submissionSchema } from "../schema/submissionSchema";
-interface TeamMember {
+
+export interface TeamMember {
   name?: string;
   role?: string;
 }
 
-interface ProjectLink {
+export interface ProjectLink {
   url?: string;
+}
+
+export interface SectionProps {
+  title: string;
+  children: React.ReactNode;
+  editButton: React.ReactNode;
+  required?: boolean;
 }
 
 export interface ProjectSubmissionFormValues
@@ -19,7 +27,7 @@ export interface ProjectSubmissionFormValues
   designFeatures: string;
   designImpact: string;
   nextSteps: string;
-  imageFile: File | null;
+  imageFiles: File[] | null;
   projectLinks: ProjectLink[];
   teamMembers: TeamMember[];
 }

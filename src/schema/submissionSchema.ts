@@ -33,20 +33,39 @@ export const submissionSchema = z.object({
     .string()
     .min(1, { message: "Next steps are required." })
     .max(500, { message: "Max 500 characters has been reached" }),
-  imageFile: z.instanceof(File).refine((file) => !!file, {
-    message: "File is required.",
-  }),
+  imageFiles: z
+    .array(
+      z.instanceof(File).refine((file) => !!file, {
+        message: "File is required.",
+      })
+    )
+    .min(1, { message: "At least one file is required." })
+    .max(3),
   projectLinks: z
     .array(
       z.object({
-        url: z.string().url({ message: "Invalid URL format." }), // Ensure the string is a valid URL
+        url: z
+          .string()
+          .refine(
+            (value) => {
+              // Check if it already starts with http or https
+              return (
+                /^(http|https):\/\//.test(value) ||
+                /^[\w-]+\.[\w-]+/.test(value)
+              );
+            },
+            { message: "Invalid URL format. Please include a valid domain." }
+          )
+          .transform((value) => {
+            // If the URL doesn't start with http or https, prepend https://
+            if (!/^(http|https):\/\//.test(value)) {
+              return `https://${value}`;
+            }
+            return value;
+          }),
       })
     )
-    .min(1, { message: "A project link is required." }) // At least one link is required
-    .refine((links) => links[0]?.url?.length > 0, {
-      message: "The first project link is required.",
-      path: [0, "url"],
-    }),
+    .min(1, { message: "At least one project link is required." }),
   teamMembers: z
     .array(
       z.object({
