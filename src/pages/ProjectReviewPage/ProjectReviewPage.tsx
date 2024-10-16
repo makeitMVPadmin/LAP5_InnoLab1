@@ -180,7 +180,7 @@ const ProjectReviewPage = () => {
     return (
         <div className="font-gilroy">
             <Header handleClick={handleBack} />
-            <main className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
+            <main className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto pb-32">
                 <h1 className="text-4xl font-bold mb-5 pt-14">Review Submission</h1>
                 <section className="flex py-12 justify-end gap-2 items-center">
                     <img className="w-6 h-6" src={Clock2} alt="clock icon" />
@@ -194,11 +194,6 @@ const ProjectReviewPage = () => {
                             </AlertDescription>
                         </Alert>
                     )}
-                    <EditButton
-                        handleClick={handleEditMode}
-                        isEditing={false}
-                        isEditMode={!isEditMode}
-                    />
                 </section>
                 <article className="mt-8 flex flex-col gap-10">
                     <Section
@@ -349,24 +344,24 @@ const ProjectReviewPage = () => {
                         )}
                     </Section>
 
-                    <div className="flex justify-end gap-2 mt-5 py-10">
-                        <Button
-                            className={`${STYLES.secondaryButton}`}
-                            onClick={handleBack}
-                            aria-label="Back button to go back"
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            className={`${STYLES.primaryButton}`}
-                            onClick={handleSubmit}
-                            aria-label="submit button to submit project"
-                        >
-                            Submit Project
-                        </Button>
-                    </div>
                 </article>
             </main>
+            <section className="h-[100px] w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white">
+               <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
+                <EditButton
+                    handleClick={handleEditMode}
+                    isEditing={false}
+                    isEditMode={!isEditMode}
+                />
+                <Button
+                    className={`${STYLES.primaryButton}`}
+                    onClick={handleSubmit}
+                    aria-label="submit button to submit project"
+                 >
+                    Submit Project
+                </Button>
+               </div>
+            </section>
         </div>
     );
 };
