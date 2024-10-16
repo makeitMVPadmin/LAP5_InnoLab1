@@ -78,7 +78,7 @@ type HackathonSubmissionType = {
   techStack: string[];
   judgesComments: JudgeCommentType[];
   comments?: CommunityCommentType[];
-  submittedAt: Timestamp;
+  createdAt: Timestamp;
 };
 
 export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {

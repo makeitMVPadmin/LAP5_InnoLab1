@@ -28,7 +28,7 @@ const ProjectShowcasePage = () => {
         techStack,
         projectLinks,
         teamMembers,
-        submittedAt,
+        createdAt,
         imageFiles,
         comments,
         judgesComments
@@ -80,7 +80,7 @@ const ProjectShowcasePage = () => {
         <div className='flex flex-col items-center font-gilroy'>
             <section className='w-[80%] flex flex-col'>
                 <h1 className='text-black font-sans text-[58px] font-extrabold leading-[115.645%] ligature-off mt-[56px]'>{ event && event.title }</h1>
-                <div className="flex text-[25px] my-[56px]"><Clock /><p className="font-extrabold"><span></span>Submitted on <span className="font-light">{submittedAt.toDate().toLocaleString('en-US', options)}</span></p></div>
+                <div className="flex text-[25px] my-[56px]"><Clock /><p className="font-extrabold"><span></span>Submitted on <span className="font-light">{createdAt.toDate().toLocaleString('en-US', options)}</span></p></div>
                 <h2 className="self-stretch text-[#1E1E1E] text-[30px] font-extrabold leading-[115.645%] font-gilroy ligature-off">Team Name</h2>
                 <p className="self-stretch text-[#000] text-[25px] font-normal leading-[115.645%] font-gilroy ligature-off">{teamName}</p>   
                 <div className="h-full flex gap-[0.5rem]">
