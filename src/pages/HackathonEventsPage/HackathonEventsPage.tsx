@@ -7,6 +7,7 @@ import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link } from "react-router-dom";
 import EventForm from "../CreateEvent/EventForm";
 import useEvents from "../../hooks/useEvents";
+import PulsingAnimation from "../../components/PulsingAnimation/PulsingAnimation";
 
 const HackathonEventsPage = () => {
   const { currentUser } = useAuth();
