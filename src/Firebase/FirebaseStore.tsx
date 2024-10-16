@@ -71,6 +71,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       techStack: formData.techStack,
       userId: formData.userId,
       imageFiles: imageURLs,
+      createdAt: Timestamp.now(),
     });
 
     // Add SubmissionId to Event
@@ -123,7 +124,7 @@ export const addCommentToSubmission = async (data) => {
     return { success: false };
   }
 }
-  
+
 export const uploadImages = async (imageFiles: File[]) => {
   try {
     const uploadPromises = imageFiles.map((file) => uploadImage(file));

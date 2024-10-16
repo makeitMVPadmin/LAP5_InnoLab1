@@ -200,6 +200,9 @@ const ProjectSubmissionPage = () => {
                                                             <SelectItem value={ROLES.SOFTWARE_DEVELOPER}>{ROLES.SOFTWARE_DEVELOPER}</SelectItem>
                                                             <SelectItem value={ROLES.UX_DESIGNER}>{ROLES.UX_DESIGNER}</SelectItem>
                                                             <SelectItem value={ROLES.PRODUCT_MANAGER}>{ROLES.PRODUCT_MANAGER}</SelectItem>
+                                                            <SelectItem value={ROLES.DATA_ANALYST}>{ROLES.DATA_ANALYST}</SelectItem>
+                                                            <SelectItem value={ROLES.FRONTEND_DEVELOPER}>{ROLES.FRONTEND_DEVELOPER}</SelectItem>
+                                                            <SelectItem value={ROLES.FULLSTACK_DEVELOPER}>{ROLES.FULLSTACK_DEVELOPER}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                     {errors?.teamMembers?.[index]?.role?.message && (
