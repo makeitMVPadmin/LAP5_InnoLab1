@@ -1,16 +1,22 @@
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "../../components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Input } from "../../components/ui/input"
 import { Textarea } from "../../components/ui/textarea";
 import { STYLES } from "../../constants/styles";
 import ErrorIcon from "../../assets/images/error.svg"
+import { FieldError, UseFormRegister } from "react-hook-form";
 
-const CustomInput = ({ type, errors, form, register, inputName, name, formValues, placeHolder }) => {
+interface CustomInputProps {
+    type: "Textarea" | "Input",
+    errors?: FieldError | undefined,
+    form: any,
+    register: UseFormRegister<any>,
+    inputName: string,
+    name: string,
+    formValues: string,
+    placeHolder: string
+}
+
+const CustomInput: React.FC<CustomInputProps> = ({ type, errors, form, register, inputName, name, formValues, placeHolder }) => {
     return (
         <FormField
             name={inputName}

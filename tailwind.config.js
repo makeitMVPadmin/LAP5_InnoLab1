@@ -22,7 +22,7 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
       },
       borderWidth: {
-        3: '3px',
+        3: "3px",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -64,6 +64,7 @@ module.exports = {
         "MVP-dark-blue": "#0954b0",
         "MVP-white": "#ffffff",
         "MVP-yellow": "#ffd22f",
+        "MVP-soft-yellow": "#F3EECD",
         "MVP-green": "#1EB268",
         "MVP-red": "#ff7070",
         "MVP-cream": "#fff9f4",
