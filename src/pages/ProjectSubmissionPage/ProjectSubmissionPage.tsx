@@ -196,7 +196,7 @@ const ProjectSubmissionPage = () => {
                                                                 <SelectValue placeholder="Select a role" />
                                                             </SelectTrigger>
                                                         </FormControl>
-                                                        <SelectContent className={`font-gilroy font-bold rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px]  ${errors?.teamMembers?.[index]?.role ? 'border-MVP-red' : "border-black"}`}>
+                                                        <SelectContent className={`font-gilroy font-bold rounded-[10px] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] ${errors?.teamMembers?.[index]?.role ? 'border-MVP-red' : "border-black"}`}>
                                                             <SelectItem value={ROLES.SOFTWARE_DEVELOPER}>{ROLES.SOFTWARE_DEVELOPER}</SelectItem>
                                                             <SelectItem value={ROLES.UX_DESIGNER}>{ROLES.UX_DESIGNER}</SelectItem>
                                                             <SelectItem value={ROLES.PRODUCT_MANAGER}>{ROLES.PRODUCT_MANAGER}</SelectItem>
