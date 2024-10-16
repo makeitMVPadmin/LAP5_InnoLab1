@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../Firebase/FirebaseConfig";
 import "./EventDetailsPage.scss";
-import { fetchHackathonEvents } from "../../Firebase/GetHackathonEvents";
+import { fetchHackathonEvents } from "../../Firebase/FirebaseQueries";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 
 type HackathonEvent = {
@@ -34,7 +34,15 @@ const EventDetailsPage = () => {
     useEffect(() => {
       const fetchData = async () => {
           const data = await fetchHackathonEvents();
-          const eventsArray = Object.entries(data).map(([id, event]) => ({ id, ...event }));
+          const eventsArray = Object.entries(data).map(([id, event]) => {
+            // Ensure that `event` is an object before spreading
+            if (typeof event === 'object' && event !== null) {
+              return { id, ...event };
+            }
+            console.error(`Event data for ID ${id} is not an object`, event);
+            return null; // Or handle this case differently if needed
+          }).filter(event => event !== null);
+          
           setHackathonEvents(eventsArray);
           setIsLoading(false);
       };
