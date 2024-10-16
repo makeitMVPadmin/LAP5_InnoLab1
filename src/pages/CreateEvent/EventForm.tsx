@@ -227,7 +227,7 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label htmlFor="theme">Theme *</label>
-          <div className="border-black rounded-lg border-solid flex gap-4 p-2 space-x-2">
+          <div className="border-black border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2">
             {selectedThemes.map((theme) => (
               <div
                 key={theme}
