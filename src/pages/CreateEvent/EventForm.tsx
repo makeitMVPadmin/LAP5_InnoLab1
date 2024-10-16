@@ -89,7 +89,7 @@ const EventForm: React.FC = () => {
       alert("You can select up to 3 themes only.");
     }
   };
-  
+
   const removeTheme = (theme) => {
     setSelectedThemes(selectedThemes.filter((t) => t !== theme));
   };
@@ -98,10 +98,6 @@ const EventForm: React.FC = () => {
 
   const handleCancelClick = () => {
     navigate("/hackathons");
-  };
-
-  const handleNextClick = () => {
-    navigate("/ChallengeDetails");
   };
 
   const [file, setFile] = useState(null);
@@ -145,9 +141,7 @@ const EventForm: React.FC = () => {
           <label htmlFor="title">Event Title *</label>
           <input
             {...register("title", { required: "Event Title is required" })}
-            className={`form-control${
-              errors.title ? "error" : ""
-            }`}
+            className={`form-control${errors.title ? "error" : ""}`}
           />
           {errors.title && <p className="error">{errors.title.message}</p>}
         </div>
@@ -227,7 +221,7 @@ const EventForm: React.FC = () => {
             )}
           />
           {errors.skillLevel && (
-            <p className="error-text">{errors.skillLevel.message}</p>
+            <p className="error">{errors.skillLevel.message}</p>
           )}
         </div>
 
@@ -237,7 +231,7 @@ const EventForm: React.FC = () => {
             {selectedThemes.map((theme) => (
               <div
                 key={theme}
-                className= "bg-yellow-400 flex items-center px-2 py-1 rounded-full"
+                className="bg-yellow-400 flex items-center px-2 py-1 rounded-full"
               >
                 {theme}
                 <button
@@ -248,7 +242,10 @@ const EventForm: React.FC = () => {
                 </button>
               </div>
             ))}
-            <select onChange={handleThemeChange} className="focus:outline-none w-full theme-select">
+            <select
+              onChange={handleThemeChange}
+              className="focus:outline-none w-full theme-select"
+            >
               <option value="">Select up to 3 themes</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
@@ -273,12 +270,12 @@ const EventForm: React.FC = () => {
                 rules={{ required: "Start date is required" }}
                 render={({ field }) => (
                   <input
-                  type="date"
-                  {...field}
-                  className={`form-control flex-1 ${
-                    errors.startDate ? "error" : ""
-                  }`}
-                />
+                    type="date"
+                    {...field}
+                    className={`form-control flex-1 ${
+                      errors.startDate ? "error" : ""
+                    }`}
+                  />
                 )}
               />
               <span className="divider">|</span>
@@ -297,8 +294,12 @@ const EventForm: React.FC = () => {
                 )}
               />
             </div>
+
+          {errors.startDate && (
+            <p className="error">{errors.startDate.message}</p>
+          )}
             {errors.startTime && (
-              <p className="error-text">{errors.startTime.message}</p>
+              <p className="error">{errors.startTime.message}</p>
             )}
           </div>
 
@@ -328,9 +329,7 @@ const EventForm: React.FC = () => {
                   <input
                     type="time"
                     {...field}
-                    className={`form-control ${
-                      errors.endTime ? "error" : ""
-                    }`}
+                    className={`form-control ${errors.endTime ? "error" : ""}`}
                   />
                 )}
               />
@@ -338,17 +337,11 @@ const EventForm: React.FC = () => {
           </div>
 
           {/* Error messages */}
-          {errors.startDate && (
-            <p className="error-text">{errors.startDate.message}</p>
-          )}
-          {errors.startTime && (
-            <p className="error-text">{errors.startTime.message}</p>
-          )}
           {errors.endDate && (
-            <p className="error-text">{errors.endDate.message}</p>
+            <p className="error">{errors.endDate.message}</p>
           )}
           {errors.endTime && (
-            <p className="error-text">{errors.endTime.message}</p>
+            <p className="error">{errors.endTime.message}</p>
           )}
         </div>
 
@@ -496,7 +489,7 @@ const EventForm: React.FC = () => {
           >
             Cancel
           </button>
-          <button type="button" className="btn next" onClick={handleNextClick}>
+          <button type="submit" className="btn next">
             Next
           </button>
         </div>
