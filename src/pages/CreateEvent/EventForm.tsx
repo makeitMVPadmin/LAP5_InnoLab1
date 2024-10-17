@@ -41,8 +41,8 @@ const EventForm: React.FC = () => {
       endTime: "",
       timezone: "",
       meetingLink: "",
-      minParticipants: 4,
-      maxParticipants: 100,
+      minParticipants: 0,
+      maxParticipants: 0,
       judges: [""],
     },
   });
@@ -79,6 +79,7 @@ const EventForm: React.FC = () => {
 
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
+    navigate("/ChallengeDetails");
   };
 
   const handleThemeChange = (e) => {
@@ -367,7 +368,7 @@ const EventForm: React.FC = () => {
             <input
               type="number"
               {...register("minParticipants", { valueAsNumber: true })}
-              placeholder="Min"
+              placeholder="4"
               className="w-2/12 p-1 rounded text-base"
             />
           </div>
@@ -377,7 +378,7 @@ const EventForm: React.FC = () => {
             <input
               type="number"
               {...register("maxParticipants", { valueAsNumber: true })}
-              placeholder="Max"
+              placeholder="100"
               className="w-2/12 p-1 rounded text-base"
             />
           </div>
