@@ -1,21 +1,19 @@
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
-import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
+// import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 
 interface EventFormInputs {
   title: string;
   organizer: string;
   description: string;
   skillLevel: string;
-  theme: string;
+  themes: string[];
   startDate: string;
   startTime: string;
   endDate: string;
   endTime: string;
-  announcementDate: string;
-  announcementTime: string;
   timezone: string;
   meetingLink: string;
   minParticipants: number;
@@ -32,21 +30,40 @@ const EventForm: React.FC = () => {
     formState: { errors },
   } = useForm<EventFormInputs>({
     defaultValues: {
+      title: "",
+      organizer: "",
+      description: "",
+      skillLevel: "",
+      themes: [""],
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+      timezone: "",
+      meetingLink: "",
+      minParticipants: 4,
+      maxParticipants: 100,
       judges: [""],
     },
   });
 
-  const [judges, setJudges] = useState([{ name: "" }]);
+  const [judges, setJudges] = useState([{ firstName: "", lastName: "" }]);
 
-  const handleJudgeChange = (index, value) => {
-    const updatedJudges = [...judges];
-    updatedJudges[index].name = value;
-    setJudges(updatedJudges);
+  const handleJudgeChange = (
+    index: number,
+    value: string,
+    field: "firstName" | "lastName"
+  ) => {
+    setJudges((prevJudges) => {
+      const updatedJudges = [...prevJudges];
+      updatedJudges[index] = { ...updatedJudges[index], [field]: value };
+      return updatedJudges;
+    });
   };
 
   const handleAddJudge = () => {
     if (judges.length < 4) {
-      setJudges([...judges, { name: "" }]);
+      setJudges([...judges, { firstName: "", lastName: "" }]);
     }
   };
 
@@ -57,8 +74,24 @@ const EventForm: React.FC = () => {
     }
   };
 
+  const [selectedThemes, setSelectedThemes] = useState([]);
+  const allThemes = ["Healthcare", "Design", "AI", "Education", "Finance"];
+
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
+  };
+
+  const handleThemeChange = (e) => {
+    const value = e.target.value;
+    if (value && selectedThemes.length < 3 && !selectedThemes.includes(value)) {
+      setSelectedThemes([...selectedThemes, value]);
+    } else if (selectedThemes.length >= 3) {
+      alert("You can select up to 3 themes only.");
+    }
+  };
+
+  const removeTheme = (theme) => {
+    setSelectedThemes(selectedThemes.filter((t) => t !== theme));
   };
 
   const navigate = useNavigate();
@@ -67,8 +100,32 @@ const EventForm: React.FC = () => {
     navigate("/hackathons");
   };
 
-  const handleNextClick = () => {
-    navigate("/ChallengeDetails");
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+      setFile(chosenFile);
+    }
+  };
+
+  const handleFileClick = () => {
+    fileInputRef.current.click();
   };
 
   return (
@@ -81,9 +138,10 @@ const EventForm: React.FC = () => {
           <div className="step">3. Review</div>
         </div>
         <div className="form-group">
-          <label>Event Title *</label>
+          <label htmlFor="title">Event Title *</label>
           <input
             {...register("title", { required: "Event Title is required" })}
+            className={`form-control${errors.title ? "error" : ""}`}
           />
           {errors.title && <p className="error">{errors.title.message}</p>}
         </div>
@@ -163,161 +221,127 @@ const EventForm: React.FC = () => {
             )}
           />
           {errors.skillLevel && (
-            <p className="error-text">{errors.skillLevel.message}</p>
+            <p className="error">{errors.skillLevel.message}</p>
           )}
         </div>
 
         <div className="form-group">
-          <label>Theme *</label>
-          <select
-            {...register("theme", { required: "Select at least one theme" })}
-          >
-            <option value="AI">AI</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Design">Design</option>
-          </select>
-          {errors.theme && <p className="error">{errors.theme.message}</p>}
+          <label htmlFor="theme">Theme *</label>
+          <div className="border-black border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2">
+            {selectedThemes.map((theme) => (
+              <div
+                key={theme}
+                className="bg-yellow-400 flex items-center px-2 py-1 rounded-full"
+              >
+                {theme}
+                <button
+                  onClick={() => removeTheme(theme)}
+                  className="ml-1 text-black"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+            <select
+              onChange={handleThemeChange}
+              className="focus:outline-none w-full theme-select"
+            >
+              <option value="">Select up to 3 themes</option>
+              {allThemes
+                .filter((theme) => !selectedThemes.includes(theme))
+                .map((theme) => (
+                  <option key={theme} value={theme}>
+                    {theme}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="eventDuration">Event Duration*</label>
+          <label htmlFor="eventDuration">Event Duration *</label>
 
           <div className="sub-section">
             <span>Start *</span>
-            <div className="date-time-container">
-              <div className="date-input">
-                <CalendarIcon className="icon" />
-                <Controller
-                  name="startDate"
-                  control={control}
-                  rules={{ required: "Start date is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="date"
-                      {...field}
-                      className={`form-control ${
-                        errors.startDate ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="time-input">
-                <ClockIcon className="icon" />
-                <Controller
-                  name="startTime"
-                  control={control}
-                  rules={{ required: "Start time is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="time"
-                      {...field}
-                      className={`form-control ${
-                        errors.startTime ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
+            <div className="date-input-container">
+              <Controller
+                name="startDate"
+                control={control}
+                rules={{ required: "Start date is required" }}
+                render={({ field }) => (
+                  <input
+                    type="date"
+                    {...field}
+                    className={`form-control flex-1 ${
+                      errors.startDate ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
+              <span className="divider">|</span>
+              <Controller
+                name="startTime"
+                control={control}
+                rules={{ required: "Start time is required" }}
+                render={({ field }) => (
+                  <input
+                    type="time"
+                    {...field}
+                    className={`form-control ${
+                      errors.startTime ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
             </div>
+
+          {errors.startDate && (
+            <p className="error">{errors.startDate.message}</p>
+          )}
+            {errors.startTime && (
+              <p className="error">{errors.startTime.message}</p>
+            )}
           </div>
 
           <div className="sub-section">
             <span>End *</span>
-            <div className="date-time-container">
-              <div className="date-input">
-                <CalendarIcon className="icon" />
-                <Controller
-                  name="endDate"
-                  control={control}
-                  rules={{ required: "End date is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="date"
-                      {...field}
-                      className={`form-control ${
-                        errors.endDate ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="time-input">
-                <ClockIcon className="icon" />
-                <Controller
-                  name="endTime"
-                  control={control}
-                  rules={{ required: "End time is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="time"
-                      {...field}
-                      className={`form-control ${
-                        errors.endTime ? "error" : ""
-                      }`}
-                    />
-                  )}
-                />
-              </div>
+            <div className="date-input-container">
+              <Controller
+                name="endDate"
+                control={control}
+                rules={{ required: "End date is required" }}
+                render={({ field }) => (
+                  <input
+                    type="date"
+                    {...field}
+                    className={`form-control ${
+                      errors.startTime ? "error" : ""
+                    }`}
+                  />
+                )}
+              />
+              <span className="divider">|</span>
+              <Controller
+                name="endTime"
+                control={control}
+                rules={{ required: "End time is required" }}
+                render={({ field }) => (
+                  <input
+                    type="time"
+                    {...field}
+                    className={`form-control ${errors.endTime ? "error" : ""}`}
+                  />
+                )}
+              />
             </div>
           </div>
 
           {/* Error messages */}
-          {errors.startDate && (
-            <p className="error-text">{errors.startDate.message}</p>
-          )}
-          {errors.startTime && (
-            <p className="error-text">{errors.startTime.message}</p>
-          )}
           {errors.endDate && (
-            <p className="error-text">{errors.endDate.message}</p>
+            <p className="error">{errors.endDate.message}</p>
           )}
           {errors.endTime && (
-            <p className="error-text">{errors.endTime.message}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="announcementDate">
-            Event Announcement Publish Date*
-          </label>
-          <div className="date-input-container">
-            <CalendarIcon className="icon" />
-            <Controller
-              name="announcementDate"
-              control={control}
-              rules={{ required: "Announcement date is required" }}
-              render={({ field }) => (
-                <input
-                  type="date"
-                  {...field}
-                  className={`form-control ${
-                    errors.announcementDate ? "error" : ""
-                  }`}
-                />
-              )}
-            />
-            <span className="divider">|</span>
-            <ClockIcon className="icon" />
-            <Controller
-              name="announcementTime"
-              control={control}
-              rules={{ required: "Announcement time is required" }}
-              render={({ field }) => (
-                <input
-                  type="time"
-                  {...field}
-                  className={`form-control ${
-                    errors.announcementTime ? "error" : ""
-                  }`}
-                />
-              )}
-            />
-          </div>
-          {errors.announcementDate && (
-            <p className="error-text">{errors.announcementDate.message}</p>
+            <p className="error">{errors.endTime.message}</p>
           )}
         </div>
 
@@ -338,55 +362,124 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label>Participant Count *</label>
-          <input
-            type="number"
-            {...register("minParticipants", { valueAsNumber: true })}
-            placeholder="Min"
-          />{" "}
-          -
-          <input
-            type="number"
-            {...register("maxParticipants", { valueAsNumber: true })}
-            placeholder="Max"
-          />
+          <div className="flex flex-col">
+            <label>Min</label>
+            <input
+              type="number"
+              {...register("minParticipants", { valueAsNumber: true })}
+              placeholder="Min"
+              className="w-2/12 p-1 rounded text-base"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label>-</label>
+            <label>Max</label>
+            <input
+              type="number"
+              {...register("maxParticipants", { valueAsNumber: true })}
+              placeholder="Max"
+              className="w-2/12 p-1 rounded text-base"
+            />
+          </div>
         </div>
 
         <div className="form-group">
           <label htmlFor="judges">Judges*</label>
           {judges.map((judge, index) => (
-            <div key={index} className="judge-input-container">
-              <label>Judge #{index + 1}</label>
+            <div
+              key={index}
+              className="judge-input-container flex items-center space-x-4 my-3"
+            >
+              <label className="mr-2">Judge #{index + 1}</label>
               <input
                 type="text"
-                value={judge.name}
-                placeholder="Enter judge name"
-                onChange={(e) => handleJudgeChange(index, e.target.value)}
+                value={judge.firstName}
+                placeholder="Enter first name"
+                onChange={(e) =>
+                  handleJudgeChange(index, e.target.value, "firstName")
+                }
+                className="flex-1 p-2 w-6"
               />
-              {index > 0 && (
+              <input
+                type="text"
+                value={judge.lastName}
+                placeholder="Enter last name"
+                onChange={(e) =>
+                  handleJudgeChange(index, e.target.value, "lastName")
+                }
+                className="flex-1 p-2 w-6"
+              />
+              {
                 <button
                   type="button"
-                  className="remove-judge-button"
+                  className="ml-2 text-red-500"
                   onClick={() => handleRemoveJudge(index)}
                 >
                   X
                 </button>
-              )}
+              }
             </div>
           ))}
           {judges.length < 4 && (
-            <button
-              type="button"
-              className="add-judge-button"
-              onClick={handleAddJudge}
-            >
-              Add Judge
-            </button>
+            <div className="flex justify-end mt-2">
+              <button
+                type="button"
+                className="px-4 py-2 add-judge-button"
+                onClick={handleAddJudge}
+              >
+                Add Judge
+              </button>
+            </div>
           )}
         </div>
 
-        <div className="form-group">
-          <label>Upload a Thumbnail Image</label>
-          <input type="file" {...register("thumbnail")} />
+        <div className="file-upload-container">
+          <label className="block font-bold text-lg mb-2">
+            Upload a Thumbnail Image
+          </label>
+          <div className="text-center w-80">
+            <div
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              className="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer hover:border-blue-400"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+
+              <p className="text-sm mb-2">
+                drag and drop file or{" "}
+                <span
+                  className="text-blue-500 underline cursor-pointer"
+                  onClick={handleFileClick}
+                >
+                  choose file
+                </span>
+              </p>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*,.pdf,.svg,.zip"
+              />
+            </div>
+            {file && <p className="mt-2 text-sm">Selected file: {file.name}</p>}
+
+            <p className="text-xs text-black mb-1">
+              supported formats: JPG, PNG, PDF, SVG, ZIP
+            </p>
+            <p className="text-xs text-black">maximum size: 10MB</p>
+          </div>
         </div>
         <div className="form-navigation">
           <button
@@ -396,7 +489,7 @@ const EventForm: React.FC = () => {
           >
             Cancel
           </button>
-          <button type="button" className="btn next" onClick={handleNextClick}>
+          <button type="submit" className="btn next">
             Next
           </button>
         </div>

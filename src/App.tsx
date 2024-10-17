@@ -14,6 +14,7 @@ import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage"
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
+// import PreviewEvent from "./pages/CreateEvent/PreviewEvent";
 import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
 
