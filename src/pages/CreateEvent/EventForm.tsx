@@ -80,7 +80,13 @@ const EventForm: React.FC = () => {
   const allThemes = ["Healthcare", "Design", "AI", "Education", "Finance"];
 
   const [selectedDisiplines, setSelectedDisiplines] = useState([]);
-  const allDisiplines = ["Design", "Data", "AI", "Development", "Multi-displine"];
+  const allDisiplines = [
+    "Design",
+    "Data",
+    "AI",
+    "Development",
+    "Multi-displine",
+  ];
 
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
@@ -102,7 +108,11 @@ const EventForm: React.FC = () => {
 
   const handleDisciplineChange = (e) => {
     const value = e.target.value;
-    if (value && selectedThemes.length < 3 && !selectedDisiplines.includes(value)) {
+    if (
+      value &&
+      selectedThemes.length < 3 &&
+      !selectedDisiplines.includes(value)
+    ) {
       setSelectedDisiplines([...selectedDisiplines, value]);
     } else if (selectedThemes.length >= 3) {
       alert("You can select up to 3 themes only.");
@@ -267,7 +277,9 @@ const EventForm: React.FC = () => {
             >
               <option value="">Select up to 3 disiplines</option>
               {allDisiplines
-                .filter((discipline) => !selectedDisiplines.includes(discipline))
+                .filter(
+                  (discipline) => !selectedDisiplines.includes(discipline)
+                )
                 .map((discipline) => (
                   <option key={discipline} value={discipline}>
                     {discipline}
@@ -347,9 +359,9 @@ const EventForm: React.FC = () => {
               />
             </div>
 
-          {errors.startDate && (
-            <p className="error">{errors.startDate.message}</p>
-          )}
+            {errors.startDate && (
+              <p className="error">{errors.startDate.message}</p>
+            )}
             {errors.startTime && (
               <p className="error">{errors.startTime.message}</p>
             )}
@@ -389,27 +401,37 @@ const EventForm: React.FC = () => {
           </div>
 
           {/* Error messages */}
-          {errors.endDate && (
-            <p className="error">{errors.endDate.message}</p>
-          )}
-          {errors.endTime && (
-            <p className="error">{errors.endTime.message}</p>
-          )}
+          {errors.endDate && <p className="error">{errors.endDate.message}</p>}
+          {errors.endTime && <p className="error">{errors.endTime.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Timezone</label>
+          <label>Timezone *</label>
           <select
             {...register("timezone", { required: "Timezone is required" })}
+            className={`form-control${errors.timezone ? " error" : ""}`}
           >
+            <option value="">Select a timezone</option>
             <option value="GMT-0700">PST (GMT-0700)</option>
             <option value="GMT-0500">EST (GMT-0500)</option>
           </select>
+          {errors.timezone && (
+            <p className="error">{errors.timezone.message}</p>
+          )}
         </div>
 
         <div className="form-group">
           <label>Meeting Link *</label>
-          <input type="url" {...register("meetingLink")} />
+          <input
+            type="url"
+            {...register("meetingLink", {
+              required: "Meeting Link is required",
+            })}
+            className={`form-control${errors.meetingLink ? " error" : ""}`}
+          />
+          {errors.meetingLink && (
+            <p className="error">{errors.meetingLink.message}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -418,20 +440,45 @@ const EventForm: React.FC = () => {
             <label>Min</label>
             <input
               type="number"
-              {...register("minParticipants", { valueAsNumber: true })}
+              {...register("minParticipants", {
+                valueAsNumber: true,
+                required: "Minimum participant count is required",
+                min: {
+                  value: 1,
+                  message: "Minimum participants must be at least 1",
+                },
+              })}
               placeholder="4"
-              className="w-2/12 p-1 rounded text-base"
+              className={`w-2/12 p-1 rounded text-base ${
+                errors.minParticipants ? "error" : ""
+              }`}
             />
+            {errors.minParticipants && (
+              <p className="error">{errors.minParticipants.message}</p>
+            )}
           </div>
           <div className="flex flex-col">
             <label>-</label>
             <label>Max</label>
             <input
               type="number"
-              {...register("maxParticipants", { valueAsNumber: true })}
+              {...register("maxParticipants", {
+                valueAsNumber: true,
+                required: "Maximum participant count is required",
+                min: {
+                  value: 1,
+                  message:
+                    "Maximum participants must be greater than or equal to 1",
+                },
+              })}
               placeholder="100"
-              className="w-2/12 p-1 rounded text-base"
+              className={`w-2/12 p-1 rounded text-base ${
+                errors.maxParticipants ? "error" : ""
+              }`}
             />
+            {errors.maxParticipants && (
+              <p className="error">{errors.maxParticipants.message}</p>
+            )}
           </div>
         </div>
 
