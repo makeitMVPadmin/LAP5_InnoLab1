@@ -9,6 +9,7 @@ interface EventFormInputs {
   organizer: string;
   description: string;
   skillLevel: string;
+  disciplines: string;
   themes: string[];
   startDate: string;
   startTime: string;
@@ -34,6 +35,7 @@ const EventForm: React.FC = () => {
       organizer: "",
       description: "",
       skillLevel: "",
+      disciplines: "",
       themes: [""],
       startDate: "",
       startTime: "",
@@ -77,6 +79,9 @@ const EventForm: React.FC = () => {
   const [selectedThemes, setSelectedThemes] = useState([]);
   const allThemes = ["Healthcare", "Design", "AI", "Education", "Finance"];
 
+  const [selectedDisiplines, setSelectedDisiplines] = useState([]);
+  const allDisiplines = ["Design", "Data", "AI", "Development", "Multi-displine"];
+
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
     navigate("/ChallengeDetails");
@@ -93,6 +98,19 @@ const EventForm: React.FC = () => {
 
   const removeTheme = (theme) => {
     setSelectedThemes(selectedThemes.filter((t) => t !== theme));
+  };
+
+  const handleDisciplineChange = (e) => {
+    const value = e.target.value;
+    if (value && selectedThemes.length < 3 && !selectedDisiplines.includes(value)) {
+      setSelectedDisiplines([...selectedDisiplines, value]);
+    } else if (selectedThemes.length >= 3) {
+      alert("You can select up to 3 themes only.");
+    }
+  };
+
+  const removeDisciplines = (disiplines) => {
+    setSelectedDisiplines(selectedDisiplines.filter((t) => t !== disiplines));
   };
 
   const navigate = useNavigate();
@@ -224,6 +242,39 @@ const EventForm: React.FC = () => {
           {errors.skillLevel && (
             <p className="error">{errors.skillLevel.message}</p>
           )}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="discipline">Discipline *</label>
+          <div className="border-black border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2">
+            {selectedDisiplines.map((discipline) => (
+              <div
+                key={discipline}
+                className="bg-yellow-400 flex items-center px-2 py-1 rounded-full"
+              >
+                {discipline}
+                <button
+                  onClick={() => removeDisciplines(discipline)}
+                  className="ml-1 text-black"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+            <select
+              onChange={handleDisciplineChange}
+              className="focus:outline-none w-full theme-select"
+            >
+              <option value="">Select up to 3 disiplines</option>
+              {allDisiplines
+                .filter((discipline) => !selectedDisiplines.includes(discipline))
+                .map((discipline) => (
+                  <option key={discipline} value={discipline}>
+                    {discipline}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
 
         <div className="form-group">
