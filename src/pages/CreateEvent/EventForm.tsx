@@ -1,7 +1,7 @@
-import { useForm, Controller } from "react-hook-form";
 import { useState, useRef } from "react";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 
 interface EventFormInputs {
@@ -19,7 +19,7 @@ interface EventFormInputs {
   meetingLink: string;
   minParticipants: number;
   maxParticipants: number;
-  judges: string[];
+  judges: { firstName: string; lastName: string }[];
   thumbnail: FileList;
 }
 
@@ -45,7 +45,7 @@ const EventForm: React.FC = () => {
       meetingLink: "",
       minParticipants: 0,
       maxParticipants: 0,
-      judges: [""],
+      judges: [{ firstName: "", lastName: "" }],
     },
   });
 
@@ -156,6 +156,11 @@ const EventForm: React.FC = () => {
   const handleFileClick = () => {
     fileInputRef.current.click();
   };
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "judges",
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="event-form">
@@ -483,54 +488,60 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="judges">Judges*</label>
-          {judges.map((judge, index) => (
-            <div
-              key={index}
-              className="judge-input-container flex items-center space-x-4 my-3"
-            >
-              <label className="mr-2">Judge #{index + 1}</label>
-              <input
-                type="text"
-                value={judge.firstName}
-                placeholder="Enter first name"
-                onChange={(e) =>
-                  handleJudgeChange(index, e.target.value, "firstName")
-                }
-                className="flex-1 p-2 w-6"
-              />
-              <input
-                type="text"
-                value={judge.lastName}
-                placeholder="Enter last name"
-                onChange={(e) =>
-                  handleJudgeChange(index, e.target.value, "lastName")
-                }
-                className="flex-1 p-2 w-6"
-              />
-              {
-                <button
-                  type="button"
-                  className="ml-2 text-red-500"
-                  onClick={() => handleRemoveJudge(index)}
-                >
-                  X
-                </button>
-              }
+        <label htmlFor="judges">Judges*</label>
+        {fields.map((field, index) => (
+          <div
+            key={field.id}
+            className="judge-input-container flex items-center space-x-4 my-3"
+          >
+            <div className="mb-4">
+            <label className="mr-2">Judge #{index + 1}</label>
+            <input
+              type="text"
+              {...register(`judges.${index}.firstName`, {
+                required: "First name is required",
+              })}
+              placeholder="Enter first name"
+              className={`mt-2 mb-1 p-2 border border-black rounded ${errors.judges?.[index]?.firstName ? "error" : ""}`}
+            />
+            {errors.judges?.[index]?.firstName && (
+              <p className="error">{errors.judges[index].firstName.message}</p>
+            )}
+            <input
+              type="text"
+              {...register(`judges.${index}.lastName`, {
+                required: "Last name is required",
+              })}
+              placeholder="Enter last name"
+              className={`mt-2 mb-1 p-2 border border-black rounded ${errors.judges?.[index]?.lastName ? "error" : ""}`}
+            />
+            {errors.judges?.[index]?.lastName && (
+              <p className="error">{errors.judges[index].lastName.message}</p>
+            )}
             </div>
-          ))}
-          {judges.length < 4 && (
-            <div className="flex justify-end mt-2">
+            {fields.length > 1 && (
               <button
                 type="button"
-                className="px-4 py-2 add-judge-button"
-                onClick={handleAddJudge}
+                className="ml-2 text-red-500"
+                onClick={() => remove(index)}
               >
-                Add Judge
+                X
               </button>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        ))}
+        {fields.length < 4 && (
+          <div className="flex justify-end mt-2">
+            <button
+              type="button"
+              className="px-4 py-2 add-judge-button"
+              onClick={() => append({ firstName: "", lastName: "" })}
+            >
+              Add Judge
+            </button>
+          </div>
+        )}
+      </div>
 
         <div className="file-upload-container">
           <label className="block font-bold text-lg mb-2">
