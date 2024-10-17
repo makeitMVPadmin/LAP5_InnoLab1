@@ -1,0 +1,93 @@
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/typography" as *;
+
+.event-details-page {
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    $MVP-Extra-Light-Blue 5%,
+    $MVP-White 20%,
+    $MVP-White 20%
+  );
+  background-repeat: no-repeat;
+  height: 100%;
+  font-family: Gilroy;
+
+  &__banner {
+    height: 5%;
+    background-color: $MVP-Light-Gray;
+  }
+
+  &__btn-navigate-back {
+    color: $MVP-Black;
+  }
+
+  &__join-button {
+    margin-top: 20px; // Adjust spacing above the button container
+    text-align: center; // Center-align the button within its container
+  }
+&__join-event-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #007bff; // Customize the button color
+      color: black;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+  
+    
+    }
+  
+  
+
+  &__header {
+    @include LandingPage-Text;
+    font-family: 'Corben';
+  }
+
+  &__btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1rem;
+    gap: 1.2rem;
+  }
+
+  &__my-events, &__create-hackathon {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 3px solid #000;
+  }
+
+  &__my-events {
+    background-color: $MVP-Green;
+    color: $MVP-Black;
+  }
+
+  &__create-hackathon {
+    background-color: $MVP-Dark-Blue;
+    color: $MVP-White;
+  }
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__filters {
+    flex: 1 1 20%;
+    border: 3px solid #000;
+  }
+
+  &__event-cards {
+    flex: 1 1 80%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
