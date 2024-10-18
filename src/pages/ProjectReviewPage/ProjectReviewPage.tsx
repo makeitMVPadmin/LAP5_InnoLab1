@@ -308,22 +308,50 @@ const ProjectReviewPage = () => {
                     >
                         {renderEditableContent("nextSteps", formData.nextSteps)}
                     </Section>
-                    <Section
-                        title="Upload project files"
-                        editButton={
-                            <EditButton
-                                handleClick={() => handleEditSection("imageFiles")}
-                                isEditing={false}
-                                isEditMode={isEditMode} />}
-                    >
-                        {renderEditableImages({
-                            sectionId: "imageFiles",
-                            content: formData.imageFiles,
-                            isEditing: editingSectionId === "imageFiles",
-                            handleSaveSection,
-                            handleDeleteImage,
-                        })}
-                    </Section>
+                    <div className="">
+                        <h3>Upload Files</h3>
+                        <div className="flex gap-4 pl-2">
+                            <div className="w-1/2">
+                                <Section
+
+                                    title="Upload project files"
+                                    editButton={
+                                        <EditButton
+                                            handleClick={() => handleEditSection("imageFiles")}
+                                            isEditing={false}
+                                            isEditMode={isEditMode} />}
+                                >
+                                    {renderEditableImages({
+                                        sectionId: "imageFiles",
+                                        content: formData.imageFiles,
+                                        isEditing: editingSectionId === "imageFiles",
+                                        handleSaveSection,
+                                        handleDeleteImage,
+                                    })}
+                                </Section>
+                            </div>
+                            <div className="w-1/2">
+                                <Section
+                                    title="Presentation Desk*"
+                                    editButton={
+                                        <EditButton
+                                            handleClick={() => handleEditSection("pdfFiles")}
+                                            isEditing={false}
+                                            isEditMode={isEditMode} />}
+                                >
+                                    {renderEditableImages({
+                                        sectionId: "pdfFiles",
+                                        content: formData.pdfFiles,
+                                        isEditing: editingSectionId === "pdfFiles",
+                                        handleSaveSection,
+                                        handleDeleteImage,
+                                    })}
+                                </Section>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     <Section
                         title="Project Links"
@@ -347,20 +375,20 @@ const ProjectReviewPage = () => {
                 </article>
             </main>
             <section className="h-[100px] w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white">
-               <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
-                <EditButton
-                    handleClick={handleEditMode}
-                    isEditing={false}
-                    isEditMode={!isEditMode}
-                />
-                <Button
-                    className={`${STYLES.primaryButton}`}
-                    onClick={handleSubmit}
-                    aria-label="submit button to submit project"
-                 >
-                    Submit Project
-                </Button>
-               </div>
+                <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
+                    <EditButton
+                        handleClick={handleEditMode}
+                        isEditing={false}
+                        isEditMode={!isEditMode}
+                    />
+                    <Button
+                        className={`${STYLES.primaryButton}`}
+                        onClick={handleSubmit}
+                        aria-label="submit button to submit project"
+                    >
+                        Submit Project
+                    </Button>
+                </div>
             </section>
         </div>
     );

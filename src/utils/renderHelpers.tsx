@@ -24,7 +24,7 @@ export const renderObjectArrayContent = (
           : (content as ProjectLink[]).map((link, i) => (
             <li
               key={i}
-              className="text-gray-700 font-poppins font-semibold underline decoration-2"
+              className="text-gray-700 font-poppins"
             >
               <a href={link.url}> {link.url}</a>
             </li>
