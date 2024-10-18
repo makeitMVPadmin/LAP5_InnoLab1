@@ -3,7 +3,7 @@ import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
-import { saveFormData } from './StorageUtils';
+import { saveFormData } from "./StorageUtils";
 
 interface EventFormInputs {
   title: string;
@@ -51,47 +51,15 @@ const EventForm: React.FC = () => {
     },
   });
 
-  const [judges, setJudges] = useState([{ firstName: "", lastName: "" }]);
-
-  const handleJudgeChange = (
-    index: number,
-    value: string,
-    field: "firstName" | "lastName"
-  ) => {
-    setJudges((prevJudges) => {
-      const updatedJudges = [...prevJudges];
-      updatedJudges[index] = { ...updatedJudges[index], [field]: value };
-      return updatedJudges;
-    });
-  };
-
-  const handleAddJudge = () => {
-    if (judges.length < 4) {
-      setJudges([...judges, { firstName: "", lastName: "" }]);
-    }
-  };
-
-  const handleRemoveJudge = (index) => {
-    if (judges.length > 1) {
-      const updatedJudges = judges.filter((_, i) => i !== index);
-      setJudges(updatedJudges);
-    }
-  };
-
   const [selectedThemes, setSelectedThemes] = useState([]);
   const allThemes = ["Healthcare", "AI", "Education", "Fintech"];
 
   const [selectedDisiplines, setSelectedDisiplines] = useState([]);
-  const allDisiplines = [
-    "Design",
-    "Data",
-    "Development",
-    "Multi-displine",
-  ];
+  const allDisiplines = ["Design", "Data", "Development", "Multi-displine"];
 
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
-    saveFormData('eventFormData', data);
+    saveFormData("eventFormData", data);
     navigate("/ChallengeDetails");
   };
 
@@ -490,60 +458,74 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-        <label htmlFor="judges">Judges*</label>
-        {fields.map((field, index) => (
-          <div
-            key={field.id}
-            className="judge-input-container flex items-center space-x-4 my-3"
-          >
-            <div className="mb-4">
-            <label className="mr-2">Judge #{index + 1}</label>
-            <input
-              type="text"
-              {...register(`judges.${index}.firstName`, {
-                required: "First name is required",
-              })}
-              placeholder="Enter first name"
-              className={`mt-2 mb-1 p-2 border border-black rounded ${errors.judges?.[index]?.firstName ? "error" : ""}`}
-            />
-            {errors.judges?.[index]?.firstName && (
-              <p className="error">{errors.judges[index].firstName.message}</p>
-            )}
-            <input
-              type="text"
-              {...register(`judges.${index}.lastName`, {
-                required: "Last name is required",
-              })}
-              placeholder="Enter last name"
-              className={`mt-2 mb-1 p-2 border border-black rounded ${errors.judges?.[index]?.lastName ? "error" : ""}`}
-            />
-            {errors.judges?.[index]?.lastName && (
-              <p className="error">{errors.judges[index].lastName.message}</p>
-            )}
+          <label htmlFor="judges">Judges *</label>
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="justify-between flex-col flex whitespace-nowrap my-3"
+            >
+              <div className="flex gap-2">
+                <label className="mr-2">Judge #{index + 1}</label>
+                <input
+                  type="text"
+                  {...register(`judges.${index}.firstName`, {
+                    required: "First name is required",
+                  })}
+                  placeholder="Enter first name"
+                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded ${
+                    errors.judges?.[index]?.firstName ? "error" : ""
+                  }`}
+                />
+
+                <input
+                  type="text"
+                  {...register(`judges.${index}.lastName`, {
+                    required: "Last name is required",
+                  })}
+                  placeholder="Enter last name"
+                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded ${
+                    errors.judges?.[index]?.lastName ? "error" : ""
+                  }`}
+                />
+                              {fields.length > 1 && (
+                <button
+                  type="button"
+                  className="ml-2 text-red-500"
+                  onClick={() => remove(index)}
+                >
+                  X
+                </button>
+              )}
+              </div>
+
+
+                            <div className="flex flex-col">
+                {errors.judges?.[index]?.firstName && (
+                  <p className="error">
+                    {errors.judges[index].firstName.message}
+                  </p>
+                )}
+                {errors.judges?.[index]?.lastName && (
+                  <p className="error">
+                    {errors.judges[index].lastName.message}
+                  </p>
+                )}
+              </div>
             </div>
-            {fields.length > 1 && (
+          ))}
+          
+          {fields.length < 4 && (
+            <div className="flex justify-end mt-2">
               <button
                 type="button"
-                className="ml-2 text-red-500"
-                onClick={() => remove(index)}
+                className="px-4 py-2 add-judge-button"
+                onClick={() => append({ firstName: "", lastName: "" })}
               >
-                X
+                Add Judge
               </button>
-            )}
-          </div>
-        ))}
-        {fields.length < 4 && (
-          <div className="flex justify-end mt-2">
-            <button
-              type="button"
-              className="px-4 py-2 add-judge-button"
-              onClick={() => append({ firstName: "", lastName: "" })}
-            >
-              Add Judge
-            </button>
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
 
         <div className="file-upload-container">
           <label className="block font-bold text-lg mb-2">
