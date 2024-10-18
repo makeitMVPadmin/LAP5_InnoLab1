@@ -3,6 +3,7 @@ import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { saveFormData } from './StorageUtils';
 
 interface EventFormInputs {
   title: string;
@@ -78,19 +79,19 @@ const EventForm: React.FC = () => {
   };
 
   const [selectedThemes, setSelectedThemes] = useState([]);
-  const allThemes = ["Healthcare", "Design", "AI", "Education", "Finance"];
+  const allThemes = ["Healthcare", "AI", "Education", "Fintech"];
 
   const [selectedDisiplines, setSelectedDisiplines] = useState([]);
   const allDisiplines = [
     "Design",
     "Data",
-    "AI",
     "Development",
     "Multi-displine",
   ];
 
   const onSubmit = (data: EventFormInputs) => {
     console.log("Form Data", data);
+    saveFormData('eventFormData', data);
     navigate("/ChallengeDetails");
   };
 

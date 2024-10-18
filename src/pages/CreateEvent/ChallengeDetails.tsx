@@ -3,6 +3,7 @@ import "./ChallengeDetails.scss";
 import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
+import { saveFormData, getFormData } from './StorageUtils';
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
@@ -32,7 +33,13 @@ const ChallengeDetailsForm: React.FC = () => {
   });
 
   const onSubmit = async (data: ChallengeDetailsFormInputs) => {
-    await saveEventToFirestore(data);
+    saveFormData('challengeDetailsData', data);
+    const eventData = getFormData('eventFormData');
+    const combinedData = {
+      ...eventData,
+      ...data,
+    }
+    await saveEventToFirestore(combinedData);
   };
   
 
