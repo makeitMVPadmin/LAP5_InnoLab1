@@ -46,6 +46,7 @@ const EventForm: React.FC = () => {
       minParticipants: 0,
       maxParticipants: 0,
       judges: [{ firstName: "", lastName: "" }],
+      thumbnail: null,
     },
   });
 

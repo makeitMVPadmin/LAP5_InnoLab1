@@ -32,10 +32,7 @@ const ChallengeDetailsForm: React.FC = () => {
   });
 
   const onSubmit = async (data: ChallengeDetailsFormInputs) => {
-    const combinedData = {
-      ...data,
-    };
-    await saveEventToFirestore(combinedData);
+    await saveEventToFirestore(data);
   };
   
 
