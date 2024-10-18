@@ -27,7 +27,8 @@ export interface ProjectSubmissionFormValues
   designFeatures: string;
   designImpact: string;
   nextSteps: string;
-  projectFiles: File[] | null;
+  imageFiles: File[] | null;
+  pdfFiles: File[] | null;
   projectLinks: ProjectLink[];
   teamMembers: TeamMember[];
 }

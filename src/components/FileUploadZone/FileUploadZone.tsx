@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import UploadBox from "../../assets/images/uploadBox.svg";
+import DashedBox from '../DashedBox/DashedBox';
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_TYPES = [
@@ -31,7 +31,6 @@ const FileUploadZone = ({ onFileChange }) => {
         if (validFiles.length > 0) {
             setErrorMessage(null);
             onFileChange(validFiles);
-            console.log('Files being passed to parent:', validFiles);
         }
     };
 
@@ -44,7 +43,7 @@ const FileUploadZone = ({ onFileChange }) => {
         <div {...getRootProps()} className="dropzone">
             <input {...getInputProps()} />
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-            <img className="pt-10" src={UploadBox} alt="upload icon" />
+            <DashedBox />
         </div>
     );
 };

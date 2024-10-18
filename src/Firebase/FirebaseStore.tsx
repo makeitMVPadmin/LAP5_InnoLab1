@@ -55,8 +55,9 @@ export const updateUserInFirestore = async (
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
   try {
-    // Post file to firebase storage and retrieve link
-    const projectFileURLs = await uploadFiles(formData.projectFiles);
+    // Post image to firebase storage and retrieve link
+    const imageURLs = await uploadImages(formData.imageFiles);
+    const pdfURLs = await uploadImages(formData.pdfFiles)
 
     // Reformat form data with projectFile link
     const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
@@ -70,7 +71,8 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       teamName: formData.teamName,
       techStack: formData.techStack,
       userId: formData.userId,
-      projectFiles: projectFileURLs,
+      imageFiles: imageURLs,
+      pdfFiles: pdfURLs,
       createdAt: Timestamp.now(),
     });
 
