@@ -72,7 +72,7 @@ type HackathonSubmissionType = {
   imageFile: string;
   nextSteps: string;
   problemStatement: string;
-  projectLinks: {url: string}[];
+  projectLinks: string[];
   teamMembers: {name: string, role: string}[];
   teamName: string;
   techStack: string[];

@@ -3,9 +3,16 @@ import { useDropzone } from 'react-dropzone';
 import UploadBox from "../../assets/images/uploadBox.svg";
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'];
+const ACCEPTED_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'application/pdf',
+    'image/svg+xml',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+];
 
-const ImageUploadZone = ({ onFileChange }) => {
+const FileUploadZone = ({ onFileChange }) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const onDrop = (acceptedFiles) => {
 
@@ -15,7 +22,7 @@ const ImageUploadZone = ({ onFileChange }) => {
                 return false;
             }
             if (!ACCEPTED_TYPES.includes(file.type)) {
-                setErrorMessage(`File type not supported: ${file.name}. Please upload JPG, PNG, PDF, or SVG files.`);
+                setErrorMessage(`File type not supported: ${file.name}. Please upload JPG, PNG, PDF, SVG, PPT, or PPTX files.`);
                 return false;
             }
             return true;
@@ -42,4 +49,4 @@ const ImageUploadZone = ({ onFileChange }) => {
     );
 };
 
-export default ImageUploadZone;
+export default FileUploadZone;

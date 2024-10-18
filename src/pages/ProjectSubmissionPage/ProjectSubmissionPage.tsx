@@ -15,7 +15,7 @@ import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
 import Header from "../../components/Header/Header";
-import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
+import FileUploadZone from "../../components/FileUploadZone/FileUploadZone";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import ImportCard from "../../components/ImportCard/ImportCard"
 import Clock from "../../assets/images/clock-type2.svg"
@@ -63,8 +63,8 @@ const ProjectSubmissionPage = () => {
                     url: link.url || ''
                 })));
             }
-            if (Array.isArray(formData.imageFiles)) {
-                setValue("imageFiles", formData.imageFiles);
+            if (Array.isArray(formData.projectFiles)) {
+                setValue("projectFiles", formData.projectFiles);
             }
         }
     }, [formData, setValue])
@@ -104,7 +104,7 @@ const ProjectSubmissionPage = () => {
                 return prevFiles
             }
             const updatedFiles = [...prevFiles, ...newFiles];
-            setValue('imageFiles', updatedFiles, { shouldValidate: true });
+            setValue('projectFiles', updatedFiles, { shouldValidate: true });
             return updatedFiles;
         });
     };
@@ -114,7 +114,7 @@ const ProjectSubmissionPage = () => {
     const handleAddMember = () => appendMember({ name: "", role: "" });
     const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleDeleteMember = (index: number) => removeMember(index);
-    const handleDeleteImage = (indexToRemove: Number) => {
+    const handleDeleteFile = (indexToRemove: Number) => {
         const newFiles = file.filter((_, index) => index !== indexToRemove);
         setFile(newFiles)
     }
@@ -319,23 +319,23 @@ const ProjectSubmissionPage = () => {
                             type="Textarea"
                         />
 
-                        {/* Upload image */}
+                        {/* Upload File */}
                         <div className="w-1/2">
-                            <ImageUploadZone onFileChange={handleFileChange}
+                            <FileUploadZone onFileChange={handleFileChange}
                             />
                         </div>
                         <div className="pb-6">
                             <div className="flex gap-4">
                                 {file.length > 0 && file.map((item, index) => {
                                     return (
-                                        <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteImage(index)} />
+                                        <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteFile(index)} />
                                     )
                                 })}
                             </div>
-                            {errors.imageFiles && (
+                            {errors.projectFiles && (
                                 <div className="flex items-center gap-2">
                                     <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
-                                    <p className="text-red-500">{errors.imageFiles.message}</p>
+                                    <p className="text-red-500">{errors.projectFiles.message}</p>
                                 </div>
                             )}
                         </div>

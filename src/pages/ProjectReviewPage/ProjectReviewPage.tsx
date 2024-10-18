@@ -40,19 +40,19 @@ const ProjectReviewPage = () => {
     const handleEditSection = (sectionId: string) => { setEditingSectionId(sectionId); };
     const handleSaveSection = (sectionId: string, newValue: any) => {
         setFormData(prev => {
-            if (sectionId === "imageFiles") {
+            if (sectionId === "projectFiles") {
                 let updatedFiles;
                 if (newValue instanceof File) {
-                    updatedFiles = [...prev.imageFiles, newValue];
+                    updatedFiles = [...prev.projectFiles, newValue];
                 } else if (Array.isArray(newValue) && newValue.every(item => item instanceof File)) {
-                    updatedFiles = [...prev.imageFiles, ...newValue];
+                    updatedFiles = [...prev.projectFiles, ...newValue];
                 } else {
-                    console.error('Unexpected newValue type for imageFiles:', newValue);
+                    console.error('Unexpected newValue type for projectFiles:', newValue);
                     return prev;
                 }
                 return {
                     ...prev,
-                    imageFiles: updatedFiles
+                    projectFiles: updatedFiles
                 };
             }
             return {
@@ -129,10 +129,10 @@ const ProjectReviewPage = () => {
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
     const handleDeleteImage = (indexToRemove: Number) => {
-        const newFiles = formData.imageFiles.filter((_, index: Number) => index !== indexToRemove);
+        const newFiles = formData.projectFiles.filter((_, index: Number) => index !== indexToRemove);
         setFormData(prev => ({
             ...prev,
-            imageFiles: newFiles
+            projectFiles: newFiles
         }))
     }
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
@@ -312,14 +312,14 @@ const ProjectReviewPage = () => {
                         title="Upload project files"
                         editButton={
                             <EditButton
-                                handleClick={() => handleEditSection("imageFiles")}
+                                handleClick={() => handleEditSection("projectFiles")}
                                 isEditing={false}
                                 isEditMode={isEditMode} />}
                     >
                         {renderEditableImages({
-                            sectionId: "imageFiles",
-                            content: formData.imageFiles,
-                            isEditing: editingSectionId === "imageFiles",
+                            sectionId: "projectFiles",
+                            content: formData.projectFiles,
+                            isEditing: editingSectionId === "projectFiles",
                             handleSaveSection,
                             handleDeleteImage,
                         })}

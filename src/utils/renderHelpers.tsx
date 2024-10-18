@@ -2,7 +2,7 @@ import { TeamMember, ProjectLink } from "../types/submissionTypes"
 import { STYLES } from "../constants/styles";
 import { Input } from "../components/ui/input";
 import ImportCard from '../components/ImportCard/ImportCard';
-import ImageUploadZone from "../components/ImageUploadZone/ImageUploadZone"
+import ImageUploadZone from "../components/FileUploadZone/FileUploadZone"
 import CloseIcon from "../assets/images/Close.svg"
 
 
