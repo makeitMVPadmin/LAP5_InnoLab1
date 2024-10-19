@@ -63,7 +63,7 @@ const ProjectShowcasePage = () => {
 
     const handleDownloadAll = () => {
         downloadRefs.current.forEach(ref => {
-            if (ref) ref.click(); // Simulate click
+            if (ref) ref.click();
         });
     };
 
