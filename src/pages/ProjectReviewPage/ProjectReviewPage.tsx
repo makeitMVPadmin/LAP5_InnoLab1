@@ -362,20 +362,20 @@ const ProjectReviewPage = () => {
                 </article>
             </main>
             <section className="h-[100px] w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white">
-               <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
-                <EditButton
-                    handleClick={handleEditMode}
-                    isEditing={false}
-                    isEditMode={!isEditMode}
-                />
-                <Button
-                    className={`${STYLES.primaryButton}`}
-                    onClick={handleSubmit}
-                    aria-label="submit button to submit project"
-                 >
-                    Submit Project
-                </Button>
-               </div>
+                <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
+                    <EditButton
+                        handleClick={handleEditMode}
+                        isEditing={false}
+                        isEditMode={!isEditMode}
+                    />
+                    <Button
+                        className={`${STYLES.primaryButton}`}
+                        onClick={handleSubmit}
+                        aria-label="submit button to submit project"
+                    >
+                        Submit Project
+                    </Button>
+                </div>
             </section>
         </div>
     );
