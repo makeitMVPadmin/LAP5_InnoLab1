@@ -38,8 +38,8 @@ const DownloadWithFilename = forwardRef<HTMLButtonElement, { filename: string }>
     };
 
     return (
-        <div className='flex bg-[#D9D9D9] py-[1rem] px-[2.5rem] justify-center items-center gap-[1.5rem]' role="group" aria-label="Download Section">
-            <p className='text-black text-center font-poppins text-base font-medium leading-[1.2rem]'>{filename}</p>
+        <div className='flex bg-MVP-light-gray py-[1rem] px-[2.5rem] justify-center items-center gap-[1.5rem]' role="group" aria-label="Download Section">
+            <p className='text-MVP-black text-center font-poppins text-base font-medium leading-[1.2rem]'>{filename}</p>
             <button 
                 ref={ref} 
                 onClick={handleDownload} 

@@ -121,12 +121,12 @@ const CommunityCommentSection = ({ submissionId }) => {
                         placeholder="Write your comment here"
                         rows={4}
                         required
-                        className="flex flex-col items-end h-[6.3rem] flex-1 rounded-[0.6rem] border-[0.2rem] border-black bg-white p-[1rem] placeholder:text-[#767676] text-[1.4rem]"
+                        className="flex flex-col items-end h-[6.3rem] flex-1 rounded-[0.6rem] border-[0.2rem] border-black bg-white p-[1rem] placeholder:text-MVP-gray text-[1.4rem]"
                     />
                 </div>
                 <button 
                     type="submit" 
-                    className='bg-[#EFEFEF] rounded-[0.6rem] border-[0.2rem] border-black flex p-[0.5rem] px-[1.1rem] justify-center items-center gap-[0.6rem] text-[#000] text-[1rem] font-extrabold leading-[115.645%] self-end'
+                    className='bg-MVP-light-gray rounded-[0.6rem] border-[0.2rem] border-black flex p-[0.5rem] px-[1.1rem] justify-center items-center gap-[0.6rem] text-MVP-black text-[1rem] font-extrabold leading-[115.645%] self-end'
                     aria-label="Submit comment"
                 >
                     Submit
@@ -182,7 +182,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                                     </button>
                                     {showOption[index] && (
                                         <button
-                                            className='absolute right-3 top-6 z-5 rounded-[0.6rem] border-[0.2rem] border-black bg-white flex p-[0.5rem] px-[1.1rem] justify-center items-center gap-[0.6rem] text-[#000] text-[1rem] font-extrabold leading-[115.645%]'
+                                            className='absolute right-3 top-6 z-5 rounded-[0.6rem] border-[0.2rem] border-black bg-white flex p-[0.5rem] px-[1.1rem] justify-center items-center gap-[0.6rem] text-MVP-black text-[1rem] font-extrabold leading-[115.645%]'
                                             onClick={() => handleCommentDelete(index)}
                                             aria-label={`Delete comment by ${commenterName}`}
                                         >

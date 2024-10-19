@@ -76,7 +76,7 @@ const HorizontalTabMenu = ({
                         role="tab"
                         aria-selected={index === activeTab}
                         className={`flex-shrink-0 ${
-                            index === activeTab ? 'bg-[#BFE5FF] text-secondary-foreground border-b-[0.5rem] border-b-[#0954B0]' : 'border-b-[0.4rem] border-b-black'
+                            index === activeTab ? 'bg-MVP-soft-blue text-secondary-foreground border-b-[0.5rem] border-b-MVP-dark-blue' : 'border-b-[0.4rem] border-b-MVP-black'
                         } ${index < startIndex || index >= startIndex + visibleTabs ? 'invisible' : ''}
                         h-full rounded-tl-[0.5rem] rounded-tr-[0.5rem] rounded-bl-[0] rounded-br-[0]`}
                         onClick={() => handleTabClick(index)}
@@ -87,7 +87,7 @@ const HorizontalTabMenu = ({
                         id={`tab-${index}`}
                         aria-controls={`panel-${index}`}
                     >
-                        <p className={`text-black font-gilroy text-[1.7rem] font-extrabold normal-case leading-[115.645%] ${index === activeTab && 'text-[#0954B0]'}`}>
+                        <p className={`text-MVP-black font-gilroy text-[1.7rem] font-extrabold normal-case leading-[115.645%] ${index === activeTab && 'text-MVP-dark-blue'}`}>
                             {tab.label}
                         </p>
                     </Button>

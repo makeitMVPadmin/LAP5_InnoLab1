@@ -26,7 +26,7 @@ const CommuntiArrowStyled: FC<ArrowProps> = ({
             bg-white 
             shadow-[-0.2rem 0.3rem 0.3rem 0 rgba(0, 0, 0, 0.25)]
             ${className} 
-            ${disabled ? 'border-[#D9D9D9] cursor-not-allowed opacity-50' : 'border-r-[0.3rem] border-b-[0.4rem]'}
+            ${disabled ? 'border-MVP-light-gray cursor-not-allowed opacity-50' : 'border-r-[0.3rem] border-b-[0.4rem]'}
         `}
         aria-label={ariaLabel}
         onClick={disabled ? null : onClick}
@@ -34,8 +34,8 @@ const CommuntiArrowStyled: FC<ArrowProps> = ({
         role="button"
     >
         {direction === 'right' ? 
-            <RightArrow className={disabled ? 'fill-[#D9D9D9]' : 'fill-black'} /> : 
-            <LeftArrow className={disabled ? 'fill-[#D9D9D9]' : 'fill-black'}/>}
+            <RightArrow className={disabled ? 'fill-MVP-light-gray' : 'fill-black'} /> : 
+            <LeftArrow className={disabled ? 'fill-MVP-light-gray' : 'fill-black'}/>}
     </button>
   )
 }
