@@ -325,6 +325,7 @@ const ProjectReviewPage = () => {
                                         sectionId: "imageFiles",
                                         content: formData.imageFiles,
                                         isEditing: editingSectionId === "imageFiles",
+                                        acceptedTypes: ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'],
                                         handleSaveSection,
                                         handleDeleteImage,
                                     })}
@@ -343,6 +344,7 @@ const ProjectReviewPage = () => {
                                         sectionId: "pdfFiles",
                                         content: formData.pdfFiles,
                                         isEditing: editingSectionId === "pdfFiles",
+                                        acceptedTypes: ['application/pdf'],
                                         handleSaveSection,
                                         handleDeleteImage,
                                     })}

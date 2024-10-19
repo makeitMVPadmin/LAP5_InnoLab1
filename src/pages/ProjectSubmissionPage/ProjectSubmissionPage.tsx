@@ -113,7 +113,7 @@ const ProjectSubmissionPage = () => {
     };
 
     const handlePdfChange = (newFiles: File[]) => {
-        const MAX_FILES = 3
+        const MAX_FILES = 1
         setPdfFile(prevFiles => {
             if (prevFiles.length >= MAX_FILES) {
                 return prevFiles
@@ -346,9 +346,11 @@ const ProjectSubmissionPage = () => {
                                 <div className="w-1/2">
                                     <h4 className="">Project Files</h4>
                                     <div className="pt-2">
-                                        <ImageUploadZone onFileChange={handleFileChange}
+                                        <ImageUploadZone
+                                            onFileChange={handleFileChange}
+                                            acceptedTypes={['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml']}
                                         />
-                                        <p className={`${STYLES.label} px-2 pt-2`}>supported formats: ZIP</p>
+                                        <p className={`${STYLES.label} px-2 pt-2`}>supported formats: JPEG, PNG, PDF, SVG</p>
                                         <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>
                                     </div>
                                     <div className="pb-6">
@@ -370,7 +372,10 @@ const ProjectSubmissionPage = () => {
                                 <div className="w-1/2">
                                     <h4 className="px-2">Presentation Deck*</h4>
                                     <div className="pt-2">
-                                        <ImageUploadZone onFileChange={handlePdfChange}
+                                        <ImageUploadZone
+                                            onFileChange={handlePdfChange}
+                                            acceptedTypes={['application/pdf']}
+
                                         />
                                         <p className={`${STYLES.label} px-2 pt-2`}>supported formats: PDF</p>
                                         <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>

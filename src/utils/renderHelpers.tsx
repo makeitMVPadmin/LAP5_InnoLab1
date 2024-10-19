@@ -128,6 +128,7 @@ export const renderEditableImages = ({ sectionId,
   isEditing,
   handleSaveSection,
   handleDeleteImage,
+  acceptedTypes
 }
 ) => {
   if (!isEditing) {
@@ -143,7 +144,7 @@ export const renderEditableImages = ({ sectionId,
   }
   return (
     <div className="flex flex-col gap-4">
-      <ImageUploadZone onFileChange={(files) => handleSaveSection(sectionId, files)} />
+      <ImageUploadZone onFileChange={(files) => handleSaveSection(sectionId, files)} acceptedTypes={acceptedTypes} />
       <div className="flex gap-4">
         {content.map((file, index) => (
           <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteImage(index)} />
