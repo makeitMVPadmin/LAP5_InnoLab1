@@ -5,94 +5,22 @@ import { ReactComponent as Sensors } from "../../assets/images/sensors.svg";
 import { useAuth } from "../../context/AuthContext";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link } from "react-router-dom";
-import EventForm from "../CreateEvent/EventForm";
 import useEvents from "../../hooks/useEvents";
+import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
-
-
 
 const HackathonEventsPage = () => {
   const { currentUser } = useAuth();
   const { joinedEvents } = useJoinedEvents(currentUser?.uid);
   const { events, isLoading, getEndingEvent } = useEvents(joinedEvents);
   const { allCurrentEvents, joinedCurrentEvents } = events || {};
-  const [alertEvent, setAlertEvent] = useState(false);
-  const [filters, setFilters] = useState({
-    skillLevel: "",
-    disciplines: "",
-    themes: "",
-    timeZone: "",
-    duration: "",
-  });
+  const { filters, setFilters, filteredEvents } = useFilterEvents(allCurrentEvents);
+  const [ alertEvent, setAlertEvent ] = useState(false);
 
   useEffect(() => {
     setAlertEvent(getEndingEvent(joinedCurrentEvents));
   }, [joinedCurrentEvents]);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    console.log(`Setting ${name} to ${value}`);
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: prevFilters[name] === value ? "" : value,
-    }));
-  };
-
-  const calculateDuration = (startTime, endTime) => {
-    const start = new Date(startTime);
-    const end = new Date(endTime);
-    const durationInHours =
-      (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    return durationInHours;
-  };
-
-
-  const filteredEvents = allCurrentEvents.filter((event) => {
-    const duration = calculateDuration(event.startTime, event.endTime);
-
-    const matchesSkillLevel =
-      filters.skillLevel === "" ||
-      (event.skillLevel &&
-        event.skillLevel.toLowerCase() === filters.skillLevel.toLowerCase());
-
-    const matchesDisciplines =
-      filters.disciplines === "" ||
-      (event.disciplines &&
-        Array.isArray(event.disciplines) &&
-        event.disciplines.some(
-          (discipline) =>
-            discipline.toLowerCase() === filters.disciplines.toLowerCase()
-        ));
-
-    const matchesThemes =
-      filters.themes === "" ||
-      (event.themes &&
-        Array.isArray(event.themes) &&
-        event.themes.some(
-          (theme) => theme.toLowerCase() === filters.themes.toLowerCase()
-        ));
-
-    const matchesTimeZone =
-      filters.timeZone === "" ||
-      (event.timeZone &&
-        event.timeZone.toLowerCase() === filters.timeZone.toLowerCase());
-
-    const matchesDuration =
-      filters.duration === "" ||
-      (duration && filters.duration === "24 hours" && duration <= 24) ||
-      (filters.duration === "48 hours" && duration > 24 && duration <= 48) ||
-      (filters.duration === "72 hours" && duration > 48 && duration <= 72);
-
-    return (
-      matchesSkillLevel &&
-      matchesDisciplines &&
-      matchesThemes &&
-      matchesTimeZone &&
-      matchesDuration
-    );
-  });
-
-  console.log("Filtered Events: ", filteredEvents);
 
   const displayCards = useMemo(() => {
     return (
@@ -111,11 +39,11 @@ const HackathonEventsPage = () => {
         />
       ))
     );
-  }, [allCurrentEvents, filteredEvents]);
+  }, [filteredEvents]);
 
   const renderEvents = () => {
     if (isLoading) return <div>Loading...</div>;
-    if (filteredEvents.length === 0) return <div>No Events</div>;
+    if (allCurrentEvents.length === 0) return <div>No Events</div>;
     return displayCards;
   };
   return (
@@ -130,7 +58,7 @@ const HackathonEventsPage = () => {
       </div>
       <div className="w-full flex justify-end gap-6 px-8 py-4 text-xl">
         <Link to="joined" className="flex relative gap-2 py-2 px-4 border-3 border-black rounded-md bg-MVP-green text-MVP-black font-gilroy">
-          <Sensors className="w-7 h-7" />
+          <Sensors className="w-7 h-7"/>
           My Events
           {alertEvent &&
             <span className="absolute right-[-0.8em] top-[-0.8em] bg-MVP-black text-white text-sm rounded-full w-7 h-7 flex items-center justify-center">
@@ -142,13 +70,10 @@ const HackathonEventsPage = () => {
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
         <div className="flex-1 w-[20%]">
-          <div className="event-page__filters flex-1 min-w-20%">
-            <h3 className="event-page__heading">Filters</h3>
-            <Filters filters={filters} onFilterChange={handleFilterChange} />
-          </div>
+        <Filters filters={filters} setFilters={setFilters} />
         </div>
         <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
-          {renderEvents()}
+        {renderEvents()}
         </div>
       </div>
     </main>

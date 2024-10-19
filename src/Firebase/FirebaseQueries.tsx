@@ -2,7 +2,7 @@ import { getDocs, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 
-type HackathonEvent = {
+export type HackathonEvent = {
   basicProjectSummary: string;
   createdAt: string;
   disciplines: string[];
