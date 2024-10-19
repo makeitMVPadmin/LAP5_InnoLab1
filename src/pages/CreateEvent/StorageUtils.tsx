@@ -1,4 +1,4 @@
-export const saveFormData = (key: string, data: any) => {
+export const saveFormData = (key: string, data: interface) => {
     localStorage.setItem(key, JSON.stringify(data));
   };
   
