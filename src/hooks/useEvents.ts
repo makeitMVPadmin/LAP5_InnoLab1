@@ -32,12 +32,11 @@ const useEvents = (joinedEvents: string[]) => {
                 return acc;
             }, { joinedCurrentEvents: [], joinedPastEvents: [], allCurrentEvents: [] });
 
-            // If no joined events, return all current events
             if (joinedCurrentEvents.length === 0 && joinedPastEvents.length === 0) {
                 setEvents({
                     joinedCurrentEvents: [],
                     joinedPastEvents: [],
-                    allCurrentEvents: sortEventsByStartTime(allCurrentEvents), // Sort current events
+                    allCurrentEvents: sortEventsByStartTime(allCurrentEvents),
                 });
             } else {
                 setEvents({
