@@ -59,7 +59,7 @@ const HorizontalTabMenu = ({
         <div className="relative flex w-full my-[2.5rem]">
             <CommuntiArrowStyled 
                 direction='left'
-                className="py-[2rem] px-[1.8rem]"
+                className="p-[1.6rem]"
                 onClick={handlePrevClick}
                 aria-label="Show previous tabs"
                 disabled={startIndex === 0}
@@ -95,7 +95,7 @@ const HorizontalTabMenu = ({
             </div>
             <CommuntiArrowStyled 
                 direction='right'
-                className="py-[2rem] px-[1.8rem]"
+                className="p-[1.6rem]"
                 onClick={handleNextClick}
                 aria-label="Show more tabs"
                 disabled={startIndex === tabs.length - visibleTabs}
