@@ -1,171 +1,279 @@
-import { ChangeEvent } from "react";
-import { FilterPropsType } from "../../hooks/useFilterEvents";
+import "./Filters.scss";
 
-const Filters = ({ filters, setFilters }: FilterPropsType) => {
-  
-  const filterLabels = "font-poppins text-sm";
-
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    
-    if (name === "disciplines" || name === "themes") {
-      setFilters((prevFilters) => {
-        const currentSelections = prevFilters[name];
-        const newSelections = currentSelections.includes(value)
-          ? currentSelections.filter((item) => item !== value)
-          : [...currentSelections, value];
-
-        return {
-          ...prevFilters,
-          [name]: newSelections,
-        };
-      });
-    } else {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [name]: prevFilters[name] === value ? "" : value,
-      }));
-    }
-  };
-
-  const clearFilter = (field: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [field]: "",
-    }));
-  }
-  
+export default function Filters({ filters, onFilterChange }) {
   return (
-    <section className="font-gilroy" aria-labelledby="filters-heading">
-      <h1 id="filters-heading" className="font-gilroy text-3xl">Filters</h1>
-      <fieldset>
-        <legend className="font-gilroy">Skill Level</legend>
-        <ul className="font-gilroy mt-[0.5rem]">
-          {["beginner", "intermediate", "experienced", "advanced"].map(level => (
-            <li key={level}>
-              <input
-                type="radio"
-                id={level}
-                name="skillLevel"
-                value={level}
-                className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
-                checked={filters.skillLevel === level}
-                onChange={handleFilterChange}
-              />
-              <label htmlFor={level} className={filterLabels}>
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-              </label>
-            </li>
-          ))}
+    <>
+      <section className="event-page__section">
+        <h4 className="event-page__subheading">Skill-level</h4>
+        <ul>
+          <li>
+            <input
+              type="checkbox"
+              id="Beginner"
+              name="skillLevel"
+              value="Beginner"
+              className="event-page__input"
+              checked={filters.skillLevel.includes("Beginner")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Beginner">Beginner</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Intermediate"
+              name="skillLevel"
+              value="Intermediate"
+              className="event-page__input"
+              checked={filters.skillLevel.includes("Intermediate")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Intermediate">Intermediate</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Advanced"
+              name="skillLevel"
+              value="Advanced"
+              className="event-page__input"
+              checked={filters.skillLevel.includes("Advanced")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Advanced">Advanced</label>
+          </li>
         </ul>
-        <button 
-          onClick={() => clearFilter('skillLevel')} 
-          className="text-MVP-gray text-sm ml-[1rem] mt-[0.5rem] mb-[1rem] font-light hover:underline"
-          aria-label="Clear selected skill level"
-        >
-          Clear Skills
-        </button>
-      </fieldset>
-      <fieldset>
-        <legend className="font-gilroy">Disciplines</legend>
-        <ul className="font-gilroy mt-[0.5rem] mb-[1rem]">
-          {["design", "software development", "data science and analytics", "web development"].map(discipline => (
-            <li key={discipline}>
-              <input
-                type="checkbox"
-                id={discipline}
-                name="disciplines"
-                value={discipline}
-                className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
-                checked={filters.disciplines.includes(discipline)}
-                onChange={handleFilterChange}
-              />
-              <label htmlFor={discipline} className={filterLabels}>
-                {discipline.charAt(0).toUpperCase() + discipline.slice(1)}
-              </label>
-            </li>
-          ))}
+      </section>
+      <section className="event-page__section">
+        <h4 className="event-page__subheading">Discipline</h4>
+        <ul>
+          <li>
+            <input
+              type="checkbox"
+              id="Design"
+              name="disciplines"
+              value="Design"
+              className="event-page__input"
+              checked={filters.disciplines.includes("Design")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Design">Design</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Software Development"
+              name="disciplines"
+              value="Software Development"
+              className="event-page__input"
+              checked={filters.disciplines.includes("Software Development")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Software Development">Software Development</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Data Science and Analytics"
+              name="disciplines"
+              value="Data Science and Analytics"
+              className="event-page__input"
+              checked={filters.disciplines.includes(
+                "Data Science and Analytics"
+              )}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Data Science and Analytics">
+              Data Science and Analytics
+            </label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Web Development"
+              name="disciplines"
+              value="Web Development"
+              className="event-page__input"
+              checked={filters.disciplines.includes("Web Development")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Web Development">Web Development</label>
+          </li>
         </ul>
-      </fieldset>
-      <fieldset>
-        <legend className="font-gilroy">Themes</legend>
-        <ul className="font-gilroy mt-[0.5rem] mb-[1rem]">
-          {["sustainability & climate", "ai & machine learning", "health & wellness", "fintech & blockchain", "gaming & vr", "education & learning"].map(theme => (
-            <li key={theme}>
-              <input
-                type="checkbox"
-                id={theme}
-                name="themes"
-                value={theme}
-                className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
-                checked={filters.themes.includes(theme)}
-                onChange={handleFilterChange}
-              />
-              <label htmlFor={theme} className={filterLabels}>
-                {theme.charAt(0).toUpperCase() + theme.slice(1)}
-              </label>
-            </li>
-          ))}
+      </section>
+      <section className="event-page__section">
+        <h4 className="event-page__subheading">Themes</h4>
+        <ul>
+          <li>
+            <input
+              type="checkbox"
+              id="Sustainability & Climate"
+              name="themes"
+              value="Sustainability & Climate"
+              className="event-page__input"
+              checked={filters.themes.includes("Sustainability & Climate")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Sustainability & Climate">
+              Sustainability & Climate
+            </label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="AI & Machine Learning"
+              name="themes"
+              value="AI & Machine Learning"
+              className="event-page__input"
+              checked={filters.themes.includes("AI & Machine Learning")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="AI & Machine Learning">AI & Machine Learning</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Health & Wellness"
+              name="themes"
+              value="Health & Wellness"
+              className="event-page__input"
+              checked={filters.themes.includes("Health & Wellness")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Health & Wellness">Health & Wellness</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Fintech & Blockchain"
+              name="themes"
+              value="Fintech & Blockchain"
+              className="event-page__input"
+              checked={filters.themes.includes("Fintech & Blockchain")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Fintech & Blockchain">Fintech & Blockchain</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Gaming & VR"
+              name="themes"
+              value="Gaming & VR"
+              className="event-page__input"
+              checked={filters.themes.includes("Gaming & VR")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Gaming & VR">Gaming & VR</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="Education & Learning"
+              name="themes"
+              value="Education & Learning"
+              className="event-page__input"
+              checked={filters.themes.includes("Education & Learning")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="Education & Learning">Education & Learning</label>
+          </li>
         </ul>
-      </fieldset>
-      <fieldset>
-        <legend className="font-gilroy">Time Zone</legend>
-        <ul className="font-gilroy mt-[0.5rem]">
-          {["EST", "PST", "CST", "MST"].map(timezone => (
-            <li key={timezone}>
-              <input
-                type="radio"
-                id={timezone}
-                name="timezone"
-                value={timezone}
-                className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
-                checked={filters.timezone === timezone}
-                onChange={handleFilterChange}
-              />
-              <label htmlFor={timezone} className={filterLabels}>
-                {timezone.charAt(0).toUpperCase() + timezone.slice(1)}
-              </label>
-            </li>
-          ))}
+      </section>
+      <section className="event-page__section">
+        <h4 className="event-page__subheading">Time-Zone</h4>
+        <ul>
+          <li>
+            <input
+              type="checkbox"
+              id="EST"
+              name="timeZone"
+              value="EST"
+              className="event-page__input"
+              checked={filters.timeZone.includes("EST")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="EST">EST</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="PST"
+              name="timeZone"
+              value="PST"
+              className="event-page__input"
+              checked={filters.timeZone.includes("PST")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="PST">PST</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="CST"
+              name="timeZone"
+              value="CST"
+              className="event-page__input"
+              checked={filters.timeZone.includes("CST")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="CST">CST</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="MST"
+              name="timeZone"
+              value="MST"
+              className="event-page__input"
+              checked={filters.timeZone.includes("MST")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="MST">MST</label>
+          </li>
         </ul>
-        <button 
-          onClick={() => clearFilter('timezone')}  
-          className="text-MVP-gray text-sm ml-[1rem] mt-[0.5rem] mb-[1rem] font-light hover:underline"
-          aria-label="Clear Timezone"
-        >
-          Clear Selected Time Zone
-        </button>
-      </fieldset>
-      <fieldset>
-        <legend className="font-gilroy">Event Duration</legend>
-        <ul className="font-gilroy mt-[0.5rem]">
-          {["Less than 24 hours", "24 to 48 hours", "48 to 72 hours"].map(duration => (
-            <li key={duration}>
-              <input
-                type="radio"
-                id={duration}
-                name="duration"
-                value={duration}
-                className="h-5 w-5 text-blue-600 border-gray-300 font-gilroy"
-                checked={filters.duration === duration}
-                onChange={handleFilterChange}
-              />
-              <label htmlFor={duration} className={filterLabels}>
-                {duration.charAt(0).toUpperCase() + duration.slice(1)}
-              </label>
-            </li>
-          ))}
+      </section>
+      <section className="event-page__section">
+        <h4 className="event-page__subheading">Duration</h4>
+        <ul>
+          <li>
+            <input
+              type="checkbox"
+              id="24-hours"
+              name="duration"
+              value="24 hours"
+              className="event-page__input"
+              checked={filters.duration.includes("24 hours")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="24-hours">24 hours</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="48-hours"
+              name="duration"
+              value="48 hours"
+              className="event-page__input"
+              checked={filters.duration.includes("48 hours")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="48-hours">48 hours</label>
+          </li>
+          <li>
+            <input
+              type="checkbox"
+              id="72-hours"
+              name="duration"
+              value="72 hours"
+              className="event-page__input"
+              checked={filters.duration.includes("72 hours")}
+              onChange={onFilterChange}
+            />
+            <label htmlFor="72-hours">72 hours</label>
+          </li>
         </ul>
-        <button 
-          onClick={() => clearFilter('duration')} 
-          className="text-MVP-gray text-sm ml-[1rem] mt-[0.5rem] mb-[1rem] font-light hover:underline"
-          aria-label="Clear Duration"
-        >
-          Clear Selected Duration
-        </button>
-      </fieldset>
-    </section>
+      </section>
+    </>
   );
-};
-
-export default Filters;
+}
