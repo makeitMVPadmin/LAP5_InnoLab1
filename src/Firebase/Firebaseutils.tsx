@@ -1,7 +1,7 @@
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../Firebase/FirebaseConfig";
 
-export const saveEventToFirestore = async (eventData: any) => {
+export const saveEventToFirestore = async (eventData: interface) => {
   try {
     const docRef = await addDoc(collection(db, "hackathonEvents"), eventData);
     console.log("Document written with ID: ", docRef.id);
