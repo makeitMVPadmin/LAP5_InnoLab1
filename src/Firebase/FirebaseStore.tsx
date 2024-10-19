@@ -60,6 +60,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
 
     // Reformat form data with imageFile link
     const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
+      title: formData.title,
       designFeatures: formData.designFeatures,
       designTools: formData.designTools,
       eventId: formData.eventId,
@@ -73,7 +74,6 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       imageFiles: imageURLs,
       createdAt: Timestamp.now(),
     });
-
     // Add SubmissionId to Event
     const secondDocRef = doc(db, "hackathonEvents", formData.eventId);
     await updateDoc(secondDocRef, {

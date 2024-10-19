@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const submissionSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title of project required." })
+    .max(80, { message: "Max 80 characters has been reached" }),
   teamName: z
     .string()
     .min(1, { message: "Team name is required." })

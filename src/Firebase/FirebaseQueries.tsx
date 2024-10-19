@@ -66,6 +66,8 @@ type CommunityCommentType = {
 }
 
 type HackathonSubmissionType = {
+  id?: string;
+  title: string;
   designFeatures: string;
   designTools: string;
   eventId: string;

@@ -159,6 +159,7 @@ const ProjectReviewPage = () => {
                 projectLinks: formattedLinks,
             };
 
+
             await createProjectSubmission(submissionFormData);
             // TO DO add navigation after the form has submitted 
             // set a alert model
@@ -196,6 +197,20 @@ const ProjectReviewPage = () => {
                     )}
                 </section>
                 <article className="mt-8 flex flex-col gap-10">
+                    <Section
+                        title="Title"
+                        required={true}
+                        editButton={
+                            <EditButton
+                                handleClick={() => handleEditSection("title")}
+                                isEditing={false}
+                                isEditMode={isEditMode}
+                            />
+                        }
+                    >
+                        {renderEditableContent("title", formData.title)}
+                    </Section>
+
                     <Section
                         title="Team Name"
                         required={true}
