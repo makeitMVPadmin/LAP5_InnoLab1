@@ -2,7 +2,7 @@ import { TeamMember, ProjectLink } from "../types/submissionTypes"
 import { STYLES } from "../constants/styles";
 import { Input } from "../components/ui/input";
 import ImportCard from '../components/ImportCard/ImportCard';
-import ImageUploadZone from "../components/FileUploadZone/FileUploadZone"
+import FileUploadZone from "../components/FileUploadZone/FileUploadZone"
 import CloseIcon from "../assets/images/Close.svg"
 
 
@@ -127,7 +127,7 @@ export const renderEditableImages = ({ sectionId,
   content,
   isEditing,
   handleSaveSection,
-  handleDeleteImage,
+  handleDeleteFile,
 }
 ) => {
   if (!isEditing) {
@@ -135,7 +135,7 @@ export const renderEditableImages = ({ sectionId,
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
           {content.map((file, index) => (
-            <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteImage(index)} />
+            <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteFile(index)} />
           ))}
         </div>
       </div>
@@ -143,10 +143,10 @@ export const renderEditableImages = ({ sectionId,
   }
   return (
     <div className="flex flex-col gap-4">
-      <ImageUploadZone onFileChange={(files) => handleSaveSection(sectionId, files)} />
+      <FileUploadZone onFileChange={(files) => handleSaveSection(sectionId, files)} />
       <div className="flex gap-4">
         {content.map((file, index) => (
-          <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteImage(index)} />
+          <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteFile(index)} />
         ))}
       </div>
     </div>

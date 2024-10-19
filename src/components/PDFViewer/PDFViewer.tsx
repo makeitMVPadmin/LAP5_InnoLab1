@@ -65,29 +65,30 @@ const PDFViewer = ({ pdfFileName }) => {
   }
 
   return (
-      <div className='flex items-center justify-center'>
-        <CommuntiArrowStyled 
-            direction='left'
-            className="py-[32px] px-[28px] w-fit h-fit"
-            onClick={previousPage}
-            aria-label="Show previous slide"
-            disabled={pageNumber == 1}
-          />
-        <Document
-          file={pdfUrl}
-          onLoadSuccess={onDocumentLoadSuccess}
-        >
-          <Page pageNumber={pageNumber} />
-        </Document>
-        <CommuntiArrowStyled 
-            direction='right'
-            className="py-[32px] px-[28px] w-fit h-fit"
-            disabled={pageNumber >= numPages}
-            onClick={nextPage}
-            aria-label="Show next slides"
-          />
-      </div>
+    <div className='flex items-center justify-center'>
+      <CommuntiArrowStyled 
+          direction='left'
+          className="py-[2rem] px-[1.8rem] w-fit h-fit"
+          onClick={previousPage}
+          aria-label="Show previous slide"
+          disabled={pageNumber === 1}
+        />
+      <Document
+        file={pdfUrl}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
+        <Page pageNumber={pageNumber} />
+      </Document>
+      <CommuntiArrowStyled 
+          direction='right'
+          className="py-[2rem] px-[1.8rem] w-fit h-fit"
+          disabled={pageNumber >= numPages}
+          onClick={nextPage}
+          aria-label="Show next slide"
+        />
+    </div>
   );
+  
 };
 
 export default PDFViewer;

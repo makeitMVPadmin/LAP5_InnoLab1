@@ -1,10 +1,15 @@
 const ParticipantInfoChip = ({ integer, fullName, role }) => {
     return (
-        <div className="flex py-[6.4px] pl-[9.6px] pr-[16px] font-gilroy rounded-[32px] border border-black bg-white gap-[0.4rem] items-center">
-            <img className="h-[35.2px] w-[35.2px] rounded-full" src={`https://i.pravatar.cc/300?img=${integer + 10}`} alt={`${fullName}-chip-image`} />
+        <div className="flex items-center gap-[0.5rem] py-[0.4rem] pl-[0.6rem] pr-[1rem] font-gilroy rounded-[2rem] border border-black bg-white">
+            <img 
+                className="h-[2.2rem] w-[2.2rem] rounded-full" 
+                src={`https://i.pravatar.cc/300?img=${integer + 10}`} 
+                alt={`Profile image of ${fullName}`} 
+                loading="lazy"
+            />
             <div className="min-w-[4rem]">
-                <h2 className="text-[#000] text-[20px] font-extrabold leading-[115.645%] ligature-off font-poppins">{fullName}</h2>
-                <p className="text-[#444] text-[11.2px] font-medium leading-[115.645%] ligature-off font-poppins">{role}</p>
+                <h3 className="text-black text-[1.25rem] font-extrabold leading-[115.645%] font-poppins">{fullName}</h3>
+                <p className="text-[#444] text-[0.7rem] font-medium leading-[115.645%] font-poppins">{role}</p>
             </div>
         </div>
     );

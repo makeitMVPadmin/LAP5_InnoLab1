@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import useSubmissions from '../../hooks/useSubmission';
+import useSubmission from '../../hooks/useSubmission';
 import useEvents from '../../hooks/useEvents';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { 
@@ -21,9 +21,9 @@ import HorizontalTabMenu from '../../components/HorizontalTabMenu/HorizontalTabM
 
 const ProjectShowcasePage = () => {
     const { submissionId } = useParams<{ submissionId: string }>();
-    const { submission, event, isLoading, error } = useSubmissions(submissionId);
+    const { submission, event, isLoading, error } = useSubmission(submissionId);
+    const downloadRefs = useRef([]);
     const { basicProjectSummary } = event || {};
-    const [imageUrls, setImageUrls] = useState<string[]>([]);
     const {
         teamName,
         designFeatures,
@@ -32,34 +32,13 @@ const ProjectShowcasePage = () => {
         problemStatement,
         techStack,
         projectLinks,
+        projectFiles,
+        pdfFiles,
         teamMembers,
         createdAt,
-        projectFiles,
         comments,
         judgesComments
     } = submission || {};
-
-    useEffect(() => {
-        const fetchImages = async () => {
-            if (submission) {
-                const storage = getStorage();
-                
-                try {
-                    const urls = await Promise.all(
-                        projectFiles.map(async (file: string) => {
-                            const imageRef = ref(storage, file);
-                            return await getDownloadURL(imageRef);
-                        })
-                    );
-                    setImageUrls(urls);
-                } catch (error) {
-                    console.error('Failed to fetch images: ', error);
-                }
-            }
-        };
-
-        fetchImages();
-    }, [submission]);
 
 
     const options: Intl.DateTimeFormatOptions = {
@@ -82,61 +61,69 @@ const ProjectShowcasePage = () => {
         return filename;
     }
 
+    const handleDownloadAll = () => {
+        downloadRefs.current.forEach(ref => {
+            if (ref) ref.click(); // Simulate click
+        });
+    };
+
     return (
         <main className='w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat'>
             <DashboardNavbar />
-            <div className="h-[17.6%] w-full shadow-sm bg-[#C8E7FB] flex flex-col justify-between px-[33px] py-[6.4px] max-h-[4.8rem] justify-center">
-                <Link to="/" className="text-MVP-black cursor-pointer font-gilroy text-[24px] font-extrabold my-auto">← Back</Link>
-            </div>
+            <header className="h-[15%] m-h-[5rem] w-full shadow-sm bg-[#C8E7FB] flex flex-col justify-between rem-[2.1rem] py-[0.4rem] px-[2.5rem] max-h-[4.8rem] justify-center">
+                <Link to="/hackathons" className="text-MVP-black cursor-pointer font-gilroy text-[1.5rem] font-extrabold my-auto">← Back</Link>
+            </header>
             <div className='flex flex-col items-center font-gilroy'>
-                <section className='w-[68%] flex flex-col'>
-                    <h1 className='text-black font-sans text-[46.4px] font-extrabold leading-[115.645%] ligature-off mt-[30.8px]'>{ event && event.title }</h1>
-                    <div className="flex text-[20px] my-[20.8px] gap-[8px]">
+                <section className='w-[66%] flex flex-col'>
+                    <h1 className='text-black font-sans text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>{event && event.title}</h1>
+                    <div className="flex text-[1.3rem] my-[1.3rem] gap-[0.5rem]">
                         <Clock />
                         <p className="font-extrabold">Submitted on</p>
                         <p className="font-light"> {createdAt?.toDate().toLocaleString('en-US', options)}</p>
                     </div>
-                    <h2 className="self-stretch text-[#1E1E1E] text-[24px] font-extrabold leading-[115.645%] font-gilroy ligature-off">Team Name</h2>
-                    <p className="self-stretch text-[#000] text-[20px] font-normal leading-[115.645%] font-gilroy ligature-off my-[8px]">{teamName}</p>   
-                    <div className="h-full flex gap-[15px] my-[16px]">
+                    <h2 className="text-[#1E1E1E] text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Team Name</h2>
+                    <p className="text-[#000] text-[1.3rem] font-normal leading-[115.645%] font-gilroy my-[0.5rem]">{teamName}</p>   
+                    <div className="h-full flex gap-[0.9rem] my-[1rem]">
                         {teamMembers?.map(({ name, role }, index) => (
                             <ParticipantInfoChip key={index} integer={index} fullName={name} role={role} />
                         ))}
                     </div>
-                    <div className="flex justify-between items-center my-[10px]">
-                        <h2 className="text-center text-[#000] text-[24px] font-extrabold leading-[115.645%] font-sans ligature-off">Project Files</h2>
-                        <button className='rounded-[8px] border-t-[2.4px] border-r-[4px] border-b-[4px] border-l-[2.4px] border-black bg-white flex p-[12.8px] px-[25.6px] justify-center items-center gap-[8px] text-center text-[#000] text-[21.6px] font-extrabold leading-[115.645%] font-sans ligature-off'>Download All Files</button>
+                    <div className="flex justify-between items-center my-[0.6rem]">
+                        <h2 className="text-center text-[#000] text-[1.5rem] font-extrabold leading-[115.645%] font-sans ligature-off">Project Files</h2>
+                        <button onClick={handleDownloadAll} className='rounded-[0.5rem] border-t-[0.15rem] border-r-[0.25rem] border-b-[0.25rem] border-l-[0.15rem] border-black bg-white flex p-[0.8rem] px-[1.6rem] justify-center items-center gap-[0.5rem] text-center text-[#000] text-[1.4rem] font-extrabold leading-[115.645%] font-sans ligature-off'>Download All Files</button>
                     </div>
-                    <PDFViewer pdfFileName={projectFiles}/>
-                    <div className='flex justify-evenly mt-[32px]'>
+                    <PDFViewer pdfFileName={pdfFiles} />
+                    <div className='flex justify-evenly my-[2rem]'>
                         {projectFiles?.map((projectFile: string, index: number) => 
-                            <DownloadWithFilename key={index} filename={getFileNameFromUrl(projectFile)}/>
+                            <DownloadWithFilename key={index} filename={getFileNameFromUrl(projectFile)} ref={el => downloadRefs.current[index] = el} />
                         )}
                     </div>
-                    <h2 className="self-stretch my-[10px] text-[#1E1E1E] text-[24px] font-extrabold leading-[130.645%] font-gilroy ligature-off">Tech Stack: *</h2>
-                    {
-                        techStack?.split(",").map(item => item.trim()).map((tech, index) => (
-                            <p className="self-stretch text-black font-normal text-[20px] leading-[130.645%] font-poppins ligature-off my-[3.2px]" key={index}>
+                    <h2 className="my-[0.6rem] text-[#1E1E1E] text-[1.5rem] font-extrabold leading-[130.645%] font-gilroy ligature-off">Tech Stack: *</h2>
+                    <ul>
+                        {techStack?.split(",").map(item => item.trim()).map((tech, index) => (
+                            <li key={index} className="text-black font-normal text-[1.3rem] leading-[130.645%] font-poppins my-[0.2rem]">
                                 {tech}
-                            </p>
-                        ))
-                    }
-                    <h2 className="self-stretch my-[20px] text-[#1E1E1E] text-[24px] font-extrabold leading-[115.645%] font-gilroy ligature-off">Design Tool Used: *</h2>
-                    {
-                        designTools?.split(",").map(item => item.trim()).map((tool, index) => (
-                            <p className="self-stretch text-black font-normal text-[20px] leading-[115.645%] font-poppins ligature-off my-[3.2px]" key={index}>
+                            </li>
+                        ))}
+                    </ul>
+                    <h2 className="my-[1.3rem] text-[#1E1E1E] text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Design Tool Used: *</h2>
+                    <ul>
+                        {designTools?.split(",").map(item => item.trim()).map((tool, index) => (
+                            <li key={index} className="text-black font-normal text-[1.3rem] leading-[115.645%] font-poppins my-[0.2rem]">
                                 {tool}
-                            </p>
-                        ))
-                    }
-                    <h2 className="self-stretch my-[20px] text-[#1E1E1E] text-[24px] font-extrabold leading-[115.645%] font-gilroy ligature-off">Project Links:</h2>
-                    {
-                        projectLinks?.map(({url}, index) => (
-                            <Link to={url} className="self-stretch text-black font-normal text-[20px] leading-[115.645%] font-poppins ligature-off my-[6.4px] hover:underline" key={index}>
-                                {url}
-                            </Link>
-                        ))
-                    }
+                            </li>
+                        ))}
+                    </ul>
+                    <h2 className="my-[1.3rem] text-[#1E1E1E] text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Project Links:</h2>
+                    <ul>
+                        {projectLinks?.map(({url}, index) => (
+                            <li key={index} className="text-black font-normal text-[1.3rem] leading-[115.645%] font-poppins my-[0.4rem] hover:underline">
+                                <Link to={url}>
+                                    {url}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
                     <HorizontalTabMenu 
                         tabs={[
                             {id: 'problemStatement', label: 'Problem Statement', content: problemStatement },
@@ -145,26 +132,15 @@ const ProjectShowcasePage = () => {
                             {id: 'nextSteps', label: 'Next Steps', content: nextSteps}
                         ]}
                     />
-                    <h1 className="flex-1 text-[#000] font-gilroy text-[24px] font-extrabold leading-[28.8px]">
+                    <h1 className="flex-1 text-[#000] font-gilroy text-[1.5rem] font-extrabold leading-[1.8rem]">
                         Comments
                     </h1>
-                    <CommentSection submissionId={submissionId}/>
+                    <CommentSection submissionId={submissionId} />
                 </section>
             </div>
         </main>
-    );
+    );    
 };
 
 export default ProjectShowcasePage;
 
-{/* <Carousel className='w-[56%] h-[32%] ml-auto mr-auto'>
-<CarouselContent>
-    {imageUrls.map((index) => (
-        <CarouselItem key={index} className='w-[40%] h-[40%]'>
-            <img src={`https://picsum.photos/200/300?random=${index}`} alt={`Submission Image ${index + 1}`} />
-        </CarouselItem>
-    ))}
-</CarouselContent>
-<CarouselPrevious aria-label='Previous image'/>
-<CarouselNext aria-label='Next image'/>
-</Carousel> */}

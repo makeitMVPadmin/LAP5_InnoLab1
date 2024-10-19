@@ -128,7 +128,7 @@ const ProjectReviewPage = () => {
     const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
-    const handleDeleteImage = (indexToRemove: Number) => {
+    const handleDeleteFile = (indexToRemove: Number) => {
         const newFiles = formData.projectFiles.filter((_, index: Number) => index !== indexToRemove);
         setFormData(prev => ({
             ...prev,
@@ -158,6 +158,7 @@ const ProjectReviewPage = () => {
                 teamMembers: formattedTeamMembers,
                 projectLinks: formattedLinks,
             };
+            console.log(submissionFormData);
 
             await createProjectSubmission(submissionFormData);
             // TO DO add navigation after the form has submitted 
@@ -317,16 +318,16 @@ const ProjectReviewPage = () => {
                                     title="Upload project files"
                                     editButton={
                                         <EditButton
-                                            handleClick={() => handleEditSection("imageFiles")}
+                                            handleClick={() => handleEditSection("projectLinks")}
                                             isEditing={false}
                                             isEditMode={isEditMode} />}
                                 >
                                     {renderEditableImages({
-                                        sectionId: "imageFiles",
-                                        content: formData.imageFiles,
-                                        isEditing: editingSectionId === "imageFiles",
+                                        sectionId: "projectLinks",
+                                        content: formData.projectLinks,
+                                        isEditing: editingSectionId === "projectLinks",
                                         handleSaveSection,
-                                        handleDeleteImage,
+                                        handleDeleteFile,
                                     })}
                                 </Section>
                             </div>
@@ -344,7 +345,7 @@ const ProjectReviewPage = () => {
                                         content: formData.pdfFiles,
                                         isEditing: editingSectionId === "pdfFiles",
                                         handleSaveSection,
-                                        handleDeleteImage,
+                                        handleDeleteFile,
                                     })}
                                 </Section>
                             </div>

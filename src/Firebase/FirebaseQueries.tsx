@@ -72,13 +72,12 @@ type HackathonSubmissionType = {
   imageFile: string;
   nextSteps: string;
   problemStatement: string;
-  projectLinks: string[];
+  projectLinks: {url: string}[];
   teamMembers: {name: string, role: string}[];
   teamName: string;
   techStack: string[];
   judgesComments: JudgeCommentType[];
   comments?: CommunityCommentType[];
-  createdAt: Timestamp;
 };
 
 export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {

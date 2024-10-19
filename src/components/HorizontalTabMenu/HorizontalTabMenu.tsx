@@ -38,8 +38,6 @@ const HorizontalTabMenu = ({
     }
   };
 
-  console.log(startIndex);
-
   useEffect(() => {
     const handleResize = () => {
       if (tabsRef.current) {
@@ -54,51 +52,63 @@ const HorizontalTabMenu = ({
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [tabs.length]);
+  }, []);
 
   return (
-    <div className="w-full mx-auto space-y-6 my-[30px]">
-      <div className="relative flex w-full my-[40px]">
-            <CommuntiArrowStyled direction='left'
-                className="py-[32px] px-[28px]"
+    <div className="w-full mx-auto space-y-6 my-[1.9rem]" role="tabpanel" aria-labelledby="tabbed-navigation">
+        <div className="relative flex w-full my-[2.5rem]">
+            <CommuntiArrowStyled 
+                direction='left'
+                className="py-[2rem] px-[1.8rem]"
                 onClick={handlePrevClick}
                 aria-label="Show previous tabs"
-                disabled={startIndex == 0}
-                />
-        <div
-          ref={tabsRef}
-          className="flex overflow-hidden mx-[1%] h-[83px] gap-[1%]" 
-        >
-          {tabs.map((tab, index) => (
-            <Button
-              key={tab.id}
-              variant="ghost"
-              className={`flex-shrink-0 ${
-                index === activeTab ? 'bg-[#BFE5FF] text-secondary-foreground border-b-[8px] border-b-[#0954B0]' : 'border-b-[6px] border-b-black'
-              } ${index < startIndex || index >= startIndex + visibleTabs ? 'invisible' : ''}
-              h-full rounded-tl-[8px] rounded-tr-[8px] rounded-bl-[0px] rounded-br-[0px] `}
-              onClick={() => handleTabClick(index)}
-              style={{
-                transform: `translateX(-${startIndex * 100}%)`,
-                transition: 'transform 0.3s ease-in-out',
-              }}
+                disabled={startIndex === 0}
+            />
+            <div
+                ref={tabsRef}
+                className="flex overflow-hidden mx-[1%] h-[5.2rem] gap-[1%]"
+                role="tablist"
             >
-              <p className={`${index === activeTab && 'text-[#0954B0]'} text-black font-gilroy text-[26px] font-extrabold normal-case leading-[115.645%]`}>{tab.label}</p>
-            </Button>
-          ))}
-          
-        </div>
-        <CommuntiArrowStyled direction='right'
-                className="py-[32px] px-[28px]"
+                {tabs.map((tab, index) => (
+                    <Button
+                        key={tab.id}
+                        variant="ghost"
+                        role="tab"
+                        aria-selected={index === activeTab}
+                        className={`flex-shrink-0 ${
+                            index === activeTab ? 'bg-[#BFE5FF] text-secondary-foreground border-b-[0.5rem] border-b-[#0954B0]' : 'border-b-[0.4rem] border-b-black'
+                        } ${index < startIndex || index >= startIndex + visibleTabs ? 'invisible' : ''}
+                        h-full rounded-tl-[0.5rem] rounded-tr-[0.5rem] rounded-bl-[0] rounded-br-[0]`}
+                        onClick={() => handleTabClick(index)}
+                        style={{
+                            transform: `translateX(-${startIndex * 100}%)`,
+                            transition: 'transform 0.3s ease-in-out',
+                        }}
+                        id={`tab-${index}`}
+                        aria-controls={`panel-${index}`}
+                    >
+                        <p className={`text-black font-gilroy text-[1.7rem] font-extrabold normal-case leading-[115.645%] ${index === activeTab && 'text-[#0954B0]'}`}>
+                            {tab.label}
+                        </p>
+                    </Button>
+                ))}
+            </div>
+            <CommuntiArrowStyled 
+                direction='right'
+                className="py-[2rem] px-[1.8rem]"
                 onClick={handleNextClick}
                 aria-label="Show more tabs"
-                disabled={startIndex == 1}
+                disabled={startIndex === tabs.length - visibleTabs}
             />
-      </div>
-        <p className='self-stretch text-[#000] mx-auto w-[95%] font-poppins text-[22px] font-normal leading-[115.645%]'>{tabs[activeTab].content}</p>
-      <div className="sr-only" aria-live="polite">
-        Current tab: {tabs[activeTab].label}, {activeTab + 1} of {tabs.length}
-      </div>
+        </div>
+        <p 
+            className='text-[#000] mx-auto w-[95%] font-poppins text-[1.4rem] font-normal leading-[115.645%]' 
+            id={`panel-${activeTab}`} 
+            role="tabpanel"
+            aria-labelledby={`tab-${activeTab}`}
+        >
+            {tabs[activeTab].content}
+        </p>
     </div>
   );
 };

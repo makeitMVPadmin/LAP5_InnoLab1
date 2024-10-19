@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { ReactComponent as DownloadIcon } from '../../assets/images/download.svg';
-import { getBlob, ref } from 'firebase/storage';
+import { getBlob, ref as firebaseRef} from 'firebase/storage';
 import { storage } from '../../Firebase/FirebaseConfig';
 
-const DownloadWithFilename = ({ filename }) => {
+const DownloadWithFilename = forwardRef<HTMLButtonElement, { filename: string }>(({ filename }, ref)  => {
     const [downloadUrl, setDownloadUrl] = useState(null);
 
     useEffect(() => {
         const fetchPdf = async () => {
             try {
-                const pdfRef = ref(storage, `submissions/${filename}`);
+                const pdfRef = firebaseRef(storage, `submissions/${filename}`);
                 setDownloadUrl(pdfRef);
             } catch (error) {
                 console.error('Error fetching PDF:', error);
@@ -38,13 +38,19 @@ const DownloadWithFilename = ({ filename }) => {
     };
 
     return (
-        <div className='flex bg-[#D9D9D9] py-[16px] px-[40px] justify-center items-center gap-[24px]'>
-            <p className='text-black text-center font-poppins text-base font-medium leading-[18.503px]'>{filename}</p>
-            <button onClick={handleDownload}>
+        <div className='flex bg-[#D9D9D9] py-[1rem] px-[2.5rem] justify-center items-center gap-[1.5rem]' role="group" aria-label="Download Section">
+            <p className='text-black text-center font-poppins text-base font-medium leading-[1.2rem]'>{filename}</p>
+            <button 
+                ref={ref} 
+                onClick={handleDownload} 
+                aria-label={`Download ${filename}`} 
+                className="flex items-center"
+            >
                 <DownloadIcon />
+                <span className="sr-only">Download</span>
             </button>
         </div>
     );
-};
+});
 
 export default DownloadWithFilename;

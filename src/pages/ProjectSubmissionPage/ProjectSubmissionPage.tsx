@@ -346,7 +346,7 @@ const ProjectSubmissionPage = () => {
                                 <div className="w-1/2">
                                     <h4 className="">Project Files</h4>
                                     <div className="pt-2">
-                                        <ImageUploadZone onFileChange={handleFileChange}
+                                        <FileUploadZone onFileChange={handleFileChange}
                                         />
                                         <p className={`${STYLES.label} px-2 pt-2`}>supported formats: ZIP</p>
                                         <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>
@@ -355,14 +355,14 @@ const ProjectSubmissionPage = () => {
                                         <div className="flex gap-4">
                                             {file.length > 0 && file.map((item, index) => {
                                                 return (
-                                                    <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteImage(index)} />
+                                                    <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteFile(index)} />
                                                 )
                                             })}
                                         </div>
-                                        {errors.imageFiles && (
+                                        {errors.projectFiles && (
                                             <div className="flex items-center gap-2">
                                                 <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
-                                                <p className="text-red-500">{errors.imageFiles.message}</p>
+                                                <p className="text-red-500">{errors.projectFiles.message}</p>
                                             </div>
                                         )}
                                     </div>
@@ -370,7 +370,7 @@ const ProjectSubmissionPage = () => {
                                 <div className="w-1/2">
                                     <h4 className="px-2">Presentation Deck*</h4>
                                     <div className="pt-2">
-                                        <ImageUploadZone onFileChange={handlePdfChange}
+                                        <FileUploadZone onFileChange={handlePdfChange}
                                         />
                                         <p className={`${STYLES.label} px-2 pt-2`}>supported formats: PDF</p>
                                         <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>
