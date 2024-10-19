@@ -231,7 +231,11 @@ const EventForm: React.FC = () => {
 
         <div className="form-group">
           <label htmlFor="discipline">Discipline *</label>
-          <div className="border-black border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2">
+          <div
+            className={`border-2 rounded-lg p-2 flex gap-4 ${
+              errors.disciplines ? "border-red-500" : "border-black"
+            }`}
+          >
             {selectedDisiplines.map((discipline) => (
               <div
                 key={discipline}
@@ -239,6 +243,7 @@ const EventForm: React.FC = () => {
               >
                 {discipline}
                 <button
+                  type="button"
                   onClick={() => removeDisciplines(discipline)}
                   className="ml-1 text-black"
                 >
@@ -249,8 +254,13 @@ const EventForm: React.FC = () => {
             <select
               onChange={handleDisciplineChange}
               className="focus:outline-none w-full theme-select"
+              {...register("disciplines", {
+                required: "Discipline is required",
+                validate: () =>
+                  selectedDisiplines.length > 0 || "Discipline is required",
+              })}
             >
-              <option value="">Select up to 3 disiplines</option>
+              <option value="">Select up to 3 disciplines</option>
               {allDisiplines
                 .filter(
                   (discipline) => !selectedDisiplines.includes(discipline)
@@ -262,11 +272,20 @@ const EventForm: React.FC = () => {
                 ))}
             </select>
           </div>
+          {errors.disciplines && (
+            <p className="text-red-500 mt-1 text-sm">
+              {errors.disciplines.message}
+            </p>
+          )}
         </div>
 
         <div className="form-group">
           <label htmlFor="theme">Theme *</label>
-          <div className="border-black border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2">
+          <div
+            className={`border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2 ${
+              errors.disciplines ? "border-red-500" : "border-black"
+            }`}
+          >
             {selectedThemes.map((theme) => (
               <div
                 key={theme}
@@ -284,6 +303,11 @@ const EventForm: React.FC = () => {
             <select
               onChange={handleThemeChange}
               className="focus:outline-none w-full theme-select"
+              {...register("themes", {
+                required: "Theme is required",
+                validate: () =>
+                  selectedDisiplines.length > 0 || "Theme is required",
+              })}
             >
               <option value="">Select up to 3 themes</option>
               {allThemes
@@ -295,6 +319,7 @@ const EventForm: React.FC = () => {
                 ))}
             </select>
           </div>
+          {errors.themes && <p className="error">{errors.themes.message}</p>}
         </div>
 
         <div className="form-group">
@@ -464,7 +489,7 @@ const EventForm: React.FC = () => {
               key={field.id}
               className="justify-between flex-col flex whitespace-nowrap my-3"
             >
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <label className="mr-2">Judge #{index + 1}</label>
                 <input
                   type="text"
@@ -487,19 +512,18 @@ const EventForm: React.FC = () => {
                     errors.judges?.[index]?.lastName ? "error" : ""
                   }`}
                 />
-                              {fields.length > 1 && (
-                <button
-                  type="button"
-                  className="ml-2 text-red-500"
-                  onClick={() => remove(index)}
-                >
-                  X
-                </button>
-              )}
+                {fields.length > 1 && (
+                  <button
+                    type="button"
+                    className="ml-2 text-red-500"
+                    onClick={() => remove(index)}
+                  >
+                    X
+                  </button>
+                )}
               </div>
 
-
-                            <div className="flex flex-col">
+              <div className="flex flex-col">
                 {errors.judges?.[index]?.firstName && (
                   <p className="error">
                     {errors.judges[index].firstName.message}
@@ -513,7 +537,7 @@ const EventForm: React.FC = () => {
               </div>
             </div>
           ))}
-          
+
           {fields.length < 4 && (
             <div className="flex justify-end mt-2">
               <button
