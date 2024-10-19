@@ -3,7 +3,8 @@ import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
 
-type HackathonEventType = {
+
+export type HackathonEvent = {
   basicProjectSummary: string;
   createdAt: string;
   disciplines: string[];

@@ -1,4 +1,4 @@
-import { ReactComponent as HomeIcon} from "../../assets/images/homeIcon.svg";
+import { ReactComponent as HomeIcon } from "../../assets/images/homeIcon.svg";
 import ChatIcon from "../../assets/images/chatIcon.svg";
 import { ReactComponent as CalendarIcon } from "../../assets/images/calendarIcon.svg";
 import { ReactComponent as CommunitiesIcon } from "../../assets/images/communitiesIcon.svg";
@@ -50,13 +50,13 @@ const DashboardNavbar = () => {
           {({ isActive }) => (
             <>
               <HomeIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black' }`}
+                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
               />
-              <p className={`text-MVP-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue' }`}>
+              <p className={`text-MVP-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue'}`}>
                 Home
               </p>
             </>
-            
+
           )}
         </NavLink>
         <NavLink
@@ -66,13 +66,13 @@ const DashboardNavbar = () => {
           {({ isActive }) => (
             <>
               <CommunitiesIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black' }`}
+                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
               />
-              <p className={`text-mvp-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-mvp-dark-blue border-b-4 border-mvp-dark-blue' }`}>
+              <p className={`text-mvp-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-mvp-dark-blue border-b-4 border-mvp-dark-blue'}`}>
                 Communities
               </p>
             </>
-            
+
           )}
         </NavLink>
         <NavLink
@@ -82,13 +82,13 @@ const DashboardNavbar = () => {
           {({ isActive }) => (
             <>
               <CalendarIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black' }`}
+                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
               />
-              <p className={`text-MVP-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue' }`}>
+              <p className={`text-MVP-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue'}`}>
                 Events
               </p>
             </>
-            
+
           )}
         </NavLink>
         <NavLink
@@ -98,25 +98,25 @@ const DashboardNavbar = () => {
           {({ isActive }) => (
             <>
               <CoffeeChatIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black' }`}
+                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
               />
-              <p className={`text-mvp-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-mvp-dark-blue border-b-4 border-mvp-dark-blue' }`}>
+              <p className={`text-mvp-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-mvp-dark-blue border-b-4 border-mvp-dark-blue'}`}>
                 Coffee Chat
               </p>
             </>
-            
+
           )}
         </NavLink>
       </div>
       <div className="flex h-[100%]">
         <Link to="/profile" className="flex items-center text-none flex-col justify-center h-full mx-4 md:mx-4">
-          <img src={ProfilePic} className="w-[2.3vw] md:w-[3vw]"/>
+          <img src={ProfilePic} className="w-[2.3vw] md:w-[3vw]" />
         </Link>
         <button className="flex items-center bg-none border-none cursor-pointer" onClick={handleDropdown}>
-          <DropDownArrow className="w-[2vw] md:w-[3vw]"/>
+          <DropDownArrow className="w-[2vw] md:w-[3vw]" />
         </button>
         {dropdownButton && (
-          <button 
+          <button
             className="absolute top-[6%] right-[1.5%]"
             onClick={handleLogout}
 
