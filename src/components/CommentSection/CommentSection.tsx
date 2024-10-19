@@ -11,7 +11,6 @@ const CommunityCommentSection = ({ submissionId }) => {
     const { submission } = useSubmission(submissionId);
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
-    const [error, setError] = useState('');
     const [showsFull, setShowsFull] = useState([]);
     const [showOption, setShowOption] = useState([]);
 
@@ -78,13 +77,10 @@ const CommunityCommentSection = ({ submissionId }) => {
                     };
                     setComments(prevComments => [...prevComments, newComment]);
                     setComment('');
-                    setError('');
-                } else {
-                    setError('No success from addCommentToSubmission');
-                }
+                } 
+
             } catch (error) {
                 console.log(error);
-                setError('Failed to add comment.');
             }
         }
     };
@@ -96,12 +92,9 @@ const CommunityCommentSection = ({ submissionId }) => {
             if (response.success) {
                 setComments(prevComments => prevComments.filter((_, i) => i !== idx));
             }
-            else {
-                setError('No success from removeCommentFromSubmission');
-            } 
+
         } catch (error) {
             console.error(error);
-            setError(`Couldn't access FirebaseStore.tsx`);
         }
     }
 

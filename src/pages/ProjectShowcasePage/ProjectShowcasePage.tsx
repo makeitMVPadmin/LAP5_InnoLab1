@@ -1,17 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useSubmission from '../../hooks/useSubmission';
-import useEvents from '../../hooks/useEvents';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { 
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious
-} from '../../components/ui/carousel';
 import CommentSection from '../../components/CommentSection/CommentSection';
-import JudgesCommentSection from '../../components/JudgesCommentSection/JudgesCommentSection';
 import DashboardNavbar from '../../components/DashboardNavbar/DashboardNavbar';
 import { ReactComponent as Clock } from '../../assets/images/clock.svg'; 
 import ParticipantInfoChip from '../../components/ParticipantInfoChip/ParticipantInfoChip';
@@ -21,7 +11,7 @@ import HorizontalTabMenu from '../../components/HorizontalTabMenu/HorizontalTabM
 
 const ProjectShowcasePage = () => {
     const { submissionId } = useParams<{ submissionId: string }>();
-    const { submission, event, isLoading, error } = useSubmission(submissionId);
+    const { submission, event } = useSubmission(submissionId);
     const downloadRefs = useRef([]);
     const { basicProjectSummary } = event || {};
     const {
@@ -36,8 +26,6 @@ const ProjectShowcasePage = () => {
         pdfFiles,
         teamMembers,
         createdAt,
-        comments,
-        judgesComments
     } = submission || {};
 
 
