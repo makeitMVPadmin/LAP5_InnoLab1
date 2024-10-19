@@ -1,3 +1,4 @@
+import PulsingAnimation from "../components/PulsingAnimation/PulsingAnimation";
 export function convertToTimeZone(
   isoString: string | number | Date,
   timeZoneAbbreviation: string
@@ -57,7 +58,8 @@ export const getEventStatus = (
   } else if (currentTime >= eventStartTime && currentTime <= eventEndTime) {
     return {
       text: "On-going",
-      style: "bg-yellow-500 text-black", // Active style
+      style: "border-2 border-MVP-black bg-MVP-yellow", // Active style
+      image: PulsingAnimation,
     };
   } else {
     return {
@@ -66,4 +68,3 @@ export const getEventStatus = (
     };
   }
 };
-
