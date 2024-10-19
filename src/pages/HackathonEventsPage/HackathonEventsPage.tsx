@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
+import PulsingAnimation from "../../components/PulsingAnimation/PulsingAnimation";
+
 
 const HackathonEventsPage = () => {
   const { currentUser } = useAuth();

@@ -31,12 +31,11 @@ const useEvents = (joinedEvents: string[]) => {
                 }
                 return acc;
             }, { joinedCurrentEvents: [], joinedPastEvents: [], allCurrentEvents: [] });
-
             if (joinedCurrentEvents.length === 0 && joinedPastEvents.length === 0) {
                 setEvents({
                     joinedCurrentEvents: [],
                     joinedPastEvents: [],
-                    allCurrentEvents: sortEventsByStartTime(allCurrentEvents),
+                    allCurrentEvents: sortEventsByStartTime(allCurrentEvents), // Sort current events
                 });
             } else {
                 setEvents({
@@ -75,5 +74,6 @@ const useEvents = (joinedEvents: string[]) => {
         refetchEvents: fetchData,
     };
 };
+
 
 export default useEvents;

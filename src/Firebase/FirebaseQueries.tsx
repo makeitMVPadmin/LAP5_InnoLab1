@@ -1,6 +1,8 @@
 import { getDocs, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
+import { Timestamp } from "firebase/firestore";
+
 
 export type HackathonEvent = {
   basicProjectSummary: string;
@@ -22,26 +24,85 @@ export type HackathonEvent = {
   title: string;
 };
 
-export const fetchHackathonEvents = async (): Promise<{ events: Record<string, HackathonEvent>; loading: boolean; error: string | null }> => {
+export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ event?: HackathonEventType; events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
   let loading = true;
   let error: string | null = null;
-  let events: Record<string, HackathonEvent> = {};
+  let event: HackathonEventType | undefined;
+  let events: Record<string, HackathonEventType> = {};
 
   try {
     const colRef = collection(db, "hackathonEvents");
     const querySnapshot = await getDocs(colRef);
     
     events = querySnapshot.docs.reduce((acc, doc) => {
-      acc[doc.id] = doc.data() as HackathonEvent;
+      acc[doc.id] = doc.data() as HackathonEventType;
       return acc;
-    }, {} as Record<string, HackathonEvent>);
+    }, {} as Record<string, HackathonEventType>);
+    if (hackathonId) {
+      event = events[hackathonId];
+      if (!event) {
+        error = "Event not found";
+      }
+    }
   } catch (err) {
     error = (err as Error).message;
   } finally {
     loading = false;
   }
 
-  return { events, loading, error };
+  return { event, events, loading, error };
+};
+
+type JudgeCommentType = {
+  comment: string;
+  judgeName: string;
+  rating: number;
+  suggestions: string;
+}
+
+type CommunityCommentType = {
+  commentEntry: string;
+  commentTimestamp: Timestamp;
+  commenterName: string;
+}
+
+type HackathonSubmissionType = {
+  designFeatures: string;
+  designTools: string;
+  eventId: string;
+  imageFile: string;
+  nextSteps: string;
+  problemStatement: string;
+  projectLinks: {url: string}[];
+  teamMembers: {name: string, role: string}[];
+  teamName: string;
+  techStack: string[];
+  judgesComments: JudgeCommentType[];
+  comments?: CommunityCommentType[];
+};
+
+export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {
+  let loading = true;
+  let error: string | null = null;
+  let submissions: Record<string, HackathonSubmissionType> = {};
+
+  try {
+      const colRef = collection(db, "hackathonProjectSubmissions");
+      const querySnapshot = await getDocs(colRef);
+      
+      submissions = querySnapshot.docs.reduce((acc, doc) => {
+          if (doc.id === id) {
+              acc[doc.id] = doc.data() as HackathonSubmissionType;
+          }
+          return acc;
+      }, {} as Record<string, HackathonSubmissionType>);
+  } catch (err) {
+      error = (err as Error).message;
+  } finally {
+      loading = false;
+  }
+
+  return { submissions, loading, error };
 };
 
 
@@ -80,4 +141,42 @@ export const useJoinedEvents = (userId: string | undefined): { joinedEvents: str
   }, [userId]);
 
   return { joinedEvents, loading, error };
+};
+
+export const useFetchHackathonUser = (userUid: string | undefined) => {
+  const [hackathonUser, setHackathonUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const userDocRef = doc(db, "hackathonUsers", userUid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+          setError("User not found");
+          setHackathonUser(null);
+        } else {
+          setHackathonUser(userDoc.data());
+        }
+      } catch (err) {
+        setError("Failed to fetch user");
+        console.error("Error fetching user:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userUid) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, [userUid]);
+
+  return { hackathonUser, loading, error };
 };
