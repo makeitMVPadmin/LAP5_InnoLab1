@@ -31,7 +31,6 @@ const useEvents = (joinedEvents: string[]) => {
                 }
                 return acc;
             }, { joinedCurrentEvents: [], joinedPastEvents: [], allCurrentEvents: [] });
-
             if (joinedCurrentEvents.length === 0 && joinedPastEvents.length === 0) {
                 setEvents({
                     joinedCurrentEvents: [],
@@ -75,5 +74,6 @@ const useEvents = (joinedEvents: string[]) => {
         refetchEvents: fetchData,
     };
 };
+
 
 export default useEvents;

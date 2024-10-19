@@ -5,15 +5,18 @@ import { ReactComponent as Sensors } from "../../assets/images/sensors.svg";
 import { useAuth } from "../../context/AuthContext";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link } from "react-router-dom";
-import EventForm from "../CreateEvent/EventForm";
 import useEvents from "../../hooks/useEvents";
+import useFilterEvents from "../../hooks/useFilterEvents";
+import Filters from "../../components/Filters/Filters";
 import PulsingAnimation from "../../components/PulsingAnimation/PulsingAnimation";
+
 
 const HackathonEventsPage = () => {
   const { currentUser } = useAuth();
   const { joinedEvents } = useJoinedEvents(currentUser?.uid);
   const { events, isLoading, getEndingEvent } = useEvents(joinedEvents);
   const { allCurrentEvents, joinedCurrentEvents } = events || {};
+  const { filters, setFilters, filteredEvents } = useFilterEvents(allCurrentEvents);
   const [ alertEvent, setAlertEvent ] = useState(false);
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const HackathonEventsPage = () => {
 
   const displayCards = useMemo(() => {
     return (
-      allCurrentEvents.map(event => (
+      filteredEvents.map(event => (
         <EventCard
           key={event.id}
           id={event.id}
@@ -38,7 +41,7 @@ const HackathonEventsPage = () => {
         />
       ))
     );
-  }, [allCurrentEvents]);
+  }, [filteredEvents]);
 
   const renderEvents = () => {
     if (isLoading) return <div>Loading...</div>;
@@ -68,7 +71,9 @@ const HackathonEventsPage = () => {
         <Link to="/EventForm" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
-        <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>
+        <div className="flex-1 w-[20%]">
+        <Filters filters={filters} setFilters={setFilters} />
+        </div>
         <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
         {renderEvents()}
         </div>
@@ -78,4 +83,3 @@ const HackathonEventsPage = () => {
 };
 
 export default HackathonEventsPage;
-

@@ -52,7 +52,6 @@ export const updateUserInFirestore = async (
   }
 };
 
-
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
 
