@@ -4,11 +4,12 @@ import { useJoinedEvents } from "../../Firebase/FirebaseQueries";
 import { ReactComponent as Sensors } from "../../assets/images/sensors.svg";
 import { useAuth } from "../../context/AuthContext";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
 import PulsingAnimation from "../../components/PulsingAnimation/PulsingAnimation";
+import Header from "../../components/Header/Header";
 
 
 const HackathonEventsPage = () => {
@@ -18,6 +19,7 @@ const HackathonEventsPage = () => {
   const { allCurrentEvents = [], joinedCurrentEvents = [] } = events || {};
   const { filters, setFilters, filteredEvents = [] } = useFilterEvents(allCurrentEvents);
   const [alertEvent, setAlertEvent] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     setAlertEvent(getEndingEvent(joinedCurrentEvents));
@@ -42,18 +44,16 @@ const HackathonEventsPage = () => {
   const renderEvents = () => {
     if (isLoading) return <div>Loading...</div>;
 
-    // Safe check for both `filteredEvents` and `allCurrentEvents`
     if (!filteredEvents || filteredEvents.length === 0) return <div>No Events</div>;
 
     return displayCards;
   };
   return (
     <main className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <DashboardNavbar />
-      <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem]">
-        <Link to="/" className="text-MVP-black cursor-pointer">← Back</Link>
-        <div>
-          <h1 className="font-corben text-[2.4rem] leading-[114%] md:text-[3rem] lg:text-[3rem]">Hackathon Events</h1>
+      <Header handleClick={() => navigate("/")} />
+      <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem] bg-">
+        <div className="pl-4">
+          <h1 className="font-corben text-[2.4rem] leading-[114%] md:text-[3rem] lg:text-[3rem]">Events</h1>
           <p className="leading-[2.5]">Explore all the hackathon events</p>
         </div>
       </div>
@@ -70,10 +70,11 @@ const HackathonEventsPage = () => {
         <Link to="/EventForm" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
-        <div className="flex-1 w-[20%]">
+        <div className="flex-1 w-[40%] md:w-[25%]">
+          <h2 className="font-gilroy text-3xl pb-8">Filters</h2>
           <Filters filters={filters} onFilterChange={setFilters} />
         </div>
-        <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
+        <div className="flex flex-wrap gap-4 w-3/4 flex-end">
           {renderEvents()}
         </div>
       </div>
