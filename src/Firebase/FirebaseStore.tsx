@@ -56,6 +56,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
   try {
     // Post image to firebase storage and retrieve link
     const imageURLs = await uploadImages(formData.imageFiles);
+    const pdfURLs = await uploadImages(formData.pdfFiles)
 
 
     // Reformat form data with imageFile link
@@ -71,6 +72,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       techStack: formData.techStack,
       userId: formData.userId,
       imageFiles: imageURLs,
+      pdfFiles: pdfURLs,
       createdAt: Timestamp.now(),
     });
 
