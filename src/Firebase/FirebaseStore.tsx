@@ -51,13 +51,13 @@ export const updateUserInFirestore = async (
   }
 };
 
-
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
   try {
     // Post image to firebase storage and retrieve link
     const imageURLs = await uploadImages(formData.imageFiles);
     const pdfURLs = await uploadImages(formData.pdfFiles)
+
 
     // Reformat form data with imageFile link
     const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
@@ -87,6 +87,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
   }
 
 }
+
 
 export const uploadImage = async (imageFile: File) => {
   try {
