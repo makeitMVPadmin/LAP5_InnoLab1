@@ -18,6 +18,7 @@ import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage
 import "./styles/_global.scss";
 import EventDetailsPage from "./pages/EventDetails/EventDetailsPage";
 
+
 const App = () => {
   return (
     <AuthProvider>
