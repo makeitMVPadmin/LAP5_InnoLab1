@@ -5,7 +5,7 @@ import {
     deleteSubmission
 } from '../Firebase/FirebaseQueries';
 
-export const useEventSubmissions = (eventId) => {
+export const useEventSubmissions = (eventId: string) => {
     const [allSubmissions, setSubmissions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,7 +32,7 @@ export const useEventSubmissions = (eventId) => {
         }
     }, [eventId]);
 
-    const handleDelete = useCallback(async (submissionId) => {
+    const handleDelete = useCallback(async (submissionId: string) => {
         try {
             const result = await deleteSubmission(submissionId, eventId);
 

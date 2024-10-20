@@ -192,7 +192,7 @@ export const fetchHackathonParticipants = async (eventId: string) => {
     if (!eventId) {
       throw new Error("Invalid eventId");
     }
-
+    // Get all the participants that joined the event
     const eventDocRef = doc(db, "hackathonParticipantData", eventId);
     const eventDoc = await getDoc(eventDocRef);
 

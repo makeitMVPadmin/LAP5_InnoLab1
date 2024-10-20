@@ -55,12 +55,11 @@ export const updateUserInFirestore = async (
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
   try {
-    // Post image to firebase storage and retrieve link
+    // Upload images and get URLs
     const imageURLs = await uploadImages(formData.imageFiles);
-    const pdfURLs = await uploadImages(formData.pdfFiles)
+    const pdfURLs = await uploadImages(formData.pdfFiles);
 
-    // Reformat form data with imageFile link
-    const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
+    const submissionData = {
       title: formData.title,
       designFeatures: formData.designFeatures,
       designTools: formData.designTools,
@@ -75,8 +74,13 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       imageFiles: imageURLs,
       pdfFiles: pdfURLs,
       createdAt: Timestamp.now(),
-    });
-    // Add SubmissionId to Event
+    };
+
+    const submissionRef = await addDoc(
+      collection(db, "hackathonProjectSubmissions"),
+      submissionData
+    );
+
     const secondDocRef = doc(db, "hackathonEvents", formData.eventId);
     await updateDoc(secondDocRef, {
       submissionsId: arrayUnion(submissionRef.id)
@@ -84,9 +88,9 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
 
   } catch (error) {
     console.error("Error submitting project submission form data:", error);
+    throw error; // Re-throw to handle in the component
   }
-
-}
+};
 
 export const uploadImage = async (imageFile: File) => {
   try {
