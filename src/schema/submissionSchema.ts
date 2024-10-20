@@ -45,6 +45,14 @@ export const submissionSchema = z.object({
     )
     .min(1, { message: "At least one file is required." })
     .max(3),
+  pdfFiles: z
+    .array(
+      z.instanceof(File).refine((file) => !!file, {
+        message: "PDF file is required.",
+      })
+    )
+    .min(1, { message: "At least one file is required." })
+    .max(3),
   projectLinks: z
     .array(
       z.object({

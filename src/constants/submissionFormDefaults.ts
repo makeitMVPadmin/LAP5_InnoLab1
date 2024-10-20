@@ -11,6 +11,7 @@ export const DEFAULT_FORM_VALUES: ProjectSubmissionFormValues = {
   designImpact: "",
   nextSteps: "",
   imageFiles: [],
+  pdfFiles: [],
   projectLinks: [{ url: "" }],
   teamMembers: [{ name: "", role: "Software developer" }],
   eventId: "",

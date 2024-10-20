@@ -323,22 +323,52 @@ const ProjectReviewPage = () => {
                     >
                         {renderEditableContent("nextSteps", formData.nextSteps)}
                     </Section>
-                    <Section
-                        title="Upload project files"
-                        editButton={
-                            <EditButton
-                                handleClick={() => handleEditSection("imageFiles")}
-                                isEditing={false}
-                                isEditMode={isEditMode} />}
-                    >
-                        {renderEditableImages({
-                            sectionId: "imageFiles",
-                            content: formData.imageFiles,
-                            isEditing: editingSectionId === "imageFiles",
-                            handleSaveSection,
-                            handleDeleteImage,
-                        })}
-                    </Section>
+                    <div className="">
+                        <h3>Upload Files</h3>
+                        <div className="flex gap-4 pl-2">
+                            <div className="w-1/2">
+                                <Section
+
+                                    title="Upload project files"
+                                    editButton={
+                                        <EditButton
+                                            handleClick={() => handleEditSection("imageFiles")}
+                                            isEditing={false}
+                                            isEditMode={isEditMode} />}
+                                >
+                                    {renderEditableImages({
+                                        sectionId: "imageFiles",
+                                        content: formData.imageFiles,
+                                        isEditing: editingSectionId === "imageFiles",
+                                        acceptedTypes: ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'],
+                                        handleSaveSection,
+                                        handleDeleteImage,
+                                    })}
+                                </Section>
+                            </div>
+                            <div className="w-1/2">
+                                <Section
+                                    title="Presentation Desk*"
+                                    editButton={
+                                        <EditButton
+                                            handleClick={() => handleEditSection("pdfFiles")}
+                                            isEditing={false}
+                                            isEditMode={isEditMode} />}
+                                >
+                                    {renderEditableImages({
+                                        sectionId: "pdfFiles",
+                                        content: formData.pdfFiles,
+                                        isEditing: editingSectionId === "pdfFiles",
+                                        acceptedTypes: ['application/pdf'],
+                                        handleSaveSection,
+                                        handleDeleteImage,
+                                    })}
+                                </Section>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     <Section
                         title="Project Links"
