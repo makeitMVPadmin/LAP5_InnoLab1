@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { HackathonEvent } from "../Firebase/FirebaseQueries";
+import { HackathonEventType } from "../Firebase/FirebaseQueries";
 import { Dispatch, SetStateAction } from "react";
 
-type ModifiedHackationEvent = HackathonEvent & {
+type ModifiedHackationEvent = HackathonEventType & {
     id: string;
 };
 
@@ -42,29 +42,29 @@ const useFilterEvents = (events: ModifiedHackationEvent[]) => {
     const filteredEvents = events.filter((event) => {
         const duration = calculateDuration(event.startTime, event.endTime);
 
-        const matchesSkillLevel = !filters.skillLevel || 
+        const matchesSkillLevel = !filters.skillLevel ||
             (event.skillLevel && event.skillLevel.toLowerCase() === filters.skillLevel.toLowerCase());
 
-        const matchesDisciplines = filters.disciplines?.length === 0 || 
-        (event.disciplines &&
-            containsAllEntries(event.disciplines.map(d => d.toLowerCase()), filters.disciplines.map(d => d.toLowerCase())));
-        
-    
-        const matchesThemes = filters.themes?.length === 0 || 
-        (event.themes &&
-            containsAllEntries(event.themes.map((t: string) => t.toLowerCase()), filters.themes.map((t: string) => t.toLowerCase())));
+        const matchesDisciplines = filters.disciplines?.length === 0 ||
+            (event.disciplines &&
+                containsAllEntries(event.disciplines.map(d => d.toLowerCase()), filters.disciplines.map(d => d.toLowerCase())));
 
-        const matchestimezone = !filters.timezone || 
+
+        const matchesThemes = filters.themes?.length === 0 ||
+            (event.themes &&
+                containsAllEntries(event.themes.map((t: string) => t.toLowerCase()), filters.themes.map((t: string) => t.toLowerCase())));
+
+        const matchestimezone = !filters.timezone ||
             (event.timeZone && event.timeZone.toLowerCase() === filters.timezone.toLowerCase());
 
-            const matchesDuration = !filters.duration || 
-            (duration && 
-            (filters.duration === "less than 24 hours" && duration < 24) ||
-            (filters.duration === "24 to 48 hours" && duration >= 24 && duration < 48) ||
-            (filters.duration === "48 to 72 hours" && duration >= 48 && duration < 72));
+        const matchesDuration = !filters.duration ||
+            (duration &&
+                (filters.duration === "less than 24 hours" && duration < 24) ||
+                (filters.duration === "24 to 48 hours" && duration >= 24 && duration < 48) ||
+                (filters.duration === "48 to 72 hours" && duration >= 48 && duration < 72));
 
         return matchesSkillLevel && matchesDisciplines && matchesThemes && matchestimezone && matchesDuration;
-        });
+    });
 
     return { filters, setFilters, filteredEvents };
 };
