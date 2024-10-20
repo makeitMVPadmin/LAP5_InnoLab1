@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { fetchHackathonEvents } from "../Firebase/FirebaseQueries";
 import { sortEventsByStartTime } from "../utils/sortEventsFunctions";
 
@@ -52,20 +52,19 @@ const useEvents = (joinedEvents: string[]) => {
         }
     };
 
-    const getEndingEvent = (events) => {
-        const now = new Date();
-        const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
-        
-        return events.find(event => {
-            const eventEndTime = new Date(event.endTime);
-            return eventEndTime > now && eventEndTime <= oneHourLater;
-        }) || null;
-    };
-
     useEffect(() => {
         fetchData();
-    }, [joinedEvents]);
+    }, [joinedEvents]); // Add joinedEvents as dependency
 
+    const getEndingEvent = useCallback((events: any[]) => {
+        if (!events?.length) return null;
+        const now = new Date();
+        return events.find(event => {
+            const endTime = new Date(event.endTime);
+            const timeLeft = endTime.getTime() - now.getTime();
+            return timeLeft > 0 && timeLeft <= 24 * 60 * 60 * 1000; // 24 hours
+        });
+    }, []);
     return {
         events,
         error,

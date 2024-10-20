@@ -16,7 +16,7 @@ const MyEventsPage = () => {
   const { joinedEvents } = useJoinedEvents(currentUser?.uid);
   const { events, error, isLoading, refetchEvents } = useEvents(joinedEvents);
   const { joinedCurrentEvents, joinedPastEvents } = events;
-  const [ showCurrent, setShowCurrent ] = useState(true);
+  const [showCurrent, setShowCurrent] = useState(true);
 
   const handleCountdownEnd = () => {
     refetchEvents();
@@ -26,9 +26,9 @@ const MyEventsPage = () => {
     setShowCurrent(prev => !prev);
   }, []);
 
-  const eventToggle = showCurrent 
-    ? { icon: <RoundEventRepeat className="h-6 w-6"/>, label: 'View Past Events' } 
-    : { icon: <CalendarIcon className="h-5 w-5 fill-MVP-black"/>, label: 'View Current Events' };
+  const eventToggle = showCurrent
+    ? { icon: <RoundEventRepeat className="h-6 w-6" />, label: 'View Past Events' }
+    : { icon: <CalendarIcon className="h-5 w-5 fill-MVP-black" />, label: 'View Current Events' };
 
   const eventsToDisplay = showCurrent ? joinedCurrentEvents : joinedPastEvents;
   const { filteredEvents, filters, setFilters } = useFilterEvents(eventsToDisplay);
