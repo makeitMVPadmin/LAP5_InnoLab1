@@ -51,12 +51,13 @@ export const updateUserInFirestore = async (
   }
 };
 
-
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
   try {
     // Post image to firebase storage and retrieve link
     const imageURLs = await uploadImages(formData.imageFiles);
+    const pdfURLs = await uploadImages(formData.pdfFiles)
+
 
     // Reformat form data with imageFile link
     const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
@@ -71,6 +72,8 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       techStack: formData.techStack,
       userId: formData.userId,
       imageFiles: imageURLs,
+      pdfFiles: pdfURLs,
+      createdAt: Timestamp.now(),
     });
 
     // Add SubmissionId to Event
@@ -84,6 +87,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
   }
 
 }
+
 
 export const uploadImage = async (imageFile: File) => {
   try {
@@ -123,7 +127,7 @@ export const addCommentToSubmission = async (data) => {
     return { success: false };
   }
 }
-  
+
 export const uploadImages = async (imageFiles: File[]) => {
   try {
     const uploadPromises = imageFiles.map((file) => uploadImage(file));

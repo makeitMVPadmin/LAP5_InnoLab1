@@ -1,5 +1,5 @@
 import EventCard from "../../components/EventCard/EventCard";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useJoinedEvents } from "../../Firebase/FirebaseQueries";
 import { useAuth } from "../../context/AuthContext";
 import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
@@ -8,13 +8,15 @@ import { ReactComponent as CalendarIcon } from "../../assets/images/calendarIcon
 import { Link } from "react-router-dom";
 import CountdownBanner from "../../components/CountdownBanner/CountdownBanner";
 import useEvents from "../../hooks/useEvents";
+import useFilterEvents from "../../hooks/useFilterEvents";
+import Filters from "../../components/Filters/Filters";
 
 const MyEventsPage = () => {
   const { currentUser } = useAuth();
   const { joinedEvents } = useJoinedEvents(currentUser?.uid);
   const { events, error, isLoading, refetchEvents } = useEvents(joinedEvents);
   const { joinedCurrentEvents, joinedPastEvents } = events;
-  const [ showCurrent, setShowCurrent ] = useState(true);
+  const [showCurrent, setShowCurrent] = useState(true);
 
   const handleCountdownEnd = () => {
     refetchEvents();
@@ -24,65 +26,45 @@ const MyEventsPage = () => {
     setShowCurrent(prev => !prev);
   }, []);
 
-  const eventToggle = showCurrent 
-    ? { icon: <RoundEventRepeat className="h-6 w-6"/>, label: 'Past Events' } 
-    : { icon: <CalendarIcon className="h-5 w-5 fill-MVP-black"/>, label: 'Current Events' };
+  const eventToggle = showCurrent
+    ? { icon: <RoundEventRepeat className="h-6 w-6" />, label: 'View Past Events' }
+    : { icon: <CalendarIcon className="h-5 w-5 fill-MVP-black" />, label: 'View Current Events' };
 
-    const displayCards = useMemo(() => {
-      return (
-        showCurrent
-          ? joinedCurrentEvents.map(event => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                imageUrl={event.imageUrl}
-                title={event.title}
-                startTime={event.startTime}
-                endTime={event.endTime}
-                timeZone={event.timeZone}
-                skillLevel={event.skillLevel}
-                themes={event.themes}
-                joined={joinedEvents.includes(event.id)}
-              />
-            ))
-          : joinedPastEvents.map(event => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                imageUrl={event.imageUrl}
-                title={event.title}
-                startTime={event.startTime}
-                endTime={event.endTime}
-                timeZone={event.timeZone}
-                skillLevel={event.skillLevel}
-                themes={event.themes}
-                joined={joinedEvents.includes(event.id)}
-              />
-            ))
-      );
-    }, [joinedEvents, showCurrent, joinedCurrentEvents, joinedPastEvents]);
+  const eventsToDisplay = showCurrent ? joinedCurrentEvents : joinedPastEvents;
+  const { filteredEvents, filters, setFilters } = useFilterEvents(eventsToDisplay);
 
-    const renderEvents = () => {
-      if (error) {
-        return <div>{error}</div>;
-      }
-      
-      if (isLoading) {
-        return <div>Loading...</div>;
-      }
-    
-      if (showCurrent) {
-        if (joinedCurrentEvents.length === 0) {
-          return <div>No Current Events</div>;
-        }
-      } else {
-        if (joinedPastEvents.length === 0) {
-          return <div>No Past Events</div>;
-        }
-      }
-    
-      return displayCards;
-    };
+  const displayCards = useMemo(() => {
+    return filteredEvents.map(event => (
+      <EventCard
+        key={event.id}
+        id={event.id}
+        imageUrl={event.imageUrl}
+        title={event.title}
+        startTime={event.startTime}
+        endTime={event.endTime}
+        timeZone={event.timeZone}
+        skillLevel={event.skillLevel}
+        themes={event.themes}
+        joined={joinedEvents.includes(event.id)}
+      />
+    ));
+  }, [filteredEvents, joinedEvents]);
+
+  const renderEvents = () => {
+    if (error) {
+      return <div>Error: {error}</div>;
+    }
+
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    if (filteredEvents.length === 0) {
+      return <div>No {showCurrent ? "Current" : "Past"} Events</div>;
+    }
+
+    return displayCards;
+  };
 
   return (
     <div className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
@@ -97,15 +79,18 @@ const MyEventsPage = () => {
       <CountdownBanner joinedEvents={joinedEvents} onCountdownEnd={handleCountdownEnd} />
 
       <div className="w-full flex justify-end text-base gap-3 px-8 pb-4">
-        <button onClick={toggleEvents} className="flex items-center py-2 px-4 text-xl gap-2 border-3 border-black rounded-md bg-MVP-green text-MVP-black font-gilroy content-center">
+        <button onClick={toggleEvents} className="flex items-center py-2 px-4 text-xl gap-2 border-3 border-black rounded-md bg-MVP-green text-MVP-black font-gilroy">
           {eventToggle.icon}
           {eventToggle.label}
         </button>
       </div>
+
       <div className="w-full h-full flex gap-4 mt-4 px-8">
-        <div className="flex-1 border-3 border-black w-[20%]">FILTER CONTAINER</div>
+        <div className="flex-1 w-[20%]">
+          <Filters filters={filters} onFilterChange={setFilters} />
+        </div>
         <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
-        {renderEvents()}
+          {renderEvents()}
         </div>
       </div>
     </div>

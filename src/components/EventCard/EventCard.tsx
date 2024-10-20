@@ -44,14 +44,15 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
                     onClick={handleFavorite}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
+                    aria-label="Like button to favorite event"
                 >
-                    <img className="w-full h-full" src={isFavorite || isHovered ? HeartIconActive : HeartIconInactive } alt="favorite icon" />
+                    <img className="w-full h-full" src={isFavorite || isHovered ? HeartIconActive : HeartIconInactive} alt="favorite icon" />
                 </button>
                 <Link to={`/join-event/${id}`}>
                     <div className="relative h-[18.4375rem] border-[3px] border-MVP-black rounded-[24.2px] bg-cover bg-center w-full" style={{ backgroundImage: `url(${imageUrl})` }}>
                         <div className="absolute flex gap-2 flex-wrap top-3 right-2.5">
-                            {joined && 
-                                <span className={`${tagStyle} bg-MVP-black text-white`}>Joined</span>
+                            {joined &&
+                                <span className={`${tagStyle} border border-MVP-black bg-MVP-yellow text-black`}>Joined</span>
                             }
                             <EventStatusTag startTime={startTime} endTime={endTime} />
                         </div>
