@@ -128,13 +128,13 @@ const ProjectReviewPage = () => {
     const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
-    const handleDeleteFile = (indexToRemove: Number) => {
-        const newFiles = formData.projectFiles.filter((_, index: Number) => index !== indexToRemove);
+    const handleDeleteFile = (fileType: 'projectFiles' | 'pdfFiles', indexToRemove: number) => {
+        const newFiles = formData[fileType].filter((_: any, index: number) => index !== indexToRemove);
         setFormData(prev => ({
             ...prev,
-            projectFiles: newFiles
-        }))
-    }
+            [fileType]: newFiles
+        }));
+    };
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         setIsLoading(true)
@@ -328,6 +328,7 @@ const ProjectReviewPage = () => {
                                         acceptedTypes: ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'],
                                         handleSaveSection,
                                         handleDeleteFile,
+                                        fileType: "projectFiles"
                                     })}
                                 </Section>
                             </div>
@@ -347,6 +348,7 @@ const ProjectReviewPage = () => {
                                         acceptedTypes: ['application/pdf'],
                                         handleSaveSection,
                                         handleDeleteFile,
+                                        fileType: "pdfFiles"
                                     })}
                                 </Section>
                             </div>

@@ -146,22 +146,22 @@ export const addCommentToSubmission = async ({
 export const removeCommentFromSubmission = async ({
   submissionId,
   index
-  }: {
-    submissionId: string;
-    index: number;
-  }) => {
-    try {
+}: {
+  submissionId: string;
+  index: number;
+}) => {
+  try {
 
-      const docRef = doc(db, "hackathonProjectSubmissions", submissionId);
+    const docRef = doc(db, "hackathonProjectSubmissions", submissionId);
 
-      const docSnap = await getDoc(docRef);
+    const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const comments = docSnap.data().comments;
+    if (docSnap.exists()) {
+      const comments = docSnap.data().comments;
 
-        await updateDoc(docRef, { comments : arrayRemove(comments[index]) });
-      };
-    
+      await updateDoc(docRef, { comments: arrayRemove(comments[index]) });
+    };
+
     return { success: true };
   } catch (error) {
     console.error("Error removing comment: ", error);
