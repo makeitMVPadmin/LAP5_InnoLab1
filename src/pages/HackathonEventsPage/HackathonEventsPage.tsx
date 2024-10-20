@@ -72,10 +72,10 @@ const HackathonEventsPage = () => {
       </div>
       <div className="w-full h-full flex gap-4 mt-4 px-8">
         <div className="flex-1 w-[20%]">
-        <Filters filters={filters} setFilters={setFilters} />
+          <Filters filters={filters} onFilterChange={setFilters} />
         </div>
         <div className="flex flex-wrap gap-4 mx-4 w-[80%]">
-        {renderEvents()}
+          {renderEvents()}
         </div>
       </div>
     </main>
