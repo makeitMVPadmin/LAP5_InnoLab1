@@ -1,17 +1,60 @@
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { STYLES } from '../../constants/styles';
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar"
 import Clock from "../../assets/images/clockIcon.svg"
+import { fetchHackathonEvents } from "../../Firebase/FirebaseQueries";
+import Header from "../../components/Header/Header";
+import { HackathonEventType } from "../../Firebase/FirebaseQueries";
 
 const EventPage = () => {
+    const [event, setEvent] = useState<HackathonEventType | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const { eventId } = useParams()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        async function loadEvent() {
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const { event, error } = await fetchHackathonEvents(eventId);
+                if (error) {
+                    setError(error);
+                } else {
+                    setEvent(event);
+                }
+            } catch (err) {
+                setError((err as Error).message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadEvent();
+    }, [eventId]);
+
+    if (isLoading) { return <p>Loading...</p>; }
+    if (error) { return <p>Error: {error}</p>; }
+
     return (
         <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-            <DashboardNavbar />
-            <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem]">
-                <Link to="/" className="text-MVP-black cursor-pointer">← Back</Link>
-            </div>
-            <div className="w-full h-full flex gap-4 mt-4 px-8">
+            <Header handleClick={() => navigate(-1)} />
+            <div className="w-full max-w-[1130px] h-full flex m-auto">
+                <div className="h-96 w-full bg-cover m-auto">
+                    <img className="h-full w-full object-cover" src={event.imageUrl} />
+                </div>
+                <section>
+                    {/* Event Details Left*/}
+                    <div>
 
+                    </div>
+                    {/* Event Details Right*/}
+                    <div>
+
+                    </div>
+                </section>
 
 
 
