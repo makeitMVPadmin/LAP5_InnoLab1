@@ -3,18 +3,17 @@ import { useDropzone } from 'react-dropzone';
 import DashedBox from '../DashedBox/DashedBox';
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'];
 
-const ImageUploadZone = ({ onFileChange }) => {
+const ImageUploadZone = ({ onFileChange, acceptedTypes }) => {
     const [errorMessage, setErrorMessage] = useState(null);
-    const onDrop = (acceptedFiles) => {
+    const onDrop = (acceptedFiles: File[]) => {
 
         const validFiles = acceptedFiles.filter(file => {
             if (file.size > MAX_SIZE) {
                 setErrorMessage(`File size exceeds 10MB: ${file.name}`);
                 return false;
             }
-            if (!ACCEPTED_TYPES.includes(file.type)) {
+            if (!acceptedTypes.includes(file.type)) {
                 setErrorMessage(`File type not supported: ${file.name}. Please upload JPG, PNG, PDF, or SVG files.`);
                 return false;
             }
@@ -30,7 +29,7 @@ const ImageUploadZone = ({ onFileChange }) => {
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         multiple: true,
-        accept: ACCEPTED_TYPES.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
+        accept: acceptedTypes.reduce((acc, type) => ({ ...acc, [type]: [] }), {})
     });
     return (
         <div {...getRootProps()} className="dropzone">

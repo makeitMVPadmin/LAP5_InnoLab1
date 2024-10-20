@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
 
 
-export type HackathonEvent = {
+export type HackathonEventType = {
   basicProjectSummary: string;
   createdAt: string;
   disciplines: string[];
@@ -33,7 +33,7 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
   try {
     const colRef = collection(db, "hackathonEvents");
     const querySnapshot = await getDocs(colRef);
-    
+
     events = querySnapshot.docs.reduce((acc, doc) => {
       acc[doc.id] = doc.data() as HackathonEventType;
       return acc;
@@ -73,8 +73,8 @@ type HackathonSubmissionType = {
   imageFile: string;
   nextSteps: string;
   problemStatement: string;
-  projectLinks: {url: string}[];
-  teamMembers: {name: string, role: string}[];
+  projectLinks: { url: string }[];
+  teamMembers: { name: string, role: string }[];
   teamName: string;
   techStack: string[];
   judgesComments: JudgeCommentType[];
@@ -87,19 +87,19 @@ export const fetchHackathonSubmissions = async (id: string): Promise<{ submissio
   let submissions: Record<string, HackathonSubmissionType> = {};
 
   try {
-      const colRef = collection(db, "hackathonProjectSubmissions");
-      const querySnapshot = await getDocs(colRef);
-      
-      submissions = querySnapshot.docs.reduce((acc, doc) => {
-          if (doc.id === id) {
-              acc[doc.id] = doc.data() as HackathonSubmissionType;
-          }
-          return acc;
-      }, {} as Record<string, HackathonSubmissionType>);
+    const colRef = collection(db, "hackathonProjectSubmissions");
+    const querySnapshot = await getDocs(colRef);
+
+    submissions = querySnapshot.docs.reduce((acc, doc) => {
+      if (doc.id === id) {
+        acc[doc.id] = doc.data() as HackathonSubmissionType;
+      }
+      return acc;
+    }, {} as Record<string, HackathonSubmissionType>);
   } catch (err) {
-      error = (err as Error).message;
+    error = (err as Error).message;
   } finally {
-      loading = false;
+    loading = false;
   }
 
   return { submissions, loading, error };

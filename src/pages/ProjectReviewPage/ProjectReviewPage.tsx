@@ -20,7 +20,7 @@ const Section = ({ title, children, required, editButton }: SectionProps) => (
         <div className="flex justify-end">
             {editButton}
         </div>
-        <h2 className="text-sm font-medium mt-4">{title}{required && '*'}</h2>
+        <h2 className="text-sm font-bold mt-4">{title}{required && '*'}</h2>
         {children}
     </section>
 );
@@ -158,7 +158,7 @@ const ProjectReviewPage = () => {
                 teamMembers: formattedTeamMembers,
                 projectLinks: formattedLinks,
             };
-            console.log(submissionFormData);
+            console.log("submission part 2", submissionFormData);
 
             await createProjectSubmission(submissionFormData);
             // TO DO add navigation after the form has submitted 
@@ -310,22 +310,22 @@ const ProjectReviewPage = () => {
                         {renderEditableContent("nextSteps", formData.nextSteps)}
                     </Section>
                     <div className="">
-                        <h3>Upload Files</h3>
+                        <h3 className={`${STYLES.label}`}>Upload Files</h3>
                         <div className="flex gap-4 pl-2">
                             <div className="w-1/2">
                                 <Section
-
                                     title="Upload project files"
                                     editButton={
                                         <EditButton
-                                            handleClick={() => handleEditSection("projectLinks")}
+                                            handleClick={() => handleEditSection("projectFiles")}
                                             isEditing={false}
                                             isEditMode={isEditMode} />}
                                 >
                                     {renderEditableImages({
-                                        sectionId: "projectLinks",
-                                        content: formData.projectLinks,
-                                        isEditing: editingSectionId === "projectLinks",
+                                        sectionId: "projectFiles",
+                                        content: formData.projectFiles,
+                                        isEditing: editingSectionId === "projectFiles",
+                                        acceptedTypes: ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'],
                                         handleSaveSection,
                                         handleDeleteFile,
                                     })}
@@ -344,6 +344,7 @@ const ProjectReviewPage = () => {
                                         sectionId: "pdfFiles",
                                         content: formData.pdfFiles,
                                         isEditing: editingSectionId === "pdfFiles",
+                                        acceptedTypes: ['application/pdf'],
                                         handleSaveSection,
                                         handleDeleteFile,
                                     })}
