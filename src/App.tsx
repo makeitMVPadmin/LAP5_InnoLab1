@@ -17,6 +17,7 @@ import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
 import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
 
+
 const App = () => {
   return (
     <AuthProvider>

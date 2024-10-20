@@ -8,7 +8,8 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  Timestamp
+  Timestamp,
+  arrayRemove
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ProjectSubmission } from "../types/submissionTypes"
@@ -53,13 +54,14 @@ export const updateUserInFirestore = async (
 
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
+
+
   try {
-    // Post image to firebase storage and retrieve link
-    const imageURLs = await uploadImages(formData.imageFiles);
-    const pdfURLs = await uploadImages(formData.pdfFiles)
+    // Post file to firebase storage and retrieve link
+    const projectFileURLs = await uploadFiles(formData.projectFiles);
+    const pdfURLs = await uploadFiles(formData.pdfFiles)
 
-
-    // Reformat form data with imageFile link
+    // Reformat form data with projectFile link
     const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
       designFeatures: formData.designFeatures,
       designTools: formData.designTools,
@@ -71,7 +73,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       teamName: formData.teamName,
       techStack: formData.techStack,
       userId: formData.userId,
-      imageFiles: imageURLs,
+      projectFiles: projectFileURLs,
       pdfFiles: pdfURLs,
       createdAt: Timestamp.now(),
     });
@@ -84,34 +86,45 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
 
   } catch (error) {
     console.error("Error submitting project submission form data:", error);
+  } finally {
+    console.log('success');
   }
 
 }
 
-
-export const uploadImage = async (imageFile: File) => {
+export const uploadFile = async (projectFile: File) => {
   try {
-    const storageRef = ref(storage, `images/${imageFile.name}`);
-    const snapshot = await uploadBytes(storageRef, imageFile);
+    const storageRef = ref(storage, `submissions/${projectFile.name}`);
+    const snapshot = await uploadBytes(storageRef, projectFile);
     const downloadURL = await getDownloadURL(snapshot.ref);
     return downloadURL;
   } catch (error) {
-    console.error("Error uploading image:", error);
+    console.error("Error uploading file:", error);
     throw error;
   }
 };
 
-export const addCommentToSubmission = async (data) => {
-  const { submissionId, commentEntry, fullName } = data;
-  if (!submissionId || !commentEntry) {
-    return { success: false, message: 'All fields are required.' };
-  }
+export const addCommentToSubmission = async ({
+  submissionId,
+  commentEntry,
+  fullName,
+  profileUrl,
+  email
+}: {
+  submissionId: string;
+  commentEntry: string;
+  fullName: string;
+  profileUrl: string;
+  email: string;
+}) => {
   const docRef = doc(db, "hackathonProjectSubmissions", submissionId);
   try {
     const comment = {
       commenterName: fullName,
+      commenterEmail: email,
       commentEntry,
-      commentTimestamp: Timestamp.now()
+      commentTimestamp: Timestamp.now(),
+      profileUrl: profileUrl
     };
     await updateDoc(docRef, {
       comments: arrayUnion(comment)
@@ -119,8 +132,10 @@ export const addCommentToSubmission = async (data) => {
     return {
       success: true,
       commenterName: comment.commenterName,
+      commenterEmail: comment.commenterEmail,
       commentEntry: comment.commentEntry,
-      commentTimestamp: comment.commentTimestamp
+      commentTimestamp: comment.commentTimestamp,
+      profileUrl: comment.profileUrl
     };
   } catch (error) {
     console.error("Error adding comment: ", error);
@@ -128,14 +143,40 @@ export const addCommentToSubmission = async (data) => {
   }
 }
 
-export const uploadImages = async (imageFiles: File[]) => {
+export const removeCommentFromSubmission = async ({
+  submissionId,
+  index
+}: {
+  submissionId: string;
+  index: number;
+}) => {
   try {
-    const uploadPromises = imageFiles.map((file) => uploadImage(file));
 
-    const imageURLs = await Promise.all(uploadPromises);
-    return imageURLs;
+    const docRef = doc(db, "hackathonProjectSubmissions", submissionId);
+
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const comments = docSnap.data().comments;
+
+      await updateDoc(docRef, { comments: arrayRemove(comments[index]) });
+    };
+
+    return { success: true };
   } catch (error) {
-    console.error("Error uploading images:", error);
+    console.error("Error removing comment: ", error);
+    return { success: false };
+  }
+}
+
+export const uploadFiles = async (projectFiles: File[]) => {
+  try {
+    const uploadPromises = projectFiles.map((file) => uploadFile(file));
+
+    const projectFileURLs = await Promise.all(uploadPromises);
+    return projectFileURLs;
+  } catch (error) {
+    console.error("Error uploading files:", error);
     throw error;
   }
 };

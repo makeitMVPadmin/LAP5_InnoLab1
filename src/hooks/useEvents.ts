@@ -35,7 +35,7 @@ const useEvents = (joinedEvents: string[]) => {
                 setEvents({
                     joinedCurrentEvents: [],
                     joinedPastEvents: [],
-                    allCurrentEvents: sortEventsByStartTime(allCurrentEvents), // Sort current events
+                    allCurrentEvents: sortEventsByStartTime(allCurrentEvents),
                 });
             } else {
                 setEvents({
