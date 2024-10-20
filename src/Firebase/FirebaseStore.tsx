@@ -51,13 +51,13 @@ export const updateUserInFirestore = async (
   }
 };
 
-
 export const createProjectSubmission = async (formData: ProjectSubmission): Promise<void> => {
 
   try {
     // Upload images and get URLs
     const imageURLs = await uploadImages(formData.imageFiles);
     const pdfURLs = await uploadImages(formData.pdfFiles);
+
 
     const submissionData = {
       title: formData.title,
@@ -91,6 +91,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
     throw error; // Re-throw to handle in the component
   }
 };
+
 
 export const uploadImage = async (imageFile: File) => {
   try {
