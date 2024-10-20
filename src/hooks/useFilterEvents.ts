@@ -1,3 +1,4 @@
+// useFilterEvents.ts
 import { useState } from "react";
 import { HackathonEventType } from "../Firebase/FirebaseQueries";
 import { Dispatch, SetStateAction } from "react";
@@ -7,27 +8,37 @@ type ModifiedHackationEvent = HackathonEventType & {
 };
 
 type FilterArrayType = {
-    skillLevel: string;
+    skillLevel: string[];  // Changed to array for multiple selection
     disciplines: string[];
     themes: string[];
-    timezone: string;
-    duration: string;
+    timeZone: string[];   // Changed to array for multiple selection
+    duration: string[];   // Changed to array for multiple selection
 };
 
 export type FilterPropsType = {
     filters: FilterArrayType;
-    setFilters: Dispatch<SetStateAction<FilterArrayType>>;
+    onFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const useFilterEvents = (events: ModifiedHackationEvent[]) => {
-
+const useFilterEvents = (events: ModifiedHackationEvent[] = []) => {
     const [filters, setFilters] = useState<FilterArrayType>({
-        skillLevel: "",
+        skillLevel: [],
         disciplines: [],
         themes: [],
-        timezone: "",
-        duration: "",
+        timeZone: [],
+        duration: []
     });
+
+    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value, checked } = e.target;
+
+        setFilters(prev => ({
+            ...prev,
+            [name]: checked
+                ? [...prev[name], value]
+                : prev[name].filter(item => item !== value)
+        }));
+    };
 
     const calculateDuration = (startTime: string, endTime: string) => {
         const start = new Date(startTime);
@@ -35,38 +46,47 @@ const useFilterEvents = (events: ModifiedHackationEvent[]) => {
         return (end.getTime() - start.getTime()) / (1000 * 60 * 60);
     };
 
-    const containsAllEntries = (eventArray: string[], checkArray: string[]) => {
-        return checkArray.every((item: string) => eventArray.includes(item));
+    const containsAnyEntries = (eventArray: string[] = [], checkArray: string[] = []) => {
+        return checkArray.length === 0 || checkArray.some(item =>
+            eventArray.some(eventItem => eventItem.toLowerCase() === item.toLowerCase())
+        );
     };
 
-    const filteredEvents = events.filter((event) => {
+    const filteredEvents = (events || []).filter((event) => {
+        const eventDisciplines = event?.disciplines || [];
+        const eventThemes = event?.themes || [];
         const duration = calculateDuration(event.startTime, event.endTime);
 
-        const matchesSkillLevel = !filters.skillLevel ||
-            (event.skillLevel && event.skillLevel.toLowerCase() === filters.skillLevel.toLowerCase());
+        const matchesSkillLevel = filters.skillLevel.length === 0 ||
+            filters.skillLevel.includes(event.skillLevel || '');
 
-        const matchesDisciplines = filters.disciplines?.length === 0 ||
-            (event.disciplines &&
-                containsAllEntries(event.disciplines.map(d => d.toLowerCase()), filters.disciplines.map(d => d.toLowerCase())));
+        const matchesDisciplines = containsAnyEntries(
+            Array.isArray(eventDisciplines) ? eventDisciplines : [],
+            filters.disciplines
+        );
 
+        const matchesThemes = containsAnyEntries(
+            Array.isArray(eventThemes) ? eventThemes : [],
+            filters.themes
+        );
 
-        const matchesThemes = filters.themes?.length === 0 ||
-            (event.themes &&
-                containsAllEntries(event.themes.map((t: string) => t.toLowerCase()), filters.themes.map((t: string) => t.toLowerCase())));
+        const matchesTimezone = filters.timeZone.length === 0 ||
+            filters.timeZone.includes(event.timeZone || '');
 
-        const matchestimezone = !filters.timezone ||
-            (event.timeZone && event.timeZone.toLowerCase() === filters.timezone.toLowerCase());
+        const matchesDuration = filters.duration.length === 0 ||
+            filters.duration.some(dur => {
+                const hours = parseInt(dur);
+                return duration <= hours;
+            });
 
-        const matchesDuration = !filters.duration ||
-            (duration &&
-                (filters.duration === "less than 24 hours" && duration < 24) ||
-                (filters.duration === "24 to 48 hours" && duration >= 24 && duration < 48) ||
-                (filters.duration === "48 to 72 hours" && duration >= 48 && duration < 72));
-
-        return matchesSkillLevel && matchesDisciplines && matchesThemes && matchestimezone && matchesDuration;
+        return matchesSkillLevel &&
+            matchesDisciplines &&
+            matchesThemes &&
+            matchesTimezone &&
+            matchesDuration;
     });
 
-    return { filters, setFilters, filteredEvents };
+    return { filters, setFilters: handleFilterChange, filteredEvents };
 };
 
 export default useFilterEvents;
