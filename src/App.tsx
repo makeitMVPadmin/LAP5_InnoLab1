@@ -10,13 +10,14 @@ import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage
 import JoinEvent from "./pages/JoinEvent/JoinEvent";
 import EventPage from "./pages/EventPage/EventPage";
 import ProjectSubmissionPage from "./pages/ProjectSubmissionPage/ProjectSubmissionPage";
-import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage"
+import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage";
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
 import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
 import EventDetailsPage from "./pages/EventDetails/EventDetailsPage";
+import EventDetails from "./components/EventDetails/EventDetails";
 
 const App = () => {
   return (
@@ -34,16 +35,26 @@ const App = () => {
           <Route path="/hackathons/joined" element={<MyEventsPage />} />
           <Route path="/join-event/:eventId" element={<JoinEvent />} />
           <Route path="/event/:eventId" element={<EventPage />} />
-          <Route path="/hackathons/submissions/:submissionId" element={<ProjectShowcasePage />}/>
-          <Route path="/event/:eventId/submit" element={<ProjectSubmissionPage />} />
-          <Route path="/event/:eventId/review-submit" element={<ProjectReviewPage />} />
+          <Route
+            path="/hackathons/submissions/:submissionId"
+            element={<ProjectShowcasePage />}
+          />
+          <Route
+            path="/event/:eventId/submit"
+            element={<ProjectSubmissionPage />}
+          />
+          <Route
+            path="/event/:eventId/review-submit"
+            element={<ProjectReviewPage />}
+          />
           <Route path="/EventForm" element={<EventForm />} />
           <Route path="/ChallengeDetails" element={<ChallengeDetails />} />
+          <Route path="/event-details" element={<EventDetails />} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </AuthProvider>
   );
-}
+};
 
 export default App;

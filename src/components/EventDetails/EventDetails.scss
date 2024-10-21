@@ -1,0 +1,67 @@
+@use "../../styles/typography" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.event-details-top-right {
+  font-family: Poppins, Gilroy;
+  font-weight: 600;
+  padding: 2rem;
+
+  &__button {
+    @include button;
+    @include thin-border;
+    background-color: $MVP-Light-Blue;
+    padding: 0.25rem 2rem;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    border: 1px solid $MVP-Green;
+    background-color: $MVP-Green;
+    width: fit-content;
+    padding: 0.25rem 1.5rem;
+    border-radius: 2rem;
+
+    &-img {
+      width: 1.25rem;
+    }
+
+    &-txt {
+      padding-left: 0.5rem;
+    }
+  }
+
+  &__time {
+    display: flex;
+
+    &-txt {
+      padding-left: 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  &__location {
+    display: flex;
+
+    &-txt {
+      padding-left: 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  &__img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &__link {
+    &-img {
+      width: 1.25rem;
+    }
+
+    &-txt {
+      padding-left: 0.5rem;
+    }
+  }
+}
