@@ -12,13 +12,12 @@ const CommunityCommentSection = ({ submissionId }) => {
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
     const [showsFull, setShowsFull] = useState([]);
-    const [showOption, setShowOption] = useState([]);
+    const [showOptionIndex, setShowOptionIndex] = useState(null);
 
     useEffect(() => {
         if (submission && submission.comments) {
             setComments(submission.comments);
             setShowsFull(submission.comments.map(() => false));
-            setShowOption(submission.comments.map(() => false));
         }
     }, [submission]);
 
@@ -42,11 +41,7 @@ const CommunityCommentSection = ({ submissionId }) => {
       };
     
       const showOptionToggle = (idx: number) => {
-        setShowOption((prev) => {
-            const newShowOption = [...prev];
-            newShowOption[idx] = !newShowOption[idx];
-            return newShowOption;
-          });
+        setShowOptionIndex((prevIndex) => (prevIndex === idx ? null : idx));
       }
     
 
@@ -55,6 +50,7 @@ const CommunityCommentSection = ({ submissionId }) => {
     };
     
     const handleCommentSubmit = async (event) => {
+        setShowOptionIndex((prev) => prev && prev + 1);
         event.preventDefault();
         if (comment.trim()) {
             try {
@@ -93,11 +89,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                 setComments(prevComments => prevComments.filter((_, i) => i !== idx));
             }
 
-            setShowOption((prev) => {
-                const newShowOption = [...prev];
-                newShowOption[idx] = !newShowOption[idx];
-                return newShowOption;
-            });
+            setShowOptionIndex(null);
 
         } catch (error) {
             console.error(error);
@@ -186,7 +178,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                                     >
                                         <MoreIcon onClick={() => showOptionToggle(index)} className='h-[1.5rem]' />
                                     </button>
-                                    {showOption[index] && (
+                                    {showOptionIndex == index && (
                                         <button
                                             className='absolute right-3 top-6 z-5 rounded-[0.6rem] border-[0.2rem] border-black bg-white flex p-[0.5rem] px-[1.1rem] justify-center items-center gap-[0.6rem] text-MVP-black text-[1rem] font-extrabold leading-[115.645%]'
                                             onClick={() => handleCommentDelete(index)}
