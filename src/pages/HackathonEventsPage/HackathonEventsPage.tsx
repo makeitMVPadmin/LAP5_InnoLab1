@@ -1,12 +1,13 @@
 import EventCard from "../../components/EventCard/EventCard";
 import { useEffect, useState } from "react";
 import { useJoinedEvents } from "../../Firebase/FirebaseQueries";
-import { ReactComponent as Sensors } from "../../assets/images/sensors.svg";
+import { ReactComponent as CalendarRewind } from "../../assets/images/ic_round-event-repeat.svg";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
+import { STYLES } from "../../constants/styles";
 
 
 const HackathonEventsPage = () => {
@@ -46,15 +47,15 @@ const HackathonEventsPage = () => {
   };
   return (
     <main className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem] bg-">
-        <div className="pl-4">
-          <h1 className="font-corben text-[2.4rem] leading-[114%] md:text-[3rem] lg:text-[3rem]">Hackathon Events</h1>
-          <p className="leading-[2.5]">Explore all the hackathon events</p>
+      <div className="h-[18.5rem] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 bg-[url(src/assets/images/banner.png)] bg-cover">
+        <div className="flex flex-col h-fit w-fit px-[4.2rem] pt-[1.2rem] pb-[1.2rem] items-start rounded-[10px] bg-white/60 backdrop-blur-[15px]">
+          <h1 className="font-corben text-[3.4rem] leading-[114%]">Events</h1>
+          <p className="leading-[2.5 font-gilroy font-extrabold leading-[3rem]">Explore all the hackathon events</p>
         </div>
       </div>
-      <div className="w-full flex justify-end gap-6 px-8 py-4 text-xl">
-        <Link to="joined" className="flex relative gap-2 py-2 px-4 border-3 border-black rounded-md bg-MVP-green text-MVP-black font-gilroy">
-          <Sensors className="w-7 h-7" />
+      <div className="w-full flex justify-end gap-6 px-12 py-8 text-2xl font-gilroy font-extrabold">
+        <Link to="joined" className="flex py-3 px-8 justify-center items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white">
+          <CalendarRewind className="w-9 h-9" />
           My Events
           {alertEvent &&
             <span className="absolute right-[-0.8em] top-[-0.8em] bg-MVP-black text-white text-sm rounded-full w-7 h-7 flex items-center justify-center">
@@ -62,14 +63,14 @@ const HackathonEventsPage = () => {
             </span>
           }
         </Link>
-        <Link to="/EventForm" className="py-2 px-4 border-3 border-black rounded-[8px] bg-MVP-dark-blue text-MVP-white font-gilroy">Create Hackathon</Link>
+        <Link to="/EventForm" className="flex py-3 px-8 justify-center items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-dark-blue text-MVP-white">Create Hackathon</Link>
       </div>
-      <div className="w-full h-full flex gap-4 mt-4 px-8">
+      <div className="w-full h-full flex gap-4 mt-2 px-8">
         <div className="flex-1 w-[40%] md:w-[25%]">
           <h2 className="font-gilroy text-3xl pb-8">Filters</h2>
           <Filters filters={filters} onFilterChange={setFilters} />
         </div>
-        <div className="flex flex-wrap gap-4 w-3/4 flex-end">
+        <div className="grid grid-cols-3 gap-10 px-4">
           {renderEvents()}
         </div>
       </div>

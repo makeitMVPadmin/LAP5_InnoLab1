@@ -8,7 +8,7 @@ const Header = ({ redirect, navigateback }) => {
     return (
         <header>
             <DashboardNavbar />
-            <section className="bg-MVP-soft-blue font-gilroy font-extrabold text-2xl text-MVP-black px-10 py-3">
+            <section className="bg-MVP-soft-blue font-gilroy font-extrabold text-2xl text-MVP-black px-10 py-2">
                 {redirect ? (
                     <Link
                         to={redirect}

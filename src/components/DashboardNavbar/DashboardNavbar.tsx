@@ -56,7 +56,7 @@ const DashboardNavbar = () => {
                 <Icon
                   className={`w-[3rem] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
                 />
-                <p className={`text-MVP-black text-center font-gilroy text-[1rem] leading-[115.645%] pb-1 border-b-4 border-transparent ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue'}`}>
+                <p className={`text-MVP-black text-center font-gilroy text-[1rem] leading-[115.645%] pb-1 border-b-4 ${isActive ? 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue' : 'border-transparent'}`}>
                   {label}
                 </p>
               </>
