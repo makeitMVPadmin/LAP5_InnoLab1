@@ -18,6 +18,7 @@ import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage
 import "./styles/_global.scss";
 import EventDetailsPage from "./pages/EventDetails/EventDetailsPage";
 import EventDetails from "./components/EventDetails/EventDetails";
+import OrganizerReviewPage from "./pages/OrganizerReviewPage/OrganizerReviewPage";
 
 const App = () => {
   return (
@@ -33,11 +34,29 @@ const App = () => {
           <Route path="/hackathons" element={<HackathonEventsPage />} />
           <Route path="/details/:eventId" element={<EventDetailsPage />} />
           <Route path="/hackathons/joined" element={<MyEventsPage />} />
-          <Route path="/join-event/:eventId" element={<JoinEvent />} />
-          <Route path="/event/:eventId" element={<EventPage />} />
           <Route
             path="/hackathons/submissions/:submissionId"
             element={<ProjectShowcasePage />}
+          />
+          <Route path="/join-event/:eventId" element={<JoinEvent />} />
+          <Route path="/event/:eventId" element={<EventPage />} />
+
+          <Route
+            path="/hackathons/submissions/:submissionId"
+            element={<ProjectShowcasePage />}
+          />
+          <Route
+            path="/event/:eventId/submit"
+            element={<ProjectSubmissionPage />}
+          />
+          <Route
+            path="/event/:eventId/review-submit"
+            element={<ProjectReviewPage />}
+          />
+          {/* Need to checkfor admin */}
+          <Route
+            path="/event/:eventId/admin"
+            element={<OrganizerReviewPage />}
           />
           <Route
             path="/event/:eventId/submit"

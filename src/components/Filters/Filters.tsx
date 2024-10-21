@@ -1,18 +1,22 @@
-import { Checkbox } from "../../components/ui/checkbox"
-import { Label } from "../../components/ui/label"
+import { Checkbox } from "../../components/ui/checkbox";
+import { Label } from "../../components/ui/label";
 
 export default function Filters({ filters, onFilterChange }) {
-  // Helper function to convert checkbox change to expected event format
+  // Helper function to convert checkbox change to the expected event format
   const handleCheckboxChange = (name: string, value: string, checked: boolean) => {
     onFilterChange({
       target: { name, value, checked },
     } as any);
   };
-  const subHeading = "font-gilroy text-lg"
-  const filterLabel = "text-base font-poppins leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-  const filterGroupedInput = "space-y-4"
+
+  // Styling constants
+  const subHeading = "font-gilroy text-lg";
+  const filterLabel = "text-base font-poppins leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+  const filterGroupedInput = "space-y-4";
+
   return (
     <div className="space-y-8">
+      {/* Skill-level section */}
       <section className="space-y-6">
         <h4 className={`${subHeading}`}>Skill-level</h4>
         <div className={`${filterGroupedInput}`}>
@@ -26,10 +30,7 @@ export default function Filters({ filters, onFilterChange }) {
                   handleCheckboxChange("skillLevel", level, checked as boolean)
                 }
               />
-              <Label
-                htmlFor={level}
-                className={`${filterLabel}`}
-              >
+              <Label htmlFor={level} className={`${filterLabel}`}>
                 {level}
               </Label>
             </div>
@@ -37,15 +38,11 @@ export default function Filters({ filters, onFilterChange }) {
         </div>
       </section>
 
+      {/* Discipline section */}
       <section className="space-y-6">
         <h4 className={`${subHeading}`}>Discipline</h4>
         <div className={`${filterGroupedInput}`}>
-          {[
-            "Design",
-            "Software Development",
-            "Data Science and Analytics",
-            "Web Development"
-          ].map((discipline) => (
+          {["Design", "Software Development", "Data Science and Analytics", "Web Development"].map((discipline) => (
             <div key={discipline} className="flex items-center space-x-4">
               <Checkbox
                 id={discipline}
@@ -55,10 +52,7 @@ export default function Filters({ filters, onFilterChange }) {
                   handleCheckboxChange("disciplines", discipline, checked as boolean)
                 }
               />
-              <Label
-                htmlFor={discipline}
-                className={`${filterLabel}`}
-              >
+              <Label htmlFor={discipline} className={`${filterLabel}`}>
                 {discipline}
               </Label>
             </div>
@@ -66,6 +60,7 @@ export default function Filters({ filters, onFilterChange }) {
         </div>
       </section>
 
+      {/* Themes section */}
       <section className="space-y-6">
         <h4 className={`${subHeading}`}>Themes</h4>
         <div className={`${filterGroupedInput}`}>
@@ -86,10 +81,7 @@ export default function Filters({ filters, onFilterChange }) {
                   handleCheckboxChange("themes", theme, checked as boolean)
                 }
               />
-              <Label
-                htmlFor={theme}
-                className={`${filterLabel}`}
-              >
+              <Label htmlFor={theme} className={`${filterLabel}`}>
                 {theme}
               </Label>
             </div>
@@ -97,6 +89,7 @@ export default function Filters({ filters, onFilterChange }) {
         </div>
       </section>
 
+      {/* Time-Zone section */}
       <section className="space-y-6">
         <h4 className={`${subHeading}`}>Time-Zone</h4>
         <div className={`${filterGroupedInput}`}>
@@ -110,10 +103,7 @@ export default function Filters({ filters, onFilterChange }) {
                   handleCheckboxChange("timeZone", timezone, checked as boolean)
                 }
               />
-              <Label
-                htmlFor={timezone}
-                className={`${filterLabel}`}
-              >
+              <Label htmlFor={timezone} className={`${filterLabel}`}>
                 {timezone}
               </Label>
             </div>
@@ -121,6 +111,7 @@ export default function Filters({ filters, onFilterChange }) {
         </div>
       </section>
 
+      {/* Duration section */}
       <section className="space-y-6">
         <h4 className={`${subHeading}`}>Duration</h4>
         <div className={`${filterGroupedInput}`}>
@@ -134,10 +125,7 @@ export default function Filters({ filters, onFilterChange }) {
                   handleCheckboxChange("duration", duration, checked as boolean)
                 }
               />
-              <Label
-                htmlFor={duration}
-                className={`${filterLabel}`}
-              >
+              <Label htmlFor={duration} className={`${filterLabel}`}>
                 {duration}
               </Label>
             </div>

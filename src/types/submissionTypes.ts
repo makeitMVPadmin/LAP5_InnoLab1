@@ -19,6 +19,7 @@ export interface SectionProps {
 
 export interface ProjectSubmissionFormValues
   extends z.infer<typeof submissionSchema> {
+  title: string,
   teamName: string;
   techStack: string;
   designTools: string;
@@ -27,7 +28,7 @@ export interface ProjectSubmissionFormValues
   designFeatures: string;
   designImpact: string;
   nextSteps: string;
-  imageFiles: File[] | null;
+  projectFiles: File[] | null;
   pdfFiles: File[] | null;
   projectLinks: ProjectLink[];
   teamMembers: TeamMember[];
