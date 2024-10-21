@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const submissionSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title of project required." })
+    .max(80, { message: "Max 80 characters has been reached" }),
   teamName: z
     .string()
     .min(1, { message: "Team name is required." })
@@ -33,10 +37,18 @@ export const submissionSchema = z.object({
     .string()
     .min(1, { message: "Next steps are required." })
     .max(500, { message: "Max 500 characters has been reached" }),
-  imageFiles: z
+  projectFiles: z
     .array(
       z.instanceof(File).refine((file) => !!file, {
         message: "File is required.",
+      })
+    )
+    .min(1, { message: "At least one file is required." })
+    .max(3),
+  pdfFiles: z
+    .array(
+      z.instanceof(File).refine((file) => !!file, {
+        message: "PDF file is required.",
       })
     )
     .min(1, { message: "At least one file is required." })

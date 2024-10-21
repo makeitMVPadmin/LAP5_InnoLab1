@@ -1,5 +1,6 @@
 export const PLACEHOLDERS = {
   SELECT_ROLE: "Select a role",
+  ENTER_TITLE: "Enter title of project",
   ENTER_TEAM_NAME: "Enter team name",
   ENTER_TECH_STACK: "Enter Tech Stack",
   ENTER_DESIGN_TOOLS: "Enter Design Tools",

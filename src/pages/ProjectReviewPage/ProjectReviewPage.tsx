@@ -20,7 +20,7 @@ const Section = ({ title, children, required, editButton }: SectionProps) => (
         <div className="flex justify-end">
             {editButton}
         </div>
-        <h2 className="text-sm font-medium mt-4">{title}{required && '*'}</h2>
+        <h2 className="text-sm font-bold mt-4">{title}{required && '*'}</h2>
         {children}
     </section>
 );
@@ -40,19 +40,19 @@ const ProjectReviewPage = () => {
     const handleEditSection = (sectionId: string) => { setEditingSectionId(sectionId); };
     const handleSaveSection = (sectionId: string, newValue: any) => {
         setFormData(prev => {
-            if (sectionId === "imageFiles") {
+            if (sectionId === "projectFiles") {
                 let updatedFiles;
                 if (newValue instanceof File) {
-                    updatedFiles = [...prev.imageFiles, newValue];
+                    updatedFiles = [...prev.projectFiles, newValue];
                 } else if (Array.isArray(newValue) && newValue.every(item => item instanceof File)) {
-                    updatedFiles = [...prev.imageFiles, ...newValue];
+                    updatedFiles = [...prev.projectFiles, ...newValue];
                 } else {
-                    console.error('Unexpected newValue type for imageFiles:', newValue);
+                    console.error('Unexpected newValue type for projectFiles:', newValue);
                     return prev;
                 }
                 return {
                     ...prev,
-                    imageFiles: updatedFiles
+                    projectFiles: updatedFiles
                 };
             }
             return {
@@ -128,50 +128,51 @@ const ProjectReviewPage = () => {
     const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
-    const handleDeleteImage = (indexToRemove: Number) => {
-        const newFiles = formData.imageFiles.filter((_, index: Number) => index !== indexToRemove);
+    const handleDeleteFile = (fileType: 'projectFiles' | 'pdfFiles', indexToRemove: number) => {
+        const newFiles = formData[fileType].filter((_: any, index: number) => index !== indexToRemove);
         setFormData(prev => ({
             ...prev,
-            imageFiles: newFiles
-        }))
-    }
+            [fileType]: newFiles
+        }));
+    };
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        setIsLoading(true)
+        setIsLoading(true);
+
         try {
+            // Validate form data
             const parsedData = submissionSchema.safeParse(formData);
             if (!parsedData.success) {
                 console.error("Validation errors:", parsedData.error.errors);
                 return;
             }
 
+            // Filter empty team members and links
             const formattedTeamMembers = formData.teamMembers.filter(
-                (member: { name: string; role: string; }) => member.name.trim() !== "" && member.role.trim() !== ""
+                (member) => member.name.trim() !== "" && member.role.trim() !== ""
             );
 
             const formattedLinks = formData.projectLinks.filter(
-                (link: { url: string; }) => link.url.trim() !== ""
+                (link) => link.url.trim() !== ""
             );
 
+            // Create submission data object
             const submissionFormData: ProjectSubmission = {
                 ...formData,
                 teamMembers: formattedTeamMembers,
                 projectLinks: formattedLinks,
             };
+            console.log("submission part 2", submissionFormData);
+
 
             await createProjectSubmission(submissionFormData);
-            // TO DO add navigation after the form has submitted 
-            // set a alert model
-            // navigate('/hackathons')
-
 
         } catch (error) {
             console.error("Error submitting form:", error);
         } finally {
             setIsLoading(false);
         }
-
-    }
+    };
 
     if (isLoading) {
         return <div>loading</div>
@@ -196,6 +197,20 @@ const ProjectReviewPage = () => {
                     )}
                 </section>
                 <article className="mt-8 flex flex-col gap-10">
+                    <Section
+                        title="Title"
+                        required={true}
+                        editButton={
+                            <EditButton
+                                handleClick={() => handleEditSection("title")}
+                                isEditing={false}
+                                isEditMode={isEditMode}
+                            />
+                        }
+                    >
+                        {renderEditableContent("title", formData.title)}
+                    </Section>
+
                     <Section
                         title="Team Name"
                         required={true}
@@ -308,22 +323,53 @@ const ProjectReviewPage = () => {
                     >
                         {renderEditableContent("nextSteps", formData.nextSteps)}
                     </Section>
-                    <Section
-                        title="Upload project files"
-                        editButton={
-                            <EditButton
-                                handleClick={() => handleEditSection("imageFiles")}
-                                isEditing={false}
-                                isEditMode={isEditMode} />}
-                    >
-                        {renderEditableImages({
-                            sectionId: "imageFiles",
-                            content: formData.imageFiles,
-                            isEditing: editingSectionId === "imageFiles",
-                            handleSaveSection,
-                            handleDeleteImage,
-                        })}
-                    </Section>
+                    <div className="">
+                        <h3 className={`${STYLES.label}`}>Upload Files</h3>
+                        <div className="flex gap-4 pl-2">
+                            <div className="w-1/2">
+                                <Section
+                                    title="Upload project files"
+                                    editButton={
+                                        <EditButton
+                                            handleClick={() => handleEditSection("projectFiles")}
+                                            isEditing={false}
+                                            isEditMode={isEditMode} />}
+                                >
+                                    {renderEditableImages({
+                                        sectionId: "projectFiles",
+                                        content: formData.projectFiles,
+                                        isEditing: editingSectionId === "projectFiles",
+                                        acceptedTypes: ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'],
+                                        handleSaveSection,
+                                        handleDeleteFile,
+                                        fileType: "projectFiles"
+                                    })}
+                                </Section>
+                            </div>
+                            <div className="w-1/2">
+                                <Section
+                                    title="Presentation Desk*"
+                                    editButton={
+                                        <EditButton
+                                            handleClick={() => handleEditSection("pdfFiles")}
+                                            isEditing={false}
+                                            isEditMode={isEditMode} />}
+                                >
+                                    {renderEditableImages({
+                                        sectionId: "pdfFiles",
+                                        content: formData.pdfFiles,
+                                        isEditing: editingSectionId === "pdfFiles",
+                                        acceptedTypes: ['application/pdf'],
+                                        handleSaveSection,
+                                        handleDeleteFile,
+                                        fileType: "pdfFiles"
+                                    })}
+                                </Section>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     <Section
                         title="Project Links"
@@ -347,20 +393,20 @@ const ProjectReviewPage = () => {
                 </article>
             </main>
             <section className="h-[100px] w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white">
-               <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
-                <EditButton
-                    handleClick={handleEditMode}
-                    isEditing={false}
-                    isEditMode={!isEditMode}
-                />
-                <Button
-                    className={`${STYLES.primaryButton}`}
-                    onClick={handleSubmit}
-                    aria-label="submit button to submit project"
-                 >
-                    Submit Project
-                </Button>
-               </div>
+                <div className="max-w-[930px] md:m-auto flex justify-end gap-8 items-center pt-4">
+                    <EditButton
+                        handleClick={handleEditMode}
+                        isEditing={false}
+                        isEditMode={!isEditMode}
+                    />
+                    <Button
+                        className={`${STYLES.primaryButton}`}
+                        onClick={handleSubmit}
+                        aria-label="submit button to submit project"
+                    >
+                        Submit Project
+                    </Button>
+                </div>
             </section>
         </div>
     );
