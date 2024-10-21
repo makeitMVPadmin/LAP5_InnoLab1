@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useSubmission from '../../hooks/useSubmission';
 import CommentSection from '../../components/CommentSection/CommentSection';
-import DashboardNavbar from '../../components/DashboardNavbar/DashboardNavbar';
 import { ReactComponent as Clock } from '../../assets/images/clock.svg'; 
 import ParticipantInfoChip from '../../components/ParticipantInfoChip/ParticipantInfoChip';
 import PDFViewer from '../../components/PDFViewer/PDFViewer';

@@ -34,7 +34,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
         setIsFavorite(!isFavorite);
     };
 
-    const tagStyle = "flex items-center justify-center px-4 font-gilroy h-7 rounded-full";
+    const tagStyle = "flex items-center justify-center px-4 font-gilroy font-extrabold h-7 rounded-full";
 
     return (
         <article className="flex flex-col w-full md:w-80 h-[34.5625rem] mb-4">
