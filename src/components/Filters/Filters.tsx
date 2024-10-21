@@ -1,6 +1,5 @@
 import { Checkbox } from "../../components/ui/checkbox";
 import { Label } from "../../components/ui/label";
-import "./Filters.scss";
 
 export default function Filters({ filters, onFilterChange }) {
   // Helper function to convert checkbox change to the expected event format

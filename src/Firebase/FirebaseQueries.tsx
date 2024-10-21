@@ -24,20 +24,20 @@ export type HackathonEventType = {
   title: string;
 };
 
-export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ event?: HackathonEvent; events: Record<string, HackathonEvent>; loading: boolean; error: string | null }> => {
+export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ event?: HackathonEventType; events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
   let loading = true;
   let error: string | null = null;
-  let event: HackathonEvent | undefined;
-  let events: Record<string, HackathonEvent> = {};
+  let event: HackathonEventType | undefined;
+  let events: Record<string, HackathonEventType> = {};
 
   try {
     const colRef = collection(db, "hackathonEvents");
     const querySnapshot = await getDocs(colRef);
 
     events = querySnapshot.docs.reduce((acc, doc) => {
-      acc[doc.id] = doc.data() as HackathonEvent;
+      acc[doc.id] = doc.data() as HackathonEventType;
       return acc;
-    }, {} as Record<string, HackathonEvent>);
+    }, {} as Record<string, HackathonEventType>);
     if (hackathonId) {
       event = events[hackathonId];
       if (!event) {
