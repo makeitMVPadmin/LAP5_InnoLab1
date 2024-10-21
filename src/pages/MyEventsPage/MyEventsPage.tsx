@@ -66,8 +66,8 @@ const MyEventsPage = () => {
 
   return (
     <div className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <div className="h-[16rem] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 bg-[url(src/assets/images/myeventsbanner.png)] bg-cover">
-        <div className="flex flex-col h-fit w-fit px-[4.2rem] pt-[1.2rem] pb-[1.2rem] items-start rounded-[10px] bg-white/60 backdrop-blur-[15px]">
+      <div className="h-[16rem] bg-MVP-light-gray flex flex-col justify-center bg-[url(src/assets/images/myeventsbanner.png)] bg-cover">
+        <div className="flex flex-col h-fit w-fit px-[4.2rem] pt-[1.2rem] pb-[1.2rem] ml-12 items-start rounded-[10px] bg-white/60 backdrop-blur-[15px]">
           <h1 className="font-corben text-[3.4rem] leading-[114%]">My Events</h1>
           <p className="leading-[2.5 font-gilroy font-extrabold leading-[3rem]">Explore all the events you joined</p>
         </div>

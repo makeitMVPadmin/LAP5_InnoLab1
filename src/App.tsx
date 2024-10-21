@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
-          <Route path="/hackathons" element={<Layout redirect="/login" ><HackathonEventsPage /></Layout>} />
+          <Route path="/hackathons" element={<Layout><HackathonEventsPage /></Layout>} />
           <Route path="/hackathons/joined" element={<Layout redirect="/hackathons"><MyEventsPage /></Layout>} />
           <Route path="/hackathons/submissions/:submissionId" element={<Layout navigateback><ProjectShowcasePage /></Layout>} />
           <Route path="/join-event/:eventId" element={<Layout redirect="/hackathons" ><JoinEvent /></Layout>} />

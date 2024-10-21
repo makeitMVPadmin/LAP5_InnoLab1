@@ -8,6 +8,7 @@ const Header = ({ redirect, navigateback }) => {
     return (
         <header>
             <DashboardNavbar />
+            { (redirect || navigateback) &&
             <section className="bg-MVP-soft-blue font-gilroy font-extrabold text-2xl text-MVP-black px-10 py-2">
                 {redirect ? (
                     <Link
@@ -29,6 +30,7 @@ const Header = ({ redirect, navigateback }) => {
                     </button>
                 ) : null}
             </section>
+            }
         </header>    
     );
 }
