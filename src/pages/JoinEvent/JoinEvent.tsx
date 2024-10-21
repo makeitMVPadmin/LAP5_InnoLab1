@@ -113,14 +113,10 @@ const JoinEvent = () => {
 
   return (
     <div className="event-page">
-      <DashboardNavbar />
-      <header className="h-[15%] m-h-[5rem] w-full shadow-sm bg-MVP-soft-blue flex flex-col justify-between rem-[2.1rem] py-[0.4rem] px-[1.5rem] max-h-[4.8rem] justify-center">
-        <Link to="/hackathons" className="text-MVP-black cursor-pointer font-gilroy text-[1.5rem] font-extrabold my-auto">← Back</Link>
-      </header>
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="join-event">
         <h1 className='text-MVP-black font-sans text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>Join {eventData.title}</h1>
-        <form className="space-y-6 mt-10" onSubmit={handleSubmit}>
-          <div className="flex flex-col">
+        <form className="join-event__form mt-10" onSubmit={handleSubmit}>
+          <div className="join-event__form-group">
             <label htmlFor="name" className={`${STYLES.label}`}>Name*</label>
             <Input
               type="text"
@@ -129,7 +125,7 @@ const JoinEvent = () => {
               value={name}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
               maxLength={80}
-              className={`${STYLES.input} ${errors.name ? "border-MVP-red" : ""}`}
+              className={`${STYLES.input} ${errors.name ? "border-red-500" : ""}`}
             />
             <div className="flex justify-between items-center pt-2">
               {errors.name && (
@@ -138,7 +134,7 @@ const JoinEvent = () => {
                   {errors.name}
                 </div>
               )}
-              <span className={`${STYLES.counterStyle}`}>{name.length}/80 characters</span>
+              <span className={`${STYLES.counterStyle}`}>{name.length}/500 characters</span>
             </div>
           </div>
 

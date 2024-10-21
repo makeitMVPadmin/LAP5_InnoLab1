@@ -1,15 +1,12 @@
 import EventCard from "../../components/EventCard/EventCard";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useJoinedEvents } from "../../Firebase/FirebaseQueries";
 import { ReactComponent as Sensors } from "../../assets/images/sensors.svg";
 import { useAuth } from "../../context/AuthContext";
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { Link, useNavigate } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
-import PulsingAnimation from "../../components/PulsingAnimation/PulsingAnimation";
-import Header from "../../components/Header/Header";
 
 
 const HackathonEventsPage = () => {
@@ -19,7 +16,6 @@ const HackathonEventsPage = () => {
   const { allCurrentEvents = [], joinedCurrentEvents = [] } = events || {};
   const { filters, setFilters, filteredEvents = [] } = useFilterEvents(allCurrentEvents);
   const [alertEvent, setAlertEvent] = useState(false);
-  const navigate = useNavigate()
 
   useEffect(() => {
     setAlertEvent(getEndingEvent(joinedCurrentEvents));
@@ -50,10 +46,9 @@ const HackathonEventsPage = () => {
   };
   return (
     <main className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <Header handleClick={() => navigate("/")} />
       <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem] bg-">
         <div className="pl-4">
-          <h1 className="font-corben text-[2.4rem] leading-[114%] md:text-[3rem] lg:text-[3rem]">Events</h1>
+          <h1 className="font-corben text-[2.4rem] leading-[114%] md:text-[3rem] lg:text-[3rem]">Hackathon Events</h1>
           <p className="leading-[2.5]">Explore all the hackathon events</p>
         </div>
       </div>

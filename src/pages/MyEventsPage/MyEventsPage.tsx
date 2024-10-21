@@ -68,9 +68,7 @@ const MyEventsPage = () => {
 
   return (
     <div className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <DashboardNavbar />
       <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem]">
-        <Link to="/hackathons" className="text-MVP-black cursor-pointer">← Back</Link>
         <div>
           <h1 className="font-corben text-[2.4rem] leading-[114%] md:text-[3rem] lg:text-[3rem]">My Events</h1>
           <p className="leading-[2.5]">Look at the events you have joined</p>
