@@ -1,4 +1,4 @@
-interface EventFormPage1Inputs {
+interface EventFormInputs {
   title: string;
   organizer: string;
   description: string;
@@ -17,7 +17,7 @@ interface EventFormPage1Inputs {
   thumbnail: FileList | null; //replace with truthy thumbnail type once thumbnail upload logic is complete
 }
 
-interface EventFormPage2Inputs {
+interface ChallengeDetailsInputs {
   additionalInformation: string;
   challengeReleaseDate: string;
   challengeReleaseTime: string;
@@ -27,7 +27,7 @@ interface EventFormPage2Inputs {
   problemStatement: string;
 }
 
-type FormData = EventFormPage1Inputs | EventFormPage2Inputs;
+type FormData = EventFormInputs | ChallengeDetailsInputs;
 
 export const saveFormData = (key: string, data: FormData) => {
     localStorage.setItem(key, JSON.stringify(data));
