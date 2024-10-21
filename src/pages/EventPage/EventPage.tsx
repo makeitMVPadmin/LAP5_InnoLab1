@@ -1,17 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { STYLES } from '../../constants/styles';
-import Clock from "../../assets/images/clockIcon.svg"
 import { fetchHackathonEvents } from "../../Firebase/FirebaseQueries";
-import Header from "../../components/Header/Header";
 import { HackathonEventType } from "../../Firebase/FirebaseQueries";
+import { STYLES } from '../../constants/styles';
+import Header from "../../components/Header/Header";
 import DetailCard from "../../components/DetailCard/DetailCard";
+import ParticipantInfoChip from "../../components/ParticipantInfoChip/ParticipantInfoChip";
+import StackedProfiles from "../../components/StackedProfiles/StackedProfiles";
+import Clock from "../../assets/images/clockIcon.svg"
+import useEventData from "../../hooks/usEventData";
+import ExportButton from "../../components/ExportButton/ExportButton";
+
 const EventPage = () => {
     const [event, setEvent] = useState<HackathonEventType | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const { eventId } = useParams()
     const navigate = useNavigate()
+    const {
+        submissions,
+        participantCount,
+        formattedUserNames,
+        exportData,
+        exportFields,
+    } = useEventData(eventId);
+
 
     useEffect(() => {
         async function loadEvent() {
@@ -20,10 +33,12 @@ const EventPage = () => {
 
             try {
                 const { event, error } = await fetchHackathonEvents(eventId);
+
                 if (error) {
                     setError(error);
                 } else {
                     setEvent(event);
+
                 }
             } catch (err) {
                 setError((err as Error).message);
@@ -59,7 +74,6 @@ const EventPage = () => {
                             </div>
                             <h1 className="text-3xl md:text-6xl font-gilroy mt-8">{event.title}</h1>
                             <DetailCard text={event.skillLevel} />
-
                             <p className="font-poppins">{event.basicProjectSummary}</p>
                             <section aria-labelledby="themes">
                                 <h2 id="themes" className="font-bold font-gilroy text-3xl my-3">Themes</h2>
@@ -82,12 +96,26 @@ const EventPage = () => {
                         <div className="border-black border">
                             {/* Hilary's code here*/}
                         </div>
-                    </div>
-
-                    {/* Event Details Right*/}
-                    <div>
 
                     </div>
+                    <section className="w-3/4 px-6 ">
+                        <div className="flex justify-start gap-8">
+                            <div className="flex gap-3 items-center">
+                                <h3 className="font-bold font-gilroy text-2xl my-3">Registrants</h3>
+                                <span>({submissions.length}/{participantCount})</span>
+                            </div>
+                            <ExportButton data={exportData} fields={exportFields} />
+                        </div>
+                        <div className="flex flex-col">
+                            <StackedProfiles />
+                            <p className="font-poppins mt-12">{formattedUserNames}</p>
+                        </div>
+                    </section>
+                    <section className="w-3/4 px-6 ">
+                        {/* Hilary's code here*/}
+
+                    </section>
+
                 </section>
 
 
