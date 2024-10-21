@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
@@ -10,7 +10,7 @@ interface EventFormInputs {
   organizer: string;
   description: string;
   skillLevel: string;
-  disciplines: string;
+  disciplines: string[];
   themes: string[];
   startDate: string;
   startTime: string;
@@ -28,6 +28,8 @@ const EventForm: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm<EventFormInputs>({
@@ -36,8 +38,8 @@ const EventForm: React.FC = () => {
       organizer: "",
       description: "",
       skillLevel: "",
-      disciplines: "",
-      themes: [""],
+      disciplines: [],
+      themes: [],
       startDate: "",
       startTime: "",
       endDate: "",
@@ -51,49 +53,54 @@ const EventForm: React.FC = () => {
     },
   });
 
+  const navigate = useNavigate();
   const [selectedThemes, setSelectedThemes] = useState([]);
-  const allThemes = ["Healthcare", "AI", "Education", "Fintech"];
+  const allThemes = ["AI & Machine Learning", "Sustainability & Climate", "Health & Wellness", "Fintech & Blockchain", "Education & Learning", "Gaming & VR"];
 
-  const [selectedDisiplines, setSelectedDisiplines] = useState([]);
-  const allDisiplines = ["Design", "Data", "Development", "Multi-displine"];
+  const [selectedDisciplines, setSelectedDisciplines] = useState([]);
+  const allDisciplines = ["Design", "Data Science and Analytics", "Software Development", "Web Development"];
 
   const onSubmit = (data: EventFormInputs) => {
-    console.log("Form Data", data);
     saveFormData("eventFormData", data);
     navigate("/ChallengeDetails");
   };
 
-  const handleThemeChange = (e) => {
+  const handleThemesChange = (e) => {
     const value = e.target.value;
-    if (value && selectedThemes.length < 3 && !selectedThemes.includes(value)) {
-      setSelectedThemes([...selectedThemes, value]);
-    } else if (selectedThemes.length >= 3) {
-      alert("You can select up to 3 themes only.");
-    }
+    if (
+      value &&
+      !selectedThemes.includes(value)
+    ) {
+      const updatedThemes = [...selectedThemes, value];
+      setSelectedThemes(updatedThemes);
+      setValue("themes", updatedThemes);
+    };
   };
 
+
   const removeTheme = (theme) => {
-    setSelectedThemes(selectedThemes.filter((t) => t !== theme));
+    const updatedThemes = selectedThemes.filter((t) => t !== theme);
+    setSelectedThemes(updatedThemes);
+    setValue("themes", updatedThemes);
   };
 
   const handleDisciplineChange = (e) => {
     const value = e.target.value;
     if (
       value &&
-      selectedThemes.length < 3 &&
-      !selectedDisiplines.includes(value)
+      !selectedDisciplines.includes(value)
     ) {
-      setSelectedDisiplines([...selectedDisiplines, value]);
-    } else if (selectedThemes.length >= 3) {
-      alert("You can select up to 3 themes only.");
-    }
+      const updatedDisciplines = [...selectedDisciplines, value];
+      setSelectedDisciplines(updatedDisciplines);
+      setValue("disciplines", updatedDisciplines);
+    };
   };
 
-  const removeDisciplines = (disiplines) => {
-    setSelectedDisiplines(selectedDisiplines.filter((t) => t !== disiplines));
+  const removeDiscipline = (discipline) => {
+    const updatedDisciplines = selectedDisciplines.filter((d) => d !== discipline);
+    setSelectedDisciplines(updatedDisciplines);
+    setValue("disciplines", updatedDisciplines);
   };
-
-  const navigate = useNavigate();
 
   const handleCancelClick = () => {
     navigate("/hackathons");
@@ -133,7 +140,7 @@ const EventForm: React.FC = () => {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="event-form">
+    <form onSubmit={handleSubmit(onSubmit)} className="event-form font-gilroy">
       <section className="form-section">
         <h2>Create an Event</h2>
         <div className="steps">
@@ -142,7 +149,7 @@ const EventForm: React.FC = () => {
           <div className="step">3. Review</div>
         </div>
         <div className="form-group">
-          <label htmlFor="title">Event Title *</label>
+          <label htmlFor="title">Event Title<sup>*</sup></label>
           <input
             {...register("title", { required: "Event Title is required" })}
             className={`form-control${errors.title ? "error" : ""}`}
@@ -151,7 +158,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Organized By *</label>
+          <label>Organized By<sup>*</sup></label>
           <input
             {...register("organizer", { required: "Organizer is required" })}
           />
@@ -161,7 +168,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Event Description *</label>
+          <label>Event Description<sup>*</sup></label>
           <textarea
             {...register("description", {
               required: "Event description is required",
@@ -173,7 +180,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="skillLevel">Skill Level *</label>
+          <label htmlFor="skillLevel">Skill Level<sup>*</sup></label>
           <Controller
             name="skillLevel"
             control={control}
@@ -230,22 +237,22 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="discipline">Discipline *</label>
+          <label htmlFor="discipline">Discipline<sup>*</sup></label>
           <div
             className={`border-2 rounded-lg p-2 flex gap-4 ${
               errors.disciplines ? "border-red-500" : "border-black"
             }`}
           >
-            {selectedDisiplines.map((discipline) => (
+            {selectedDisciplines.map((discipline) => (
               <div
                 key={discipline}
-                className="bg-yellow-400 flex items-center px-2 py-1 rounded-full"
+                className="bg-yellow-400 flex items-center px-6 py-1 rounded-full leading-[115.645%]"
               >
                 {discipline}
                 <button
                   type="button"
-                  onClick={() => removeDisciplines(discipline)}
-                  className="ml-1 text-black"
+                  onClick={() => removeDiscipline(discipline)}
+                  className="ml-4 text-black"
                 >
                   ✕
                 </button>
@@ -253,17 +260,13 @@ const EventForm: React.FC = () => {
             ))}
             <select
               onChange={handleDisciplineChange}
-              className="focus:outline-none w-full theme-select"
-              {...register("disciplines", {
-                required: "Discipline is required",
-                validate: () =>
-                  selectedDisiplines.length > 0 || "Discipline is required",
-              })}
+              className={`focus:outline-none w-full theme-select ${selectedDisciplines.length === 3 && 'appearance-none'}`}
+              disabled={selectedDisciplines.length === 3}
             >
-              <option value="">Select up to 3 disciplines</option>
-              {allDisiplines
+              <option value={""}>{selectedDisciplines.length == 0 && 'Select up to 3 disciplines'}</option>
+              {allDisciplines
                 .filter(
-                  (discipline) => !selectedDisiplines.includes(discipline)
+                  (discipline) => !selectedDisciplines.includes(discipline)
                 )
                 .map((discipline) => (
                   <option key={discipline} value={discipline}>
@@ -280,7 +283,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="theme">Theme *</label>
+          <label htmlFor="theme">Theme<sup>*</sup></label>
           <div
             className={`border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2 ${
               errors.disciplines ? "border-red-500" : "border-black"
@@ -289,27 +292,23 @@ const EventForm: React.FC = () => {
             {selectedThemes.map((theme) => (
               <div
                 key={theme}
-                className="bg-yellow-400 flex items-center px-2 py-1 rounded-full"
+                className="bg-yellow-400 flex items-center px-6 py-1 rounded-full leading-[115.645%]"
               >
                 {theme}
                 <button
                   onClick={() => removeTheme(theme)}
-                  className="ml-1 text-black"
+                  className="ml-4 text-black"
                 >
                   ✕
                 </button>
               </div>
             ))}
-            <select
-              onChange={handleThemeChange}
-              className="focus:outline-none w-full theme-select"
-              {...register("themes", {
-                required: "Theme is required",
-                validate: () =>
-                  selectedDisiplines.length > 0 || "Theme is required",
-              })}
+             <select
+              onChange={handleThemesChange}
+              className={`focus:outline-none w-full theme-select ${selectedThemes.length === 3 && 'appearance-none'}`}
+              disabled={selectedThemes.length === 3}
             >
-              <option value="">Select up to 3 themes</option>
+              <option value={""}>{selectedThemes.length == 0 && 'Select up to 3 themes'}</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
                 .map((theme) => (
@@ -323,10 +322,10 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="eventDuration">Event Duration *</label>
+          <label htmlFor="eventDuration">Event Duration<sup>*</sup></label>
 
           <div className="sub-section">
-            <span>Start *</span>
+            <span>Start<sup>*</sup></span>
             <div className="date-input-container">
               <Controller
                 name="startDate"
@@ -368,7 +367,7 @@ const EventForm: React.FC = () => {
           </div>
 
           <div className="sub-section">
-            <span>End *</span>
+            <span>End<sup>*</sup></span>
             <div className="date-input-container">
               <Controller
                 name="endDate"
@@ -406,13 +405,15 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Timezone *</label>
+          <label>Timezone<sup>*</sup></label>
           <select
             {...register("timezone", { required: "Timezone is required" })}
             className={`form-control${errors.timezone ? " error" : ""}`}
           >
             <option value="">Select a timezone</option>
             <option value="GMT-0700">PST (GMT-0700)</option>
+            <option value="GMT-0600">MST (GMT-0600)</option>
+            <option value="GMT-0600">CST (GMT-0600)</option>
             <option value="GMT-0500">EST (GMT-0500)</option>
           </select>
           {errors.timezone && (
@@ -421,7 +422,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Meeting Link *</label>
+          <label>Meeting Link<sup>*</sup></label>
           <input
             type="url"
             {...register("meetingLink", {
@@ -435,7 +436,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Participant Count *</label>
+          <label>Participant Count<sup>*</sup></label>
           <div className="flex flex-col">
             <label>Min</label>
             <input
@@ -483,7 +484,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="judges">Judges *</label>
+          <label htmlFor="judges">Judges<sup>*</sup></label>
           {fields.map((field, index) => (
             <div
               key={field.id}
@@ -515,7 +516,7 @@ const EventForm: React.FC = () => {
                 {fields.length > 1 && (
                   <button
                     type="button"
-                    className="ml-2 text-red-500"
+                    className="ml-4 text-red-500"
                     onClick={() => remove(index)}
                   >
                     X
@@ -538,17 +539,17 @@ const EventForm: React.FC = () => {
             </div>
           ))}
 
-          {fields.length < 4 && (
-            <div className="flex justify-end mt-2">
-              <button
-                type="button"
-                className="px-4 py-2 add-judge-button"
-                onClick={() => append({ firstName: "", lastName: "" })}
-              >
-                Add Judge
-              </button>
-            </div>
-          )}
+        {fields.length <3 && (
+          <div className="flex justify-end mt-2">
+            <button
+              type="button"
+              className="px-4 py-2 rounded-[10px] bg-MVP-light-blue border-[3px] border-r-[5px] border-b-[5px] border-MVP-black text-MVP-black"
+              onClick={() => append({ firstName: "", lastName: "" })}
+            >
+              Add Judge
+            </button>
+          </div>
+        )}
         </div>
 
         <div className="file-upload-container">
@@ -615,5 +616,6 @@ const EventForm: React.FC = () => {
     </form>
   );
 };
+
 
 export default EventForm;
