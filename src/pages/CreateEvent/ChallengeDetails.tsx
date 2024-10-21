@@ -1,10 +1,13 @@
 import { useForm, Controller } from "react-hook-form";
 import "./ChallengeDetails.scss";
 import { useNavigate } from "react-router-dom";
-import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
+// import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
+import { saveFormData, getFormData } from "./StorageUtils";
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
+  challengeReleaseTime: string;
   problemStatement: string;
   objectivesGoals: string;
   constraints: string;
@@ -30,8 +33,14 @@ const ChallengeDetailsForm: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: ChallengeDetailsFormInputs) => {
-    console.log(data);
+  const onSubmit = async (data: ChallengeDetailsFormInputs) => {
+    saveFormData("challengeDetailsData", data);
+    const eventData = getFormData("eventFormData");
+    const combinedData = {
+      ...eventData,
+      ...data,
+    };
+    await saveEventToFirestore(combinedData);
   };
 
   const navigate = useNavigate();
@@ -50,40 +59,48 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="challengeReleaseDate">Challenge Release Date*</label>
-        <Controller
-          name="challengeReleaseDate"
-          control={control}
-          rules={{ required: "Challenge release date is required" }}
-          render={({ field }) => (
-            <div className="date-input-container">
-              <CalendarIcon className="icon" />
+        <label htmlFor="challengeReleaseDate">Challenge Release Date *</label>
+        <div className="date-input-container">
+          <Controller
+            name="challengeReleaseDate"
+            control={control}
+            rules={{ required: "Release date is required" }}
+            render={({ field }) => (
               <input
                 type="date"
                 {...field}
-                className={`form-control ${
+                className={`form-control${
                   errors.challengeReleaseDate ? "error" : ""
                 }`}
               />
-              <span className="divider">|</span>
-              <ClockIcon className="icon" />
+            )}
+          />
+          <span className="divider">|</span>
+          <Controller
+            name="challengeReleaseTime"
+            control={control}
+            rules={{ required: "Release time is required" }}
+            render={({ field }) => (
               <input
                 type="time"
                 {...field}
                 className={`form-control ${
-                  errors.challengeReleaseDate ? "error" : ""
+                  errors.challengeReleaseTime ? "error" : ""
                 }`}
               />
-            </div>
-          )}
-        />
+            )}
+          />
+        </div>
         {errors.challengeReleaseDate && (
           <p className="error-text">{errors.challengeReleaseDate.message}</p>
+        )}
+        {errors.challengeReleaseTime && (
+          <p className="error-text">{errors.challengeReleaseTime.message}</p>
         )}
       </div>
 
       <div className="form-group">
-        <label htmlFor="problemStatement">Problem Statement*</label>
+        <label htmlFor="problemStatement">Problem Statement *</label>
         <textarea
           {...register("problemStatement", {
             required: "Problem statement is required",
@@ -102,7 +119,7 @@ const ChallengeDetailsForm: React.FC = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="objectivesGoals">Objectives/Goals*</label>
+        <label htmlFor="objectivesGoals">Objectives/Goals *</label>
         <textarea
           {...register("objectivesGoals", {
             required: "Objectives/Goals are required",
