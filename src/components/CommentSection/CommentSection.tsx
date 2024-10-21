@@ -93,6 +93,12 @@ const CommunityCommentSection = ({ submissionId }) => {
                 setComments(prevComments => prevComments.filter((_, i) => i !== idx));
             }
 
+            setShowOption((prev) => {
+                const newShowOption = [...prev];
+                newShowOption[idx] = !newShowOption[idx];
+                return newShowOption;
+            });
+
         } catch (error) {
             console.error(error);
         }
@@ -121,7 +127,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                         placeholder="Write your comment here"
                         rows={4}
                         required
-                        className="flex flex-col items-end h-[6.3rem] flex-1 rounded-[0.6rem] border-[0.2rem] border-black bg-white p-[1rem] placeholder:text-MVP-gray text-[1.4rem]"
+                        className="flex flex-col items-end h-[6.3rem] flex-1 rounded-[0.6rem] border-[0.2rem] border-black bg-white p-[1rem] placeholder:text-MVP-gray text-[1.2rem]"
                     />
                 </div>
                 <button 

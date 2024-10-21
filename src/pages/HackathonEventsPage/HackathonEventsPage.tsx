@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
-import { STYLES } from "../../constants/styles";
 
 
 const HackathonEventsPage = () => {
@@ -47,14 +46,14 @@ const HackathonEventsPage = () => {
   };
   return (
     <main className="w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <div className="h-[18.5rem] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 bg-[url(src/assets/images/banner.png)] bg-cover">
+      <div className="h-[18.5rem] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 bg-[url(src/assets/images/hackathoneventsbanner.png)] bg-cover">
         <div className="flex flex-col h-fit w-fit px-[4.2rem] pt-[1.2rem] pb-[1.2rem] items-start rounded-[10px] bg-white/60 backdrop-blur-[15px]">
           <h1 className="font-corben text-[3.4rem] leading-[114%]">Events</h1>
           <p className="leading-[2.5 font-gilroy font-extrabold leading-[3rem]">Explore all the hackathon events</p>
         </div>
       </div>
       <div className="w-full flex justify-end gap-6 px-12 py-8 text-2xl font-gilroy font-extrabold">
-        <Link to="joined" className="flex py-3 px-8 justify-center items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white">
+        <Link to="joined" className="relative flex py-3 px-8 justify-center items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white">
           <CalendarRewind className="w-9 h-9" />
           My Events
           {alertEvent &&
