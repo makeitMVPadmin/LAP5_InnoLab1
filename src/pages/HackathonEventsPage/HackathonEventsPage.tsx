@@ -66,7 +66,7 @@ const HackathonEventsPage = () => {
       </div>
       <div className="w-full h-full flex gap-4 mt-2 px-8">
         <div className="flex-1 w-[40%] md:w-[25%]">
-          <h2 className="font-gilroy text-3xl pb-8">Filters</h2>
+          <h2 className="font-gilroy text-3xl pb-8 font-bold">Filters</h2>
           <Filters filters={filters} onFilterChange={setFilters} />
         </div>
         <div className="grid grid-cols-3 gap-10 px-4">
