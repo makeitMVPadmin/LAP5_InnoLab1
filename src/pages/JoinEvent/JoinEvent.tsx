@@ -112,10 +112,10 @@ const JoinEvent = () => {
   }
 
   return (
-    <div className="event-page">
-      <div className="join-event">
-        <h1 className='text-MVP-black font-sans text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>Join {eventData.title}</h1>
-        <form className="join-event__form mt-10" onSubmit={handleSubmit}>
+    <div className="event-page pb-10">
+      <div className="join-event max-w-[1010px] m-auto px-8">
+        <h1 className='text-MVP-black font-sans mt-12 text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>Join {eventData.title}</h1>
+        <form className="join-event__form mt-16 space-y-8" onSubmit={handleSubmit}>
           <div className="join-event__form-group">
             <label htmlFor="name" className={`${STYLES.label}`}>Name*</label>
             <Input
