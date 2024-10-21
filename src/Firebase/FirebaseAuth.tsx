@@ -49,7 +49,6 @@ export const handleSignIn = async (
     const photoURL = user.photoURL || null;
 
     // Update user in Firestore on sign-in (if needed)
-    await updateUserInFirestore(user, { email, fullName: user.displayName || '', photoURL });
   } catch (error) {
     console.error("Sign-in error:", error);
   }
