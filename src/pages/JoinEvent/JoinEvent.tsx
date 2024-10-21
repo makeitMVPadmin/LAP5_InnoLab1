@@ -90,10 +90,6 @@ const JoinEvent = () => {
 
   return (
     <div className="event-page">
-      <DashboardNavbar />
-      <div className="event-joinpage" style={{ height: "3rem", backgroundColor: "grey" }}>
-        <Link to="/hackathons" className="join-event__back-link">← Back</Link>
-      </div>
       <div className="join-event">
         <h1 className="join-event__title">Join {eventData.title}</h1>
         <form className="join-event__form" onSubmit={handleSubmit}>

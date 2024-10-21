@@ -1,5 +1,4 @@
 import { ReactComponent as HomeIcon } from "../../assets/images/homeIcon.svg";
-import ChatIcon from "../../assets/images/chatIcon.svg";
 import { ReactComponent as CalendarIcon } from "../../assets/images/calendarIcon.svg";
 import { ReactComponent as CommunitiesIcon } from "../../assets/images/communitiesIcon.svg";
 import { ReactComponent as CoffeeChatIcon } from "../../assets/images/coffeeChatIcon.svg";
@@ -8,18 +7,20 @@ import ProfilePic from "../../assets/images/profilePic.svg";
 import { ReactComponent as DropDownArrow } from "../../assets/images/drop-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { NavLink, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { collection, doc, getDoc } from "firebase/firestore";
-import { db, auth } from "../../Firebase/FirebaseConfig";
+import { useState } from "react";
+import { auth } from "../../Firebase/FirebaseConfig";
 
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [dropdownButton, setDropdownButton] = useState(false);
-  // const [profilePhoto, setProfilePhoto] = useState(() => {
-  //   // Try to get profile photo from session storage
-  //   const storedProfilePhoto = sessionStorage.getItem("profilePhoto");
-  //   return storedProfilePhoto ? JSON.parse(storedProfilePhoto) : null;
-  // });
+
+
+  const navItems = [
+    { path: "/dashboard", icon: HomeIcon, label: "Home" },
+    { path: "/communities", icon: CommunitiesIcon, label: "Communities" },
+    { path: "/hackathons", icon: CalendarIcon, label: "Events" },
+    { path: "/coffeechat", icon: CoffeeChatIcon, label: "Coffee Chat" },
+  ];
 
   const handleLogout = async () => {
     try {
@@ -31,95 +32,50 @@ const DashboardNavbar = () => {
   };
 
   const handleDropdown = () => {
-    setDropdownButton(!dropdownButton); // Toggle the dropdownButton state
+    setDropdownButton(!dropdownButton);
   };
 
 
   return (
-    <div className="bg-white font-gilroy h-[10%] flex w-full px-6 justify-between items-center border-b border-black md:px-8">
+    <div className="bg-white font-gilroy font-extrabold h-[6rem] px-[2rem] flex w-full justify-between items-center border-b border-black ">
       <div className="flex h-full items-end">
-        <Link to="/" className="flex flex-col items-center justify-center h-full mx-4">
+        <Link to="/" className="flex flex-col items-center justify-center h-full mx-4 mr-[3rem]">
           <LogoIcon
-            className="w-[24vw] md:w-[16vw]"
+            className="w-[18rem]"
           />
         </Link>
-        <NavLink
-          to="/dashboard"
-          className="flex flex-col items-center justify-center h-full mx-4 no-underline"
-        >
-          {({ isActive }) => (
-            <>
-              <HomeIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
-              />
-              <p className={`text-MVP-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue'}`}>
-                Home
-              </p>
-            </>
-
-          )}
-        </NavLink>
-        <NavLink
-          to="/communities"
-          className="flex flex-col items-center justify-center h-full mx-4 no-underline"
-        >
-          {({ isActive }) => (
-            <>
-              <CommunitiesIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
-              />
-              <p className={`text-mvp-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-mvp-dark-blue border-b-4 border-mvp-dark-blue'}`}>
-                Communities
-              </p>
-            </>
-
-          )}
-        </NavLink>
-        <NavLink
-          to="/hackathons"
-          className="flex flex-col items-center justify-center h-full mx-4 no-underline"
-        >
-          {({ isActive }) => (
-            <>
-              <CalendarIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
-              />
-              <p className={`text-MVP-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue'}`}>
-                Events
-              </p>
-            </>
-
-          )}
-        </NavLink>
-        <NavLink
-          to="/coffeechat"
-          className="flex flex-col items-center justify-center h-full mx-4 no-underline"
-        >
-          {({ isActive }) => (
-            <>
-              <CoffeeChatIcon
-                className={`w-[2.3vw] md:w-[1.5vw] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
-              />
-              <p className={`text-mvp-black text-center font-gilroy text-[1.5vw] leading-[115.645%] pb-1 md:text-[20px] ${isActive && 'text-mvp-dark-blue border-b-4 border-mvp-dark-blue'}`}>
-                Coffee Chat
-              </p>
-            </>
-
-          )}
-        </NavLink>
+      <div className="flex h-full pt-[0.5rem]">
+        {navItems.map(({ path, icon: Icon, label }) => (
+          <NavLink
+            key={path}
+            to={path}
+            className="flex flex-col items-center justify-center h-full mx-4 no-underline gap-[0.25rem]"
+          >
+            {({ isActive }) => (
+              <>
+                <Icon
+                  className={`w-[3rem] ${isActive ? 'filter brightness-[1.5] fill-MVP-dark-blue' : 'fill-MVP-black'}`}
+                />
+                <p className={`text-MVP-black text-center font-gilroy text-[1rem] leading-[115.645%] pb-1 border-b-4 border-transparent ${isActive && 'text-MVP-dark-blue border-b-4 border-MVP-dark-blue'}`}>
+                  {label}
+                </p>
+              </>
+            )}
+          </NavLink>  
+        ))}
       </div>
-      <div className="flex h-[100%]">
-        <Link to="/profile" className="flex items-center text-none flex-col justify-center h-full mx-4 md:mx-4">
-          <img src={ProfilePic} className="w-[2.3vw] md:w-[3vw]" />
+      </div>
+      <div className="flex h-full relative">
+        <Link to="/profile" className="flex items-center text-none flex-col justify-center h-full mx-4">
+          <img src={ProfilePic} className="w-[3rem]" />
         </Link>
         <button className="flex items-center bg-none border-none cursor-pointer" onClick={handleDropdown}>
-          <DropDownArrow className="w-[2vw] md:w-[3vw]" />
+          <DropDownArrow className="w-[2rem]" />
         </button>
         {dropdownButton && (
           <button
-            className="absolute top-[6%] right-[1.5%]"
+            className="absolute top-[5rem] right-[0.3rem] px-[2rem] border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-[1.2rem] font-gilroy cursor-pointer bg-MVP-light-blue"
             onClick={handleLogout}
-
           >
             Logout
           </button>

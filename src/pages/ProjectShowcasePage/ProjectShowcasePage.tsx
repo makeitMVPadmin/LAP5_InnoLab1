@@ -57,10 +57,6 @@ const ProjectShowcasePage = () => {
 
     return (
         <main className='w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat'>
-            <DashboardNavbar />
-            <header className="h-[15%] m-h-[5rem] w-full shadow-sm bg-MVP-soft-blue flex flex-col justify-between rem-[2.1rem] py-[0.4rem] px-[1.5rem] max-h-[4.8rem] justify-center">
-                <Link to="/hackathons" className="text-MVP-black cursor-pointer font-gilroy text-[1.5rem] font-extrabold my-auto">← Back</Link>
-            </header>
             <div className='flex flex-col items-center font-gilroy pb-[5rem]'>
                 <section className='w-[66%] flex flex-col'>
                     <h1 className='text-MVP-black font-sans text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>{event && event.title}</h1>

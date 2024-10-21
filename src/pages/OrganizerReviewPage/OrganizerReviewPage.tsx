@@ -4,7 +4,6 @@ import { fetchAllEventProjectSubmissions, fetchHackathonEvents, deleteSubmission
 import { SUBMISSION_TABLE_FIELDS } from "../../constants/tableFields"
 import { sortSubmissions, formatUserNames } from '../../utils/sortHelpers';
 import { Popover, PopoverContent, PopoverTrigger, } from "../../components/ui/popover"
-import Header from "../../components/Header/Header"
 import SortIcon from "../../assets/images/sortIcon.svg"
 import MoreDotsIcon from "../../assets/images/moreDots.svg"
 import DeleteIcon from "../../assets/images/delete.svg"
@@ -102,7 +101,6 @@ const OrganizerReviewPage = () => {
 
     return (
         <main className="font-gilroy">
-            <Header handleClick={() => { navigate(-1) }} />
             <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Submission</h1>
                 <p className="font-semibold mt-6">View all hackathons submissions below</p>

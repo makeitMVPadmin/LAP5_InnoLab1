@@ -11,7 +11,6 @@ import { Button } from "../../components/ui/button";
 import { Textarea } from "../../components/ui/textarea";
 import { Input } from "../../components/ui/input";
 import EditButton from "../../components/EditButton/EditButton";
-import Header from "../../components/Header/Header";
 import Clock2 from "../../assets/images/clock-type2.svg"
 
 
@@ -180,7 +179,6 @@ const ProjectReviewPage = () => {
 
     return (
         <div className="font-gilroy">
-            <Header handleClick={handleBack} />
             <main className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto pb-32">
                 <h1 className="text-4xl font-bold mb-5 pt-14">Review Submission</h1>
                 <section className="flex py-12 justify-end gap-2 items-center">

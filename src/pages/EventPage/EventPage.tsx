@@ -6,15 +6,7 @@ import Clock from "../../assets/images/clockIcon.svg"
 const EventPage = () => {
     return (
         <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-            <DashboardNavbar />
-            <div className="h-[22%] bg-MVP-light-gray flex flex-col justify-between px-8 py-8 max-h-[15rem] min-h-[12.5rem]">
-                <Link to="/" className="text-MVP-black cursor-pointer">← Back</Link>
-            </div>
             <div className="w-full h-full flex gap-4 mt-4 px-8">
-
-
-
-
             </div>
             <section className="h-[100px] w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white flex justify-between items-center">
                 <div className="flex gap-2 ">
