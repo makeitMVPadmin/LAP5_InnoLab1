@@ -74,7 +74,7 @@ const MyEventsPage = () => {
       </div>
       <CountdownBanner joinedEvents={joinedEvents} onCountdownEnd={handleCountdownEnd} />
 
-      <div className="w-full flex justify-end text-base gap-3 px-8 pb-4">
+      <div className="w-full flex justify-end text-base gap-3 px-8 pb-4 my-6">
         <button onClick={toggleEvents} className="flex py-2.5 px-6 justify-center text-xl items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white font-gilroy font-extrabold">
           {eventToggle.icon}
           {eventToggle.label}
@@ -85,7 +85,7 @@ const MyEventsPage = () => {
         <div className="flex-1 w-[20%]">
           <Filters filters={filters} onFilterChange={setFilters} />
         </div>
-        <div className="grid grid-cols-3 gap-12 px-2">
+        <div className="flex flex-wrap gap-10 w-3/4 pr-1.5">
           {renderEvents()}
         </div>
       </div>
