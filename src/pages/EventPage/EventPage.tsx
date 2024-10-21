@@ -50,7 +50,6 @@ const EventPage = () => {
         loadEvent();
     }, [eventId]);
 
-    console.log(event)
     const formatThemes = [...(event?.themes || []), ...(event?.disciplines || [])];
 
 
@@ -127,8 +126,7 @@ const EventPage = () => {
                     <p className="font-gilroy">Time left to submit: 50m:15s</p>
                 </div>
                 <button className={`${STYLES.primaryButton} rounded-[10px] w-auto`} aria-label="Submit Project">
-                    {/* TO DO Make eventId dynamic  */}
-                    <Link to={`/event/0wPdqmuwFXyZawaf2Q9d/submit`} >Submit Project</Link>
+                    <Link to={`/event/${eventId}/submit`} >Submit Project</Link>
                 </button>
             </section>
         </main>)
