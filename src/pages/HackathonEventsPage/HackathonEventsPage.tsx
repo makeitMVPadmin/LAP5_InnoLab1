@@ -53,8 +53,8 @@ const HackathonEventsPage = () => {
         </div>
       </div>
       <div className="w-full flex justify-end gap-6 px-12 py-8 text-2xl font-gilroy font-extrabold">
-        <Link to="joined" className="relative flex py-3 px-8 justify-center items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white">
-          <CalendarRewind className="w-9 h-9" />
+        <Link to="joined" className="flex py-2.5 px-6 justify-center text-xl items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white font-gilroy font-extrabold">
+          <CalendarRewind className="w-7 h-7" />
           My Events
           {alertEvent &&
             <span className="absolute right-[-0.8em] top-[-0.8em] bg-MVP-black text-white text-sm rounded-full w-7 h-7 flex items-center justify-center">
@@ -62,7 +62,7 @@ const HackathonEventsPage = () => {
             </span>
           }
         </Link>
-        <Link to="/EventForm" className="flex py-3 px-8 justify-center items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-dark-blue text-MVP-white">Create Hackathon</Link>
+        <Link to="/EventForm" className="flex py-2.5 px-6 justify-center text-xl items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black font-gilroy font-extrabold bg-MVP-dark-blue text-MVP-white">Create Hackathon</Link>
       </div>
       <div className="w-full h-full flex gap-4 mt-2 px-8">
         <div className="flex-1 w-[40%] md:w-[25%]">
