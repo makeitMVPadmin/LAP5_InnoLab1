@@ -69,7 +69,7 @@ const HackathonEventsPage = () => {
           <h2 className="font-gilroy text-3xl pb-8">Filters</h2>
           <Filters filters={filters} onFilterChange={setFilters} />
         </div>
-        <div className="grid grid-cols-3 gap-10 px-4">
+        <div className="flex flex-wrap gap-10 w-3/4 pr-4">
           {renderEvents()}
         </div>
       </div>
