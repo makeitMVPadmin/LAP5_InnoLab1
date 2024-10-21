@@ -2,7 +2,6 @@ import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../Firebase/FirebaseConfig";
-import DashboardNavbar from "../../components/DashboardNavbar/DashboardNavbar";
 import { useAuth } from "../../context/AuthContext";
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
@@ -62,6 +61,7 @@ const JoinEvent = () => {
     if (!location) validationErrors.location = "Location is required.";
     if (!goal) validationErrors.goal = "Goal is required.";
     if (!strength) validationErrors.strength = "Strength is required.";
+    if (!weakness) validationErrors.strength = "Weakness is required.";
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -114,7 +114,7 @@ const JoinEvent = () => {
   return (
     <div className="event-page pb-10">
       <div className="join-event max-w-[1010px] m-auto px-8">
-        <h1 className='text-MVP-black font-sans mt-12 text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>Join {eventData.title}</h1>
+        <h1 className='text-MVP-black font-sans mt-12 text-[2.9rem] font-extrabold leading-[115.645%]'>Join {eventData.title}</h1>
         <form className="join-event__form mt-16 space-y-8" onSubmit={handleSubmit}>
           <div className="join-event__form-group">
             <label htmlFor="name" className={`${STYLES.label}`}>Name*</label>
@@ -128,13 +128,15 @@ const JoinEvent = () => {
               className={`${STYLES.input} ${errors.name ? "border-red-500" : ""}`}
             />
             <div className="flex justify-between items-center pt-2">
-              {errors.name && (
-                <div className={`${STYLES.label} text-MVP-red flex items-center`}>
-                  <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
-                  {errors.name}
-                </div>
-              )}
-              <span className={`${STYLES.counterStyle}`}>{name.length}/500 characters</span>
+              <div className="flex-1">
+                {errors.name && (
+                  <div className={`${STYLES.label} text-MVP-red flex items-center`}>
+                    <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
+                    {errors.name}
+                  </div>
+                )}
+              </div>
+              <span className={`${STYLES.counterStyle} ml-4`}>{name.length}/80 characters</span>
             </div>
           </div>
 
@@ -148,12 +150,17 @@ const JoinEvent = () => {
               onChange={(e: ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)}
               className={`${STYLES.input} ${errors.location ? "border-MVP-red" : ""}`}
             />
-            {errors.location && (
-              <div className={`text-red-500 text-sm flex items-center pt-2 ${STYLES.label}`}>
-                <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
-                {errors.location}
+            <div className="flex justify-between items-center pt-2">
+              <div className="flex-1">
+                {errors.location && (
+                  <div className={`${STYLES.label} text-MVP-red flex items-center`}>
+                    <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
+                    {errors.location}
+                  </div>
+                )}
               </div>
-            )}
+              <span className={`${STYLES.counterStyle} ml-4`}>{location.length}/80 characters</span>
+            </div>
           </div>
 
           <div className="flex flex-col">
@@ -222,13 +229,15 @@ const JoinEvent = () => {
               className={`${STYLES.textareaStyle} ${errors.goal ? "border-MVP-red" : ""}`}
             />
             <div className="flex justify-between items-center pt-2">
-              {errors.goal && (
-                <div className={`${STYLES.label} text-MVP-red flex items-center`}>
-                  <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
-                  {errors.goal}
-                </div>
-              )}
-              <span className={`${STYLES.counterStyle}`}>{goal.length}/500 characters</span>
+              <div className="flex-1">
+                {errors.goal && (
+                  <div className={`${STYLES.label} text-MVP-red flex items-center`}>
+                    <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
+                    {errors.goal}
+                  </div>
+                )}
+              </div>
+              <span className={`${STYLES.counterStyle} ml-4`}>{goal.length}/500 characters</span>
             </div>
           </div>
 
@@ -242,13 +251,36 @@ const JoinEvent = () => {
               className={`${STYLES.textareaStyle} ${errors.strength ? "border-MVP-red" : ""}`}
             />
             <div className="flex justify-between items-center pt-2">
-              {errors.strength && (
-                <div className={`${STYLES.label} text-MVP-red flex items-center`}>
-                  <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
-                  {errors.strength}
-                </div>
-              )}
-              <span className={`${STYLES.counterStyle}`}>{strength.length}/500 characters</span>
+              <div className="flex-1">
+                {errors.strength && (
+                  <div className={`${STYLES.label} text-MVP-red flex items-center`}>
+                    <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
+                    {errors.strength}
+                  </div>
+                )}
+              </div>
+              <span className={`${STYLES.counterStyle} ml-4`}>{strength.length}/500 characters</span>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="weakness" className={`${STYLES.label}`}>Weakness*</label>
+            <Textarea
+              id="weakness"
+              placeholder="What are your weakness?"
+              value={weakness}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setWeakness(e.target.value)}
+              className={`${STYLES.textareaStyle} ${errors.weakness ? "border-MVP-red" : ""}`}
+            />
+            <div className="flex justify-between items-center pt-2">
+              <div className="flex-1">
+                {errors.weakness && (
+                  <div className={`${STYLES.label} text-MVP-red flex items-center`}>
+                    <img src={ErrorIcon} alt="Error" className="w-3 h-3 mr-1" />
+                    {errors.weakness}
+                  </div>
+                )}
+              </div>
+              <span className={`${STYLES.counterStyle} ml-4`}>{weakness.length}/500 characters</span>
             </div>
           </div>
           <div className="flex justify-end gap-2 pt-10">
