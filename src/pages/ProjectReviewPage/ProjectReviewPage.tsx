@@ -20,7 +20,7 @@ const Section = ({ title, children, required, editButton }: SectionProps) => (
         <div className="flex justify-end">
             {editButton}
         </div>
-        <h2 className="text-sm font-medium mt-4">{title}{required && '*'}</h2>
+        <h2 className="text-sm font-bold mt-4">{title}{required && '*'}</h2>
         {children}
     </section>
 );
@@ -40,19 +40,19 @@ const ProjectReviewPage = () => {
     const handleEditSection = (sectionId: string) => { setEditingSectionId(sectionId); };
     const handleSaveSection = (sectionId: string, newValue: any) => {
         setFormData(prev => {
-            if (sectionId === "imageFiles") {
+            if (sectionId === "projectFiles") {
                 let updatedFiles;
                 if (newValue instanceof File) {
-                    updatedFiles = [...prev.imageFiles, newValue];
+                    updatedFiles = [...prev.projectFiles, newValue];
                 } else if (Array.isArray(newValue) && newValue.every(item => item instanceof File)) {
-                    updatedFiles = [...prev.imageFiles, ...newValue];
+                    updatedFiles = [...prev.projectFiles, ...newValue];
                 } else {
-                    console.error('Unexpected newValue type for imageFiles:', newValue);
+                    console.error('Unexpected newValue type for projectFiles:', newValue);
                     return prev;
                 }
                 return {
                     ...prev,
-                    imageFiles: updatedFiles
+                    projectFiles: updatedFiles
                 };
             }
             return {
@@ -128,14 +128,14 @@ const ProjectReviewPage = () => {
     const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
-    const handleDeleteImage = (indexToRemove: Number) => {
-        const newFiles = formData.imageFiles.filter((_, index: Number) => index !== indexToRemove);
+    const handleDeleteFile = (fileType: 'projectFiles' | 'pdfFiles', indexToRemove: number) => {
+        const newFiles = formData[fileType].filter((_: any, index: number) => index !== indexToRemove);
         setFormData(prev => ({
             ...prev,
-            imageFiles: newFiles
-        }))
-    }
-    const handleSubmit = async (event: { preventDefault: () => void }) => {
+            [fileType]: newFiles
+        }));
+    };
+    const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         setIsLoading(true);
 
@@ -162,6 +162,7 @@ const ProjectReviewPage = () => {
                 teamMembers: formattedTeamMembers,
                 projectLinks: formattedLinks,
             };
+            console.log("submission part 2", submissionFormData);
 
 
             await createProjectSubmission(submissionFormData);
@@ -323,25 +324,25 @@ const ProjectReviewPage = () => {
                         {renderEditableContent("nextSteps", formData.nextSteps)}
                     </Section>
                     <div className="">
-                        <h3>Upload Files</h3>
+                        <h3 className={`${STYLES.label}`}>Upload Files</h3>
                         <div className="flex gap-4 pl-2">
                             <div className="w-1/2">
                                 <Section
-
                                     title="Upload project files"
                                     editButton={
                                         <EditButton
-                                            handleClick={() => handleEditSection("imageFiles")}
+                                            handleClick={() => handleEditSection("projectFiles")}
                                             isEditing={false}
                                             isEditMode={isEditMode} />}
                                 >
                                     {renderEditableImages({
-                                        sectionId: "imageFiles",
-                                        content: formData.imageFiles,
-                                        isEditing: editingSectionId === "imageFiles",
+                                        sectionId: "projectFiles",
+                                        content: formData.projectFiles,
+                                        isEditing: editingSectionId === "projectFiles",
                                         acceptedTypes: ['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml'],
                                         handleSaveSection,
-                                        handleDeleteImage,
+                                        handleDeleteFile,
+                                        fileType: "projectFiles"
                                     })}
                                 </Section>
                             </div>
@@ -360,7 +361,8 @@ const ProjectReviewPage = () => {
                                         isEditing: editingSectionId === "pdfFiles",
                                         acceptedTypes: ['application/pdf'],
                                         handleSaveSection,
-                                        handleDeleteImage,
+                                        handleDeleteFile,
+                                        fileType: "pdfFiles"
                                     })}
                                 </Section>
                             </div>

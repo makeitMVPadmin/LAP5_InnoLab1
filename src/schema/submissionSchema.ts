@@ -37,7 +37,7 @@ export const submissionSchema = z.object({
     .string()
     .min(1, { message: "Next steps are required." })
     .max(500, { message: "Max 500 characters has been reached" }),
-  imageFiles: z
+  projectFiles: z
     .array(
       z.instanceof(File).refine((file) => !!file, {
         message: "File is required.",

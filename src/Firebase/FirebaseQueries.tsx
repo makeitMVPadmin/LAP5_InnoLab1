@@ -72,8 +72,8 @@ type HackathonSubmissionType = {
   designFeatures: string;
   designTools: string;
   eventId: string;
-  imageFile: string;
-  pdfFiles: string;
+  projectFiles: File[] | null;
+  pdfFiles: File[] | null;
   nextSteps: string;
   problemStatement: string;
   projectLinks: { url: string }[];
