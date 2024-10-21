@@ -137,22 +137,26 @@ const ProjectReviewPage = () => {
     };
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        setIsLoading(true)
+        setIsLoading(true);
+
         try {
+            // Validate form data
             const parsedData = submissionSchema.safeParse(formData);
             if (!parsedData.success) {
                 console.error("Validation errors:", parsedData.error.errors);
                 return;
             }
 
+            // Filter empty team members and links
             const formattedTeamMembers = formData.teamMembers.filter(
-                (member: { name: string; role: string; }) => member.name.trim() !== "" && member.role.trim() !== ""
+                (member) => member.name.trim() !== "" && member.role.trim() !== ""
             );
 
             const formattedLinks = formData.projectLinks.filter(
-                (link: { url: string; }) => link.url.trim() !== ""
+                (link) => link.url.trim() !== ""
             );
 
+            // Create submission data object
             const submissionFormData: ProjectSubmission = {
                 ...formData,
                 teamMembers: formattedTeamMembers,
@@ -160,19 +164,15 @@ const ProjectReviewPage = () => {
             };
             console.log("submission part 2", submissionFormData);
 
-            await createProjectSubmission(submissionFormData);
-            // TO DO add navigation after the form has submitted 
-            // set a alert model
-            // navigate('/hackathons')
 
+            await createProjectSubmission(submissionFormData);
 
         } catch (error) {
             console.error("Error submitting form:", error);
         } finally {
             setIsLoading(false);
         }
-
-    }
+    };
 
     if (isLoading) {
         return <div>loading</div>
@@ -197,6 +197,20 @@ const ProjectReviewPage = () => {
                     )}
                 </section>
                 <article className="mt-8 flex flex-col gap-10">
+                    <Section
+                        title="Title"
+                        required={true}
+                        editButton={
+                            <EditButton
+                                handleClick={() => handleEditSection("title")}
+                                isEditing={false}
+                                isEditMode={isEditMode}
+                            />
+                        }
+                    >
+                        {renderEditableContent("title", formData.title)}
+                    </Section>
+
                     <Section
                         title="Team Name"
                         required={true}

@@ -19,6 +19,7 @@ export interface SectionProps {
 
 export interface ProjectSubmissionFormValues
   extends z.infer<typeof submissionSchema> {
+  title: string,
   teamName: string;
   techStack: string;
   designTools: string;

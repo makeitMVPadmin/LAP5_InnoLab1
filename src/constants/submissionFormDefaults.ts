@@ -1,6 +1,7 @@
 import { ProjectSubmissionFormValues } from "../types/submissionTypes";
 
 export const DEFAULT_FORM_VALUES: ProjectSubmissionFormValues = {
+  title: "",
   teamName: "",
   techStack: "",
   designTools: "",

@@ -44,6 +44,7 @@ const ProjectSubmissionPage = () => {
         //To set the data if the user goes back from the review page
         if (formData) {
             setValue("teamName", formData.teamName);
+            setValue("title", formData.title);
             setValue("techStack", formData.techStack);
             setValue("designTools", formData.designTools);
             setValue("designFeatures", formData.designFeatures);
@@ -153,6 +154,16 @@ const ProjectSubmissionPage = () => {
                 </div>
                 <Form {...form} >
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <CustomInput
+                            errors={errors?.title}
+                            form={form}
+                            register={register}
+                            inputName="title"
+                            name="Title"
+                            formValues={formValues.title}
+                            placeHolder={PLACEHOLDERS.ENTER_TITLE}
+                            type="Input"
+                        />
                         {/* Team Name */}
                         <CustomInput
                             errors={errors?.teamName}

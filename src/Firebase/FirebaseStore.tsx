@@ -57,12 +57,13 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
 
 
   try {
-    // Post file to firebase storage and retrieve link
+    // Upload images and get URLs
+
     const projectFileURLs = await uploadFiles(formData.projectFiles);
     const pdfURLs = await uploadFiles(formData.pdfFiles)
 
-    // Reformat form data with projectFile link
-    const submissionRef = await addDoc(collection(db, "hackathonProjectSubmissions"), {
+    const submissionData = {
+      title: formData.title,
       designFeatures: formData.designFeatures,
       designTools: formData.designTools,
       eventId: formData.eventId,
@@ -76,9 +77,13 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
       projectFiles: projectFileURLs,
       pdfFiles: pdfURLs,
       createdAt: Timestamp.now(),
-    });
+    };
 
-    // Add SubmissionId to Event
+    const submissionRef = await addDoc(
+      collection(db, "hackathonProjectSubmissions"),
+      submissionData
+    );
+
     const secondDocRef = doc(db, "hackathonEvents", formData.eventId);
     await updateDoc(secondDocRef, {
       submissionsId: arrayUnion(submissionRef.id)
@@ -89,8 +94,7 @@ export const createProjectSubmission = async (formData: ProjectSubmission): Prom
   } finally {
     console.log('success');
   }
-
-}
+};
 
 export const uploadFile = async (projectFile: File) => {
   try {
