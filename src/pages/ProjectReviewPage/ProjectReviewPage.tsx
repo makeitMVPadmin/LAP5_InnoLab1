@@ -12,6 +12,7 @@ import { Textarea } from "../../components/ui/textarea";
 import { Input } from "../../components/ui/input";
 import EditButton from "../../components/EditButton/EditButton";
 import Clock2 from "../../assets/images/clock-type2.svg"
+import SubmissionModal from "../../components/SubmissionModal/SubmissionModal";
 
 
 const Section = ({ title, children, required, editButton }: SectionProps) => (
@@ -123,7 +124,9 @@ const ProjectReviewPage = () => {
             </div>
         );
     };
+    const handleConfirm = () => {
 
+    }
     const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
@@ -397,13 +400,14 @@ const ProjectReviewPage = () => {
                         isEditing={false}
                         isEditMode={!isEditMode}
                     />
-                    <Button
+                    {/* <Button
                         className={`${STYLES.primaryButton}`}
                         onClick={handleSubmit}
                         aria-label="submit button to submit project"
                     >
                         Submit Project
-                    </Button>
+                    </Button> */}
+                    <SubmissionModal handleSubmit={handleSubmit} />
                 </div>
             </section>
         </div>
