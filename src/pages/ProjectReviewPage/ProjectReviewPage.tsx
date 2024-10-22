@@ -124,10 +124,6 @@ const ProjectReviewPage = () => {
             </div>
         );
     };
-    const handleConfirm = () => {
-
-    }
-    const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
     const handleDeleteFile = (fileType: 'projectFiles' | 'pdfFiles', indexToRemove: number) => {
