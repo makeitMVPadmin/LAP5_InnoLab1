@@ -6,8 +6,9 @@ import { auth } from '../../Firebase/FirebaseConfig';
 import { Timestamp } from 'firebase/firestore';
 import { ReactComponent as MoreIcon } from '../../assets/images/moreIcon.svg';
 
+
 const CommunityCommentSection = ({ submissionId }) => {
-    const { hackathonUser } = useFetchHackathonUser(auth.currentUser.uid);
+    const { hackathonUser } = useFetchHackathonUser(auth.currentUser?.uid);
     const { submission } = useSubmission(submissionId);
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
@@ -102,7 +103,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                 <h2 id="comment-form-title" className="hidden">Comment Section</h2>
                 <div className="flex gap-[1rem] mt-[1.7rem] mb-[0.9rem]">
                     <img 
-                        src="https://i.pravatar.cc/300?img=5" 
+                        src={hackathonUser?.profilePhoto || 'https://i.pravatar.cc/150?img=10'}
                         alt="User profile" 
                         className="w-[4rem] h-[4rem] rounded-full bg-lightgray bg-cover bg-no-repeat" 
                         loading="lazy"
@@ -143,7 +144,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                     return (
                         <li key={index} className='flex gap-[1.1rem] my-[1.3rem] w-full relative' role="listitem">
                             <img 
-                                src={profileUrl} 
+                                src={profileUrl || 'https://i.pravatar.cc/150?img=12'} 
                                 alt={`Profile of ${commenterName}`} 
                                 className="w-[2.8rem] h-[2.8rem] rounded-full bg-lightgray bg-cover bg-no-repeat" 
                                 loading="lazy" 

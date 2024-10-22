@@ -3,17 +3,18 @@ import { ReactComponent as CalendarIcon } from "../../assets/images/calendarIcon
 import { ReactComponent as CommunitiesIcon } from "../../assets/images/communitiesIcon.svg";
 import { ReactComponent as CoffeeChatIcon } from "../../assets/images/coffeeChatIcon.svg";
 import { ReactComponent as LogoIcon } from "../../assets/logos/communiti2.svg";
-import ProfilePic from "../../assets/images/profilePic.svg";
 import { ReactComponent as DropDownArrow } from "../../assets/images/drop-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { NavLink, Link } from "react-router-dom";
 import { useState } from "react";
 import { auth } from "../../Firebase/FirebaseConfig";
+import { useFetchHackathonUser } from "../../Firebase/FirebaseQueries";
 
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [dropdownButton, setDropdownButton] = useState(false);
-
+  const { hackathonUser } = useFetchHackathonUser(auth.currentUser?.uid);
+  console.log(hackathonUser);
 
   const navItems = [
     { path: "/dashboard", icon: HomeIcon, label: "Home" },
@@ -67,7 +68,7 @@ const DashboardNavbar = () => {
       </div>
       <div className="flex h-full relative">
         <Link to="/profile" className="flex items-center text-none flex-col justify-center h-full mx-4">
-          <img src={ProfilePic} className="w-[3rem]" />
+          <img src={hackathonUser?.profilePhoto} className="w-[3rem] rounded-full" />
         </Link>
         <button className="flex items-center bg-none border-none cursor-pointer" onClick={handleDropdown}>
           <DropDownArrow className="w-[2rem]" />
