@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import "./EventForm.scss";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
@@ -140,57 +139,51 @@ const EventForm: React.FC = () => {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="event-form font-gilroy">
-      <section className="form-section">
-        <h2>Create an Event</h2>
-        <div className="steps">
-          <div className="step active">1. Event Details</div>
-          <div className="step">2. Challenge Details</div>
-          <div className="step">3. Review</div>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-2/3 mx-auto py-[3.5rem] px-[1.5rem] rounded-lg font-gilroy">
+      <section className="mb-[1.3rem]">
+        <h2 className="text-black font-bold text-[3rem] leading-[115.645%]">Create an Event</h2>
+        <div className="flex gap-[1rem] my-[3.5rem]">
+          <div className="flex flex-1 gap-[0.8rem] py-[0.6rem] justify-center items-center text-center text-[1.2rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black bg-MVP-yellow text-MVP-black font-extrabold"><div className="justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">1</div> Event Details</div>
+          <div className="flex flex-1 gap-[0.8rem] py-[0.6rem] justify-center items-center text-center text-[1.2rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black font-extrabold"><div className="justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">2</div> Challenge Details</div>
+          <div className="flex flex-1 gap-[0.8rem] py-[0.6rem] justify-center items-center text-center text-[1.2rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black font-extrabold"><div className="justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">3</div> Review</div>
         </div>
-        <div className="form-group">
-          <label htmlFor="title">Event Title<sup>*</sup></label>
+        <div className="py-[0.5rem] px-[2rem]">
+        <div className="mb-[1rem] flex flex-col">
+          <label htmlFor="event title" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
           <input
             {...register("title", { required: "Event Title is required" })}
-            className={`form-control${errors.title ? "error" : ""}`}
+            placeholder="Enter Event Title" 
+            className={`form-control p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[1.2rem] flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.title && "text-MVP-red" }`}
           />
-          {errors.title && <p className="error">{errors.title.message}</p>}
+          {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
         </div>
-
-        <div className="form-group">
-          <label>Organized By<sup>*</sup></label>
-          <input
-            {...register("organizer", { required: "Organizer is required" })}
-          />
-          {errors.organizer && (
-            <p className="error">{errors.organizer.message}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>Event Description<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
           <textarea
             {...register("description", {
               required: "Event description is required",
             })}
+            placeholder="Enter any event descriptions"
+            className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
           />
           {errors.description && (
-            <p className="error">{errors.description.message}</p>
+            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="skillLevel">Skill Level<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label htmlFor="skillLevel" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Skill Level<span className="mb-2/3 text-[2rem]">*</span></label>
           <Controller
             name="skillLevel"
             control={control}
             rules={{ required: "Skill Level is required" }}
             render={({ field }) => (
               <>
-                <div className="radio-group">
-                  <label>
+                <div className="flex flex-row gap-[2.5rem] px-[1rem]">
+                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] text-MVP-black font-semibold">
                     <input
                       {...field}
+                      className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
                       type="radio"
                       value="Beginner"
                       checked={field.value === "Beginner"}
@@ -198,9 +191,10 @@ const EventForm: React.FC = () => {
                     Beginner
                   </label>
 
-                  <label>
+                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] text-MVP-black font-semibold">
                     <input
                       {...field}
+                      className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
                       type="radio"
                       value="Intermediate"
                       checked={field.value === "Intermediate"}
@@ -208,38 +202,29 @@ const EventForm: React.FC = () => {
                     Intermediate
                   </label>
 
-                  <label>
+                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] text-MVP-black font-semibold">
                     <input
                       {...field}
+                      className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
                       type="radio"
                       value="Advanced"
                       checked={field.value === "Advanced"}
                     />
                     Advanced
                   </label>
-
-                  <label>
-                    <input
-                      {...field}
-                      type="radio"
-                      value="Expert"
-                      checked={field.value === "Expert"}
-                    />
-                    Expert
-                  </label>
                 </div>
               </>
             )}
           />
           {errors.skillLevel && (
-            <p className="error">{errors.skillLevel.message}</p>
+            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.skillLevel.message}</p>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="discipline">Discipline<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label htmlFor="discipline" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
-            className={`border-2 rounded-lg p-2 flex gap-4 ${
+            className={`border-2 rounded-lg p-2 flex gap-4 flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
               errors.disciplines ? "border-red-500" : "border-black"
             }`}
           >
@@ -260,7 +245,7 @@ const EventForm: React.FC = () => {
             ))}
             <select
               onChange={handleDisciplineChange}
-              className={`focus:outline-none w-full theme-select ${selectedDisciplines.length === 3 && 'appearance-none'}`}
+              className={`focus:outline-none w-full text-[1.2rem] ${selectedDisciplines.length === 3 && 'appearance-none'}`}
               disabled={selectedDisciplines.length === 3}
             >
               <option value={""}>{selectedDisciplines.length == 0 && 'Select up to 3 disciplines'}</option>
@@ -282,10 +267,10 @@ const EventForm: React.FC = () => {
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="theme">Theme<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label htmlFor="theme" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Theme<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
-            className={`border-2 rounded-lg border-solid flex gap-4 p-2 space-x-2 ${
+            className={`flex gap-4 py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
               errors.disciplines ? "border-red-500" : "border-black"
             }`}
           >
@@ -305,7 +290,7 @@ const EventForm: React.FC = () => {
             ))}
              <select
               onChange={handleThemesChange}
-              className={`focus:outline-none w-full theme-select ${selectedThemes.length === 3 && 'appearance-none'}`}
+              className={`focus:outline-none w-full text-[1.2rem] ${selectedThemes.length === 3 && 'appearance-none'}`}
               disabled={selectedThemes.length === 3}
             >
               <option value={""}>{selectedThemes.length == 0 && 'Select up to 3 themes'}</option>
@@ -318,15 +303,15 @@ const EventForm: React.FC = () => {
                 ))}
             </select>
           </div>
-          {errors.themes && <p className="error">{errors.themes.message}</p>}
+          {errors.themes && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.themes.message}</p>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="eventDuration">Event Duration<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label htmlFor="eventDuration" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Duration<span className="mb-2/3 text-[2rem]">*</span></label>
 
           <div className="sub-section">
-            <span>Start<sup>*</sup></span>
-            <div className="date-input-container">
+            <span className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Start<span className="mb-2/3 text-[2rem]">*</span></span>
+            <div className="w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue">
               <Controller
                 name="startDate"
                 control={control}
@@ -335,13 +320,13 @@ const EventForm: React.FC = () => {
                   <input
                     type="date"
                     {...field}
-                    className={`form-control flex-1 ${
-                      errors.startDate ? "error" : ""
+                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1 ${
+                      errors.startDate && "text-MVP-red"
                     }`}
                   />
                 )}
               />
-              <span className="divider">|</span>
+              <div className="border-l-[0.18rem] border-MVP-black h-[70%]"/>
               <Controller
                 name="startTime"
                 control={control}
@@ -350,8 +335,8 @@ const EventForm: React.FC = () => {
                   <input
                     type="time"
                     {...field}
-                    className={`form-control ${
-                      errors.startTime ? "error" : ""
+                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${
+                      errors.startTime && "text-MVP-red"
                     }`}
                   />
                 )}
@@ -359,16 +344,16 @@ const EventForm: React.FC = () => {
             </div>
 
             {errors.startDate && (
-              <p className="error">{errors.startDate.message}</p>
+              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>
             )}
             {errors.startTime && (
-              <p className="error">{errors.startTime.message}</p>
+              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>
             )}
           </div>
 
-          <div className="sub-section">
-            <span>End<sup>*</sup></span>
-            <div className="date-input-container">
+          <div>
+            <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">End<span className="mb-2/3 text-[2rem]">*</span></label>
+            <div className="w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue">
               <Controller
                 name="endDate"
                 control={control}
@@ -377,13 +362,13 @@ const EventForm: React.FC = () => {
                   <input
                     type="date"
                     {...field}
-                    className={`form-control ${
-                      errors.startTime ? "error" : ""
+                    className={`form-control bg-transparent outline-none text-inherit cursor-pointer border-0 ${
+                      errors.startTime && "text-MVP-red"
                     }`}
                   />
                 )}
               />
-              <span className="divider">|</span>
+              <div className="border-l-[0.18rem] border-MVP-black h-[70%]"/>
               <Controller
                 name="endTime"
                 control={control}
@@ -392,7 +377,7 @@ const EventForm: React.FC = () => {
                   <input
                     type="time"
                     {...field}
-                    className={`form-control ${errors.endTime ? "error" : ""}`}
+                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "text-MVP-red text-[0.8rem] mt-[0.3rem]"}`}
                   />
                 )}
               />
@@ -400,15 +385,16 @@ const EventForm: React.FC = () => {
           </div>
 
           {/* Error messages */}
-          {errors.endDate && <p className="error">{errors.endDate.message}</p>}
-          {errors.endTime && <p className="error">{errors.endTime.message}</p>}
+          {errors.endDate && <p className="text-MVP-red">{errors.endDate.message}</p>}
+          {errors.endTime && <p className="text-MVP-red">{errors.endTime.message}</p>}
         </div>
 
-        <div className="form-group">
-          <label>Timezone<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Timezone<span className="mb-2/3 text-[2rem]">*</span></label>
+          <div className="rounded-[0.6rem] py-[1.3rem] px-[1rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black">
           <select
             {...register("timezone", { required: "Timezone is required" })}
-            className={`form-control${errors.timezone ? " error" : ""}`}
+            className={`text-[1.2rem] focus:outline-none w-full ${errors.timezone && "text-MVP-red"}`}
           >
             <option value="">Select a timezone</option>
             <option value="GMT-0700">PST (GMT-0700)</option>
@@ -417,89 +403,93 @@ const EventForm: React.FC = () => {
             <option value="GMT-0500">EST (GMT-0500)</option>
           </select>
           {errors.timezone && (
-            <p className="error">{errors.timezone.message}</p>
+            <p className="text-MVP-red">{errors.timezone.message}</p>
           )}
         </div>
+        </div>
 
-        <div className="form-group">
-          <label>Meeting Link<sup>*</sup></label>
+        <div className="mb-[1rem] flex flex-col">
+          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Meeting Link<span className="mb-2/3 text-[2rem]">*</span></label>
           <input
             type="url"
             {...register("meetingLink", {
               required: "Meeting Link is required",
             })}
-            className={`form-control${errors.meetingLink ? " error" : ""}`}
+            placeholder="Enter meeting link"
+            className={`p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[1.2rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.meetingLink && "text-MVP-red text-[0.8rem] mt-[0.3rem]"}`}
           />
           {errors.meetingLink && (
-            <p className="error">{errors.meetingLink.message}</p>
+            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
           )}
         </div>
 
-        <div className="form-group">
-          <label>Participant Count<sup>*</sup></label>
-          <div className="flex flex-col">
-            <label>Min</label>
-            <input
-              type="number"
-              {...register("minParticipants", {
-                valueAsNumber: true,
-                required: "Minimum participant count is required",
-                min: {
-                  value: 1,
-                  message: "Minimum participants must be at least 1",
-                },
-              })}
-              placeholder="4"
-              className={`w-2/12 p-1 rounded text-base ${
-                errors.minParticipants ? "error" : ""
-              }`}
-            />
-            {errors.minParticipants && (
-              <p className="error">{errors.minParticipants.message}</p>
-            )}
-          </div>
-          <div className="flex flex-col">
-            <label>-</label>
-            <label>Max</label>
-            <input
-              type="number"
-              {...register("maxParticipants", {
-                valueAsNumber: true,
-                required: "Maximum participant count is required",
-                min: {
-                  value: 1,
-                  message:
-                    "Maximum participants must be greater than or equal to 1",
-                },
-              })}
-              placeholder="100"
-              className={`w-2/12 p-1 rounded text-base ${
-                errors.maxParticipants ? "error" : ""
-              }`}
-            />
-            {errors.maxParticipants && (
-              <p className="error">{errors.maxParticipants.message}</p>
-            )}
+        <div className="mb-[1rem] flex flex-col">
+          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Participant Count<span className="mb-2/3 text-[2rem]">*</span></label>
+          <div className="flex">
+            <div className="flex flex-col">
+              <label className="flex items-center text-MVP-black">Min</label>
+              <input
+                type="number"
+                {...register("minParticipants", {
+                  valueAsNumber: true,
+                  required: "Minimum participant count is required",
+                  min: {
+                    value: 1,
+                    message: "Minimum participants must be at least 1",
+                  },
+                })}
+                placeholder="4"
+                className={`w-fit rounded-[0.6rem] text-[0.9rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                  errors.minParticipants && "text-MVP-red"
+                }`}
+              />
+              {errors.minParticipants && (
+                <p className="text-MVP-red">{errors.minParticipants.message}</p>
+              )}
+            </div>
+            <p className="flex items-center text-[1rem] text-MVP-black">-</p>
+            <div className="flex flex-col">
+              <label className="flex items-center text-MVP-black">Max</label>
+              <input
+                type="number"
+                {...register("maxParticipants", {
+                  valueAsNumber: true,
+                  required: "Maximum participant count is required",
+                  min: {
+                    value: 1,
+                    message:
+                      "Maximum participants must be greater than or equal to 1",
+                  },
+                })}
+                placeholder="100"
+                className={`text-base rounded-[0.6rem] text-[0.9rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                  errors.maxParticipants && "text-MVP-red"
+                }`}
+              />
+              {errors.maxParticipants && (
+                <p className="text-MVP-red">{errors.maxParticipants.message}</p>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="judges">Judges<sup>*</sup></label>
+        <div className="mb-[1rem] flex-col">
+          <label htmlFor="judges" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Judges<span className="mb-2/3 text-[2rem]">*</span></label>
           {fields.map((field, index) => (
             <div
               key={field.id}
               className="justify-between flex-col flex whitespace-nowrap my-3"
             >
               <div className="flex gap-2 items-center">
-                <label className="mr-2">Judge #{index + 1}</label>
+                <label className="flex items-center gap-[0.5rem] mb-[0.3rem] text-MVP-black">Judge #{index + 1}</label>
                 <input
                   type="text"
                   {...register(`judges.${index}.firstName`, {
                     required: "First name is required",
                   })}
                   placeholder="Enter first name"
-                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded ${
-                    errors.judges?.[index]?.firstName ? "error" : ""
+                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                    errors.judges?.[index]?.firstName && "text-MVP-red text-[0.8rem] mt-[0.3rem]"
                   }`}
                 />
 
@@ -509,8 +499,8 @@ const EventForm: React.FC = () => {
                     required: "Last name is required",
                   })}
                   placeholder="Enter last name"
-                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded ${
-                    errors.judges?.[index]?.lastName ? "error" : ""
+                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                    errors.judges?.[index]?.lastName && "text-MVP-red text-[0.8rem] mt-[0.3rem]"
                   }`}
                 />
                 {fields.length > 1 && (
@@ -526,12 +516,12 @@ const EventForm: React.FC = () => {
 
               <div className="flex flex-col">
                 {errors.judges?.[index]?.firstName && (
-                  <p className="error">
+                  <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
                     {errors.judges[index].firstName.message}
                   </p>
                 )}
                 {errors.judges?.[index]?.lastName && (
-                  <p className="error">
+                  <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
                     {errors.judges[index].lastName.message}
                   </p>
                 )}
@@ -553,7 +543,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="file-upload-container">
-          <label className="block font-bold text-lg mb-2">
+          <label className="block font-bold text-lg mb-2 flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">
             Upload a Thumbnail Image
           </label>
           <div className="text-center w-80">
@@ -600,17 +590,18 @@ const EventForm: React.FC = () => {
             <p className="text-xs text-black">maximum size: 10MB</p>
           </div>
         </div>
-        <div className="form-navigation">
+        <div className="flex justify-end gap-[1rem]">
           <button
             type="button"
-            className="btn cancel"
+            className="px-[0.6rem] py-[1rem] text-MVP-black border-[0.3rem] border-MVP-black cursor-pointer hover:bg-MVP-dark-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
             onClick={handleCancelClick}
           >
             Cancel
           </button>
-          <button type="submit" className="btn next">
+          <button type="submit" className="px-[0.6rem] py-[1rem] text-MVP-black border-[0.3rem] border-MVP-black cursor-pointer hover:bg-MVP-dark-blue bg-MVP-light-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black">
             Next
           </button>
+        </div>
         </div>
       </section>
     </form>
