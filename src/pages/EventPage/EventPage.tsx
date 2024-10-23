@@ -98,7 +98,6 @@ const EventPage = () => {
 
   return (
     <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
-      <Header handleClick={() => navigate(-1)} />
       <div className="w-full max-w-[1130px] h-full flex flex-col m-auto pb-32">
         <div className="h-72 w-full bg-cover m-auto">
           <img
