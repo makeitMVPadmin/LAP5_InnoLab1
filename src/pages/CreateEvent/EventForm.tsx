@@ -68,7 +68,7 @@ const EventForm: React.FC = () => {
         setSelectedDisciplines(savedData.disciplines);
       }
     }
-  
+
     if (savedData?.themes && savedData.themes.length > 0) {
       if (JSON.stringify(savedData.themes) !== JSON.stringify(selectedThemes)) {
         setSelectedThemes(savedData.themes);
@@ -81,7 +81,7 @@ const EventForm: React.FC = () => {
       validateField("disciplines", selectedDisciplines);
       validateField("themes", selectedThemes);
     }
-}, [errors]);
+  }, [errors]);
 
   const watchedDisciplines = watch("disciplines");
   const watchedThemes = watch("themes");
@@ -100,7 +100,7 @@ const EventForm: React.FC = () => {
       clearErrors(field);
     }
 
-    return arrayValue.length !==0;
+    return arrayValue.length !== 0;
   };
 
   const handleSelectionChange = (e, selectedArray, setSelected, validateField, setValue, fieldName) => {
@@ -116,7 +116,7 @@ const EventForm: React.FC = () => {
   const handleThemesChange = (e) => {
     handleSelectionChange(e, selectedThemes, setSelectedThemes, validateField, setValue, "themes");
   };
-  
+
   const handleDisciplineChange = (e) => {
     handleSelectionChange(e, selectedDisciplines, setSelectedDisciplines, validateField, setValue, "disciplines");
   };
@@ -131,7 +131,7 @@ const EventForm: React.FC = () => {
   const removeTheme = (theme) => {
     removeItem(theme, selectedThemes, setSelectedThemes, validateField, setValue, "themes");
   };
-  
+
   const removeDiscipline = (discipline) => {
     removeItem(discipline, selectedDisciplines, setSelectedDisciplines, validateField, setValue, "disciplines");
   };
@@ -176,7 +176,7 @@ const EventForm: React.FC = () => {
     if (!(validTheme || validDiscipline)) {
       return;
     }
-    
+
     saveFormData("eventFormData", data);
     navigate("/ChallengeDetails");
   };
@@ -196,458 +196,450 @@ const EventForm: React.FC = () => {
           <div className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center`}><div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">3</div> Review</div>
         </div>
         <div className="py-[0.5rem] px-[2rem]">
-        <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="event title" className={`${sectionHeader}`}>Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
-          <input
-            {...register("title", { required: "Event Title is required" })}
-            placeholder="Enter Event Title" 
-            className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.title && "border-MVP-red" }`}
-          />
-          {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
-        </div>
-        <div className="mb-[1rem] flex flex-col">
-          <label className={`${sectionHeader}`}>Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
-          <textarea
-            {...register("description", {
-              required: "Event description is required",
-            })}
-            placeholder="Enter any event descriptions"
-            className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.description && "border-MVP-red"}`}
-          />
-          {errors.description && (
-            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
-          )}
-        </div>
-
-        <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="skillLevel" className={`${sectionHeader}`}>Skill Level<span className="mb-2/3 text-[2rem]">*</span></label>
-          <Controller
-            name="skillLevel"
-            control={control}
-            rules={{ required: "Skill Level is required" }}
-            render={({ field }) => (
-              <>
-                <div className="flex flex-row gap-[2.5rem] px-[1rem]">
-                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
-                    <input
-                      {...field}
-                      className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
-                      type="radio"
-                      value="Beginner"
-                      checked={field.value === "Beginner"}
-                    />
-                    Beginner
-                  </label>
-
-                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
-                    <input
-                      {...field}
-                      className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
-                      type="radio"
-                      value="Intermediate"
-                      checked={field.value === "Intermediate"}
-                    />
-                    Intermediate
-                  </label>
-
-                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
-                    <input
-                      {...field}
-                      className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
-                      type="radio"
-                      value="Advanced"
-                      checked={field.value === "Advanced"}
-                    />
-                    Advanced
-                  </label>
-                </div>
-              </>
-            )}
-          />
-          {errors.skillLevel && (
-            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.skillLevel.message}</p>
-          )}
-        </div>
-
-        <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="discipline" className={`${sectionHeader}`}>Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
-          <div
-            className={`${styledBorder} gap-4 flex w-full items-center ${
-              errors.disciplines && "border-MVP-red"
-            }`}
-          >
-            {selectedDisciplines.map((discipline) => (
-              <div
-                key={discipline}
-                className="rounded-[40px] bg-MVP-yellow flex items-center justify-between w-full h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]"
-              >
-                <p>{discipline}</p>
-                <button
-                  type="button"
-                  onClick={() => removeDiscipline(discipline)}
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-            <select
-              onChange={handleDisciplineChange}
-              className={`focus:outline-none w-full text-[1.2rem] ${selectedDisciplines.length === 3 && 'appearance-none'}`}
-              disabled={selectedDisciplines.length === 3}
-            >
-              <option value={""}>{selectedDisciplines.length === 0 && 'Select up to 3 disciplines'}</option>
-              {allDisciplines
-                .filter(
-                  (discipline) => !selectedDisciplines.includes(discipline)
-                )
-                .map((discipline) => (
-                  <option key={discipline} value={discipline}>
-                    {discipline}
-                  </option>
-                ))}
-            </select>
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="event title" className={`${sectionHeader}`}>Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
+            <input
+              {...register("title", { required: "Event Title is required" })}
+              placeholder="Enter Event Title"
+              className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.title && "border-MVP-red"}`}
+            />
+            {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
           </div>
-          {errors.disciplines && (
-            <p className="text-red-500 mt-1 text-sm">
-              {errors.disciplines.message}
-            </p>
-          )}
-        </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label className={`${sectionHeader}`}>Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
+            <textarea
+              {...register("description", {
+                required: "Event description is required",
+              })}
+              placeholder="Enter any event descriptions"
+              className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.description && "border-MVP-red"}`}
+            />
+            {errors.description && (
+              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
+            )}
+          </div>
 
-        <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="theme" className={`${sectionHeader}`}>Theme<span className="mb-2/3 text-[2rem]">*</span></label>
-          <div
-            className={`${styledBorder} gap-4 flex w-full items-center ${
-              errors.themes && "border-MVP-red"
-            }`}
-          >
-            {selectedThemes.map((theme) => (
-              <div
-                key={theme}
-                className="rounded-[40px] bg-MVP-yellow flex items-center justify-between w-full h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]"
-              >
-                <p>{theme}</p>
-                <button
-                  type="button"
-                  onClick={() => removeTheme(theme)}
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="skillLevel" className={`${sectionHeader}`}>Skill Level<span className="mb-2/3 text-[2rem]">*</span></label>
+            <Controller
+              name="skillLevel"
+              control={control}
+              rules={{ required: "Skill Level is required" }}
+              render={({ field }) => (
+                <>
+                  <div className="flex flex-row gap-[2.5rem] px-[1rem]">
+                    <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
+                      <input
+                        {...field}
+                        className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
+                        type="radio"
+                        value="Beginner"
+                        checked={field.value === "Beginner"}
+                      />
+                      Beginner
+                    </label>
+
+                    <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
+                      <input
+                        {...field}
+                        className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
+                        type="radio"
+                        value="Intermediate"
+                        checked={field.value === "Intermediate"}
+                      />
+                      Intermediate
+                    </label>
+
+                    <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
+                      <input
+                        {...field}
+                        className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
+                        type="radio"
+                        value="Advanced"
+                        checked={field.value === "Advanced"}
+                      />
+                      Advanced
+                    </label>
+                  </div>
+                </>
+              )}
+            />
+            {errors.skillLevel && (
+              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.skillLevel.message}</p>
+            )}
+          </div>
+
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="discipline" className={`${sectionHeader}`}>Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
+            <div
+              className={`${styledBorder} gap-4 flex w-full items-center ${errors.disciplines && "border-MVP-red"
+                }`}
+            >
+              {selectedDisciplines.map((discipline) => (
+                <div
+                  key={discipline}
+                  className="rounded-[40px] bg-MVP-yellow flex items-center justify-between w-full h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]"
                 >
-                  ✕
-                </button>
-              </div>
-            ))}
-             <select
+                  <p>{discipline}</p>
+                  <button
+                    type="button"
+                    onClick={() => removeDiscipline(discipline)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <select
+                onChange={handleDisciplineChange}
+                className={`focus:outline-none w-full text-[1.2rem] ${selectedDisciplines.length === 3 && 'appearance-none'}`}
+                disabled={selectedDisciplines.length === 3}
+              >
+                <option value={""}>{selectedDisciplines.length === 0 && 'Select up to 3 disciplines'}</option>
+                {allDisciplines
+                  .filter(
+                    (discipline) => !selectedDisciplines.includes(discipline)
+                  )
+                  .map((discipline) => (
+                    <option key={discipline} value={discipline}>
+                      {discipline}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            {errors.disciplines && (
+              <p className="text-red-500 mt-1 text-sm">
+                {errors.disciplines.message}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="theme" className={`${sectionHeader}`}>Theme<span className="mb-2/3 text-[2rem]">*</span></label>
+            <div
+              className={`${styledBorder} gap-4 flex w-full items-center ${errors.themes && "border-MVP-red"
+                }`}
+            >
+              {selectedThemes.map((theme) => (
+                <div
+                  key={theme}
+                  className="rounded-[40px] bg-MVP-yellow flex items-center justify-between w-full h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]"
+                >
+                  <p>{theme}</p>
+                  <button
+                    type="button"
+                    onClick={() => removeTheme(theme)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <select
                 onChange={handleThemesChange}
                 className={`focus:outline-none w-full text-[1.2rem] ${selectedThemes.length === 3 && 'appearance-none'}`}
                 disabled={selectedThemes.length === 3}
               >
-              <option value={""}>{selectedThemes.length === 0 && 'Select up to 3 themes'}</option>
-              {allThemes
-                .filter((theme) => !selectedThemes.includes(theme))
-                .map((theme) => (
-                  <option key={theme} value={theme}>
-                    {theme}
-                  </option>
-                ))}
-            </select>
-          </div>
-          {errors.themes && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.themes.message}</p>}
-        </div>
-
-        <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="eventDuration" className={`${sectionHeader}`}>Event Duration<span className="mb-2/3 text-[2rem]">*</span></label>
-
-          <div className="sub-section">
-            <span className={`${sectionHeader}`}>Start<span className="mb-2/3 text-[2rem]">*</span></span>
-            <div className={`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${
-                      (errors.startDate || errors.startTime) && "border-MVP-red"
-                    }`}>
-              <Controller
-                name="startDate"
-                control={control}
-                rules={{ required: "Start date is required" }}
-                render={({ field }) => (
-                  <input
-                    type="date"
-                    {...field}
-                    className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1"
-                  />
-                )}
-              />
-              <div className="border-l-[0.18rem] border-MVP-black h-[70%]"/>
-              <Controller
-                name="startTime"
-                control={control}
-                rules={{ required: "Start time is required" }}
-                render={({ field }) => (
-                  <input
-                    type="time"
-                    {...field}
-                    className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
-                  />
-                )}
-              />
+                <option value={""}>{selectedThemes.length === 0 && 'Select up to 3 themes'}</option>
+                {allThemes
+                  .filter((theme) => !selectedThemes.includes(theme))
+                  .map((theme) => (
+                    <option key={theme} value={theme}>
+                      {theme}
+                    </option>
+                  ))}
+              </select>
             </div>
-            <div className="flex gap-[3rem]">
-              {errors.startDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>}
-              {errors.startTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>}
-            </div>
+            {errors.themes && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.themes.message}</p>}
           </div>
 
-          <div>
-            <label className={`${sectionHeader}`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
-            <div className= {`${styledBorder} w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] hover:border-MVP-dark-blue ${
-                      (errors.endDate || errors.endTime) && "border-MVP-red"
-                    }`}>
-              <Controller
-                name="endDate"
-                control={control}
-                rules={{ required: "End date is required" }}
-                render={({ field }) => (
-                  <input
-                    type="date"
-                    {...field}
-                    className="form-control bg-transparent outline-none text-inherit cursor-pointer border-0"
-                  />
-                )}
-              />
-              <div className="border-l-[0.18rem] border-MVP-black h-[70%]"/>
-              <Controller
-                name="endTime"
-                control={control}
-                rules={{ required: "End time is required" }}
-                render={({ field }) => (
-                  <input
-                    type="time"
-                    {...field}
-                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "border-MVP-red"}`}
-                  />
-                )}
-              />
-            </div>
-          </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="eventDuration" className={`${sectionHeader}`}>Event Duration<span className="mb-2/3 text-[2rem]">*</span></label>
 
-          {/* Error messages */}
-          <div className="flex gap-[3.5rem]">
-            {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endDate.message}</p>}
-            {errors.endTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endTime.message}</p>}
-          </div>
-        </div>
-
-        <div className="mb-[1rem] flex flex-col">
-          <label className={`${sectionHeader}`}>Timezone<span className="mb-2/3 text-[2rem]">*</span></label>
-          <div className={`${styledBorder} ${errors.timezone && "border-MVP-red"}`}>
-          <select
-            {...register("timezone", { required: "Timezone is required" })}
-            className="text-[1.2rem] focus:outline-none w-full"
-          >
-            <option value="">Select a timezone</option>
-            <option value="GMT-0700">PST (GMT-0700)</option>
-            <option value="GMT-0600">MST (GMT-0600)</option>
-            <option value="GMT-0600">CST (GMT-0600)</option>
-            <option value="GMT-0500">EST (GMT-0500)</option>
-          </select>
-        </div>
-        {errors.timezone && (
-            <p className="text-MVP-red">{errors.timezone.message}</p>
-          )}
-        </div>
-
-        <div className="mb-[1rem] flex flex-col">
-          <label className={`${sectionHeader}`}>Meeting Link<span className="mb-2/3 text-[2rem]">*</span></label>
-          <input
-            type="url"
-            {...register("meetingLink", {
-              required: "Meeting Link is required",
-            })}
-            placeholder="Enter meeting link"
-            className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.meetingLink && "border-MVP-red"}`}
-          />
-          {errors.meetingLink && (
-            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
-          )}
-        </div>
-
-        <div className="mb-[1rem]">
-          <label className={`${sectionHeader}`}>Participant Count<span className="mb-2/3 text-[2rem]">*</span></label>
-          <div className="flex">
-            <div className="flex-col">
-              <label className={`${sectionHeader}`}>Min</label>
-              <input
-                type="number"
-                {...register("minParticipants", {
-                  valueAsNumber: true,
-                  required: "Minimum participant count is required",
-                  min: {
-                    value: 1,
-                    message: "Minimum participants must be at least 1",
-                  },
-                })}
-                placeholder="4"
-                className={`${styledBorder} w-1/3 form-control text-[1.2rem] ${
-                  errors.minParticipants && "border-MVP-red"
-                }`}
-              />
-              {errors.minParticipants && (
-                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.minParticipants.message}</p>
-              )}
-            </div>
-            <p className="flex items-center text-[1rem]">-</p>
-            <div className="flex-col">
-              <label className={`${sectionHeader}`}>Max</label>
-              <input
-                type="number"
-                {...register("maxParticipants", {
-                  valueAsNumber: true,
-                  required: "Maximum participant count is required",
-                  min: {
-                    value: 1,
-                    message:
-                      "Maximum participants must be greater than or equal to 1",
-                  },
-                })}
-                placeholder="100"
-                className={`${styledBorder} w-1/3 form-control text-[1.2rem] text-center ${
-                  errors.maxParticipants && "border-MVP-red"
-                }`}
-              />
-              {errors.maxParticipants && (
-                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.maxParticipants.message}</p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-[1rem] flex-col">
-          <label htmlFor="judges" className={`${sectionHeader}`}>Judges<span className="mb-2/3 text-[2rem]">*</span></label>
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="flex-col flex whitespace-nowrap my-5"
-            >
-              <div className={`flex gap-[2rem] items-center`}>
-                <label className="flex items-center font-extrabold text-2xl mr-[3rem]">Judge #{index + 1}</label>
-                <div>
-                  <input
-                    type="text"
-                    {...register(`judges.${index}.firstName`, {
-                      required: "First name is required",
-                    })}
-                    placeholder="Enter first name"
-                    className={`${styledBorder} flex-1 text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${
-                      errors.judges?.[index]?.firstName && "border-MVP-red"
-                    }`}
-                  />
-                   {errors.judges?.[index]?.firstName && (
-                  <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
-                    {errors.judges[index].firstName.message}
-                  </p>
-                )}
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    {...register(`judges.${index}.lastName`, {
-                      required: "Last name is required",
-                    })}
-                    placeholder="Enter last name"
-                    className={`${styledBorder} flex-1 text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${
-                      errors.judges?.[index]?.lastName && "border-MVP-red"
-                    }`}
-                  />
-                  {errors.judges?.[index]?.lastName && (
-                    <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
-                      {errors.judges[index].lastName.message}
-                    </p>
+            <div className="sub-section">
+              <span className={`${sectionHeader}`}>Start<span className="mb-2/3 text-[2rem]">*</span></span>
+              <div className={`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${(errors.startDate || errors.startTime) && "border-MVP-red"
+                }`}>
+                <Controller
+                  name="startDate"
+                  control={control}
+                  rules={{ required: "Start date is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="date"
+                      {...field}
+                      className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1"
+                    />
                   )}
-                </div>
-                {fields.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                  >
-                    <CloseIcon/>
-                  </button>
+                />
+                <div className="border-l-[0.18rem] border-MVP-black h-[70%]" />
+                <Controller
+                  name="startTime"
+                  control={control}
+                  rules={{ required: "Start time is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="time"
+                      {...field}
+                      className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex gap-[3rem]">
+                {errors.startDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>}
+                {errors.startTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>}
+              </div>
+            </div>
+
+            <div>
+              <label className={`${sectionHeader}`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
+              <div className={`${styledBorder} w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] hover:border-MVP-dark-blue ${(errors.endDate || errors.endTime) && "border-MVP-red"
+                }`}>
+                <Controller
+                  name="endDate"
+                  control={control}
+                  rules={{ required: "End date is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="date"
+                      {...field}
+                      className="form-control bg-transparent outline-none text-inherit cursor-pointer border-0"
+                    />
+                  )}
+                />
+                <div className="border-l-[0.18rem] border-MVP-black h-[70%]" />
+                <Controller
+                  name="endTime"
+                  control={control}
+                  rules={{ required: "End time is required" }}
+                  render={({ field }) => (
+                    <input
+                      type="time"
+                      {...field}
+                      className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "border-MVP-red"}`}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Error messages */}
+            <div className="flex gap-[3.5rem]">
+              {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endDate.message}</p>}
+              {errors.endTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endTime.message}</p>}
+            </div>
+          </div>
+
+          <div className="mb-[1rem] flex flex-col">
+            <label className={`${sectionHeader}`}>Timezone<span className="mb-2/3 text-[2rem]">*</span></label>
+            <div className={`${styledBorder} ${errors.timezone && "border-MVP-red"}`}>
+              <select
+                {...register("timezone", { required: "Timezone is required" })}
+                className="text-[1.2rem] focus:outline-none w-full"
+              >
+                <option value="">Select a timezone</option>
+                <option value="GMT-0700">PST (GMT-0700)</option>
+                <option value="GMT-0600">MST (GMT-0600)</option>
+                <option value="GMT-0600">CST (GMT-0600)</option>
+                <option value="GMT-0500">EST (GMT-0500)</option>
+              </select>
+            </div>
+            {errors.timezone && (
+              <p className="text-MVP-red">{errors.timezone.message}</p>
+            )}
+          </div>
+
+          <div className="mb-[1rem] flex flex-col">
+            <label className={`${sectionHeader}`}>Meeting Link<span className="mb-2/3 text-[2rem]">*</span></label>
+            <input
+              type="url"
+              {...register("meetingLink", {
+                required: "Meeting Link is required",
+              })}
+              placeholder="Enter meeting link"
+              className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.meetingLink && "border-MVP-red"}`}
+            />
+            {errors.meetingLink && (
+              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
+            )}
+          </div>
+
+          <div className="mb-[1rem]">
+            <label className={`${sectionHeader}`}>Participant Count<span className="mb-2/3 text-[2rem]">*</span></label>
+            <div className="flex items-center gap-4">
+              <div className="flex-col">
+                <label className={`${sectionHeader}`}>Min</label>
+                <input
+                  type="number"
+                  {...register("minParticipants", {
+                    valueAsNumber: true,
+                    required: "Minimum participant count is required",
+                    min: {
+                      value: 1,
+                      message: "Minimum participants must be at least 1",
+                    },
+                  })}
+                  placeholder="4"
+                  className={`${styledBorder} w-[90px] h-[64px] form-control text-[1.2rem] ${errors.minParticipants && "border-MVP-red"
+                    }`}
+                />
+                {errors.minParticipants && (
+                  <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.minParticipants.message}</p>
+                )}
+              </div>
+              <hr className="border-t-4 border-MVP-black w-4 mt-8" />
+              <div className="flex-col">
+                <label className={`${sectionHeader}`}>Max</label>
+                <input
+                  type="number"
+                  {...register("maxParticipants", {
+                    valueAsNumber: true,
+                    required: "Maximum participant count is required",
+                    min: {
+                      value: 1,
+                      message:
+                        "Maximum participants must be greater than or equal to 1",
+                    },
+                  })}
+                  placeholder="100"
+                  className={`${styledBorder} w-[90px] h-[64px] form-control text-[1.2rem] text-center ${errors.maxParticipants && "border-MVP-red"
+                    }`}
+                />
+                {errors.maxParticipants && (
+                  <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.maxParticipants.message}</p>
                 )}
               </div>
             </div>
-          ))}
+          </div>
 
-        {fields.length <3 && (
-          <div className="flex justify-end mt-2">
+          <div className="mb-[1rem] flex-col">
+            <label htmlFor="judges" className={`${sectionHeader}`}>Judges<span className="mb-2/3 text-[2rem]">*</span></label>
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                className="flex-col flex whitespace-nowrap my-5"
+              >
+                <div className={`flex gap-[2rem] items-center`}>
+                  <label className="flex items-center font-extrabold text-2xl mr-[3rem]">Judge #{index + 1}</label>
+                  <div>
+                    <input
+                      type="text"
+                      {...register(`judges.${index}.firstName`, {
+                        required: "First name is required",
+                      })}
+                      placeholder="Enter first name"
+                      className={`${styledBorder} flex-1 text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${errors.judges?.[index]?.firstName && "border-MVP-red"
+                        }`}
+                    />
+                    {errors.judges?.[index]?.firstName && (
+                      <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
+                        {errors.judges[index].firstName.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      {...register(`judges.${index}.lastName`, {
+                        required: "Last name is required",
+                      })}
+                      placeholder="Enter last name"
+                      className={`${styledBorder} flex-1 text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${errors.judges?.[index]?.lastName && "border-MVP-red"
+                        }`}
+                    />
+                    {errors.judges?.[index]?.lastName && (
+                      <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
+                        {errors.judges[index].lastName.message}
+                      </p>
+                    )}
+                  </div>
+                  {fields.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                    >
+                      <CloseIcon />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {fields.length < 3 && (
+              <div className="flex justify-end mt-2">
+                <button
+                  type="button"
+                  className={`${styledBorder} !py-[0.6rem] bg-MVP-light-blue font-extrabold text-xl`}
+                  onClick={() => append({ firstName: "", lastName: "" })}
+                >
+                  Add Judge
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="file-upload-container">
+            <label className={`${sectionHeader} mb-[1rem]`}>
+              Upload a Thumbnail Image
+            </label>
+            <div className="text-center font-extrabold w-[40%] text-xl">
+              <div
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                className="flex flex-col gap-2 items-center justify-center border-2 border-dashed border-MVP-black rounded-lg p-6 cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="size-10"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+
+                <p className="">
+                  drag and drop file or{" "}
+                  <span
+                    className="text-blue-500 underline cursor-pointer"
+                    onClick={handleFileClick}
+                  >
+                    choose file
+                  </span>
+                </p>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  accept="image/*,.pdf,.svg,.zip"
+                />
+              </div>
+              {file && <p className="mt-2 text-sm">Selected file: {file.name}</p>}
+
+              <p className="my-2 text-sm ">
+                supported formats: JPG, PNG, PDF, SVG, ZIP
+              </p>
+              <p className="text-sm">maximum size: 10MB</p>
+            </div>
+          </div>
+          <div className="flex justify-end gap-[2rem] font-extrabold text-2xl">
             <button
               type="button"
-              className={`${styledBorder} !py-[0.6rem] bg-MVP-light-blue font-extrabold text-xl`}
-              onClick={() => append({ firstName: "", lastName: "" })}
+              className={`${styledBorder} !py-[0.7rem] !px-[1.5rem]`}
+              onClick={handleCancelClick}
             >
-              Add Judge
+              Cancel
+            </button>
+            <button type="submit" className={`${styledBorder} !bg-MVP-light-blue !py-[0.7rem] !px-[1.5rem]`}>
+              Next
             </button>
           </div>
-        )}
-        </div>
-
-        <div className="file-upload-container">
-          <label className={`${sectionHeader} mb-[1rem]`}>
-            Upload a Thumbnail Image
-          </label>
-          <div className="text-center font-extrabold w-[40%] text-xl">
-            <div
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              className="flex flex-col gap-2 items-center justify-center border-2 border-dashed border-MVP-black rounded-lg p-6 cursor-pointer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="size-10"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-
-              <p className="">
-                drag and drop file or{" "}
-                <span
-                  className="text-blue-500 underline cursor-pointer"
-                  onClick={handleFileClick}
-                >
-                  choose file
-                </span>
-              </p>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                accept="image/*,.pdf,.svg,.zip"
-              />
-            </div>
-            {file && <p className="mt-2 text-sm">Selected file: {file.name}</p>}
-
-            <p className="my-2 text-sm ">
-              supported formats: JPG, PNG, PDF, SVG, ZIP
-            </p>
-            <p className="text-sm">maximum size: 10MB</p>
-          </div>
-        </div>
-        <div className="flex justify-end gap-[2rem] font-extrabold text-2xl">
-          <button
-            type="button"
-            className={`${styledBorder} !py-[0.7rem] !px-[1.5rem]`}
-            onClick={handleCancelClick}
-          >
-            Cancel
-          </button>
-          <button type="submit" className={`${styledBorder} !bg-MVP-light-blue !py-[0.7rem] !px-[1.5rem]`}>
-            Next
-          </button>
-        </div>
         </div>
       </section>
-    </form>
+    </form >
   );
 };
 
