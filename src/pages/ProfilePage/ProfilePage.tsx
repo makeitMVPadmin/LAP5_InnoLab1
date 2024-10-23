@@ -90,7 +90,6 @@ const ProfilePage = () => {
 
   return (
     <>
-      <DashboardNavbar />
       <div className="profile">
         <div className="profile_container">
           {isEditing ? (
