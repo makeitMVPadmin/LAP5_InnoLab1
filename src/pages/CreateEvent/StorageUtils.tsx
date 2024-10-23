@@ -1,7 +1,7 @@
 interface EventFormInputs {
   title: string;
   organizer: string;
-  description: string;
+  basicProjectSummary: string;
   skillLevel: string;
   disciplines: string[];
   themes: string[];
@@ -14,7 +14,7 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  thumbnail: FileList | null;
+  imageUrl: FileList | null;
 }
 
 interface ChallengeDetailsInputs {

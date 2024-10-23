@@ -4,6 +4,8 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
 import { STYLES } from "../../constants/styles";
+import { useFetchHackathonUser } from '../../Firebase/FirebaseQueries';
+import { auth } from '../../Firebase/FirebaseConfig';
 
 interface EventFormInputs {
   title: string;
@@ -25,6 +27,7 @@ interface EventFormInputs {
 }
 
 const EventForm: React.FC = () => {
+  const { hackathonUser } = useFetchHackathonUser(auth.currentUser?.uid);
   const savedData = getFormData("eventFormData");
 
   const {
@@ -40,7 +43,7 @@ const EventForm: React.FC = () => {
     defaultValues: {
       title: savedData?.title || "",
       organizer: savedData?.organizer || "",
-      basicProjectSummary: savedData?.description || "",
+      basicProjectSummary: savedData?.basicProjectSummary || "",
       skillLevel: savedData?.skillLevel || "",
       disciplines: savedData?.disciplines || [],
       themes: savedData?.themes || [],
@@ -53,11 +56,17 @@ const EventForm: React.FC = () => {
       minParticipants: savedData?.minParticipants || 0,
       maxParticipants: savedData?.maxParticipants || 0,
       judges: savedData?.judges || [{ firstName: "", lastName: "" }],
-      imageUrl: savedData?.thumbnail || null,
+      imageUrl: savedData?.imageUrl || null,
     },
   });
   const [selectedThemes, setSelectedThemes] = useState([]);
   const [selectedDisciplines, setSelectedDisciplines] = useState([]);
+
+  useEffect(() => {
+    if (hackathonUser) {
+      setValue("organizer", hackathonUser.fullName);
+    }
+  }, [hackathonUser]);
 
   useEffect(() => {
     if (savedData?.disciplines && savedData.disciplines.length > 0) {
@@ -173,7 +182,6 @@ const EventForm: React.FC = () => {
     if (!(validTheme || validDiscipline)) {
       return;
     }
-    
     saveFormData("eventFormData", data);
     navigate("/ChallengeDetails");
   };
@@ -205,14 +213,14 @@ const EventForm: React.FC = () => {
         <div className="mb-[1rem] flex flex-col">
           <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
           <textarea
-            {...register("description", {
+            {...register("basicProjectSummary", {
               required: "Event description is required",
             })}
             placeholder="Enter any event descriptions"
-            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.description && "border-MVP-red"}`}
+            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.basicProjectSummary && "border-MVP-red"}`}
           />
-          {errors.description && (
-            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
+          {errors.basicProjectSummary && (
+            <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.basicProjectSummary.message}</p>
           )}
         </div>
 
