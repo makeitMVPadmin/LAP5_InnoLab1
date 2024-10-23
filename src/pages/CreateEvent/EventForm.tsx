@@ -8,7 +8,7 @@ import { STYLES } from "../../constants/styles";
 interface EventFormInputs {
   title: string;
   organizer: string;
-  description: string;
+  basicProjectSummary: string;
   skillLevel: string;
   disciplines: string[];
   themes: string[];
@@ -21,7 +21,7 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  thumbnail: FileList;
+  imageUrl: FileList;
 }
 
 const EventForm: React.FC = () => {
@@ -40,7 +40,7 @@ const EventForm: React.FC = () => {
     defaultValues: {
       title: savedData?.title || "",
       organizer: savedData?.organizer || "",
-      description: savedData?.description || "",
+      basicProjectSummary: savedData?.description || "",
       skillLevel: savedData?.skillLevel || "",
       disciplines: savedData?.disciplines || [],
       themes: savedData?.themes || [],
@@ -53,7 +53,7 @@ const EventForm: React.FC = () => {
       minParticipants: savedData?.minParticipants || 0,
       maxParticipants: savedData?.maxParticipants || 0,
       judges: savedData?.judges || [{ firstName: "", lastName: "" }],
-      thumbnail: savedData?.thumbnail || null,
+      imageUrl: savedData?.thumbnail || null,
     },
   });
   const [selectedThemes, setSelectedThemes] = useState([]);
