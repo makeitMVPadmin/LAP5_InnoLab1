@@ -8,7 +8,7 @@ export default function EventDetails() {
   return (
     <>
       {/* top right section */}
-      <section className="event-details-top-right">
+      {/* <section className="event-details-top-right">
         <article className="event-details-top-right__status">
           <img className="event-details-top-right__status-img" src={ongoing} />
           <p className="event-details-top-right__status-txt">On-going</p>
@@ -39,6 +39,43 @@ export default function EventDetails() {
         <button className="event-details-top-right__button">
           <img src={link} className="event-details-top-right__link-img" />
           <p className="event-details-top-right__link-txt">Event Link</p>
+        </button>
+      </section> */}
+
+      <section className="p-8 font-poppins font-semibold">
+        <article className="flex items-center border border-green-500 bg-green-500 w-fit px-4 py-1 rounded-full">
+          <img className="w-5" src={ongoing} alt="Ongoing" />
+          <p className="pl-2">On-going</p>
+        </article>
+        <p>Organized by</p>
+        <p>Starts:</p>
+        <div className="flex items-center">
+          <img src={calender} className="w-5 h-5" alt="Calendar" />
+          <div className="pl-2 text-sm">
+            <p>Wednesday, Nov 28</p>
+            <p>4:00 PM EST</p>
+          </div>
+        </div>
+        <p>Ends:</p>
+        <div className="flex items-center">
+          <img src={calender} className="w-5 h-5" alt="Calendar" />
+          <div className="pl-2 text-sm">
+            <p>Thursday, Nov 29</p>
+            <p>4:00 PM EST</p>
+          </div>
+        </div>
+        <div className="flex items-center">
+          <img src={location} className="w-5 h-5" alt="Location" />
+          <p className="pl-2 text-sm">Location: Online</p>
+        </div>
+
+        <button
+          type="button"
+          className="flex items-center justify-center w-[10rem] h-[2.5rem] bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-[1.25rem] font-gilroy cursor-pointer"
+          aria-label="Event link"
+        >
+          <img src={link} className="w-5" alt="Event Link" />
+          <span>Event Link</span>
         </button>
       </section>
 
