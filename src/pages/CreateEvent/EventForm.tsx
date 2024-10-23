@@ -135,6 +135,7 @@ const EventForm: React.FC = () => {
 
   const handleCancelClick = () => {
     clearFormData("eventFormData");
+    clearFormData("challengeDetailsData");
     navigate("/hackathons");
   };
 
