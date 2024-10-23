@@ -18,11 +18,13 @@ import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage
 import "./styles/_global.scss";
 import OrganizerReviewPage from "./pages/OrganizerReviewPage/OrganizerReviewPage";
 import Layout from "./components/Layout/Layout";
+import { Toaster } from "./components/ui/toaster"
 
 
 const App = () => {
   return (
     <AuthProvider>
+      <Toaster />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -43,6 +45,7 @@ const App = () => {
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </AuthProvider>
+
   );
 }
 
