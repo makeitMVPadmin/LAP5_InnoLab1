@@ -153,7 +153,7 @@ const EventForm: React.FC = () => {
           <input
             {...register("title", { required: "Event Title is required" })}
             placeholder="Enter Event Title" 
-            className={`form-control p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[1.2rem] flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.title && "text-MVP-red" }`}
+            className={`form-control p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.title && "text-MVP-red" }`}
           />
           {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
         </div>
@@ -164,7 +164,7 @@ const EventForm: React.FC = () => {
               required: "Event description is required",
             })}
             placeholder="Enter any event descriptions"
-            className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
+            className="p-[0.6rem] border-[0.2rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
           />
           {errors.description && (
             <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
@@ -224,7 +224,7 @@ const EventForm: React.FC = () => {
         <div className="mb-[1rem] flex flex-col">
           <label htmlFor="discipline" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
-            className={`border-2 rounded-lg p-2 flex gap-4 flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+            className={`border-2 rounded-lg p-2 gap-4 flex py-[1.3rem] px-[1rem] items-center self-stretch border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
               errors.disciplines ? "border-red-500" : "border-black"
             }`}
           >
@@ -416,7 +416,7 @@ const EventForm: React.FC = () => {
               required: "Meeting Link is required",
             })}
             placeholder="Enter meeting link"
-            className={`p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[1.2rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.meetingLink && "text-MVP-red text-[0.8rem] mt-[0.3rem]"}`}
+            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.meetingLink && "text-MVP-red text-[0.8rem] mt-[0.3rem]"}`}
           />
           {errors.meetingLink && (
             <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
@@ -488,7 +488,7 @@ const EventForm: React.FC = () => {
                     required: "First name is required",
                   })}
                   placeholder="Enter first name"
-                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                  className={`w-3/6 mt-2 mb-1 p-2 border-[0.2rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
                     errors.judges?.[index]?.firstName && "text-MVP-red text-[0.8rem] mt-[0.3rem]"
                   }`}
                 />
@@ -499,7 +499,7 @@ const EventForm: React.FC = () => {
                     required: "Last name is required",
                   })}
                   placeholder="Enter last name"
-                  className={`w-3/6 mt-2 mb-1 p-2 border border-black rounded p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                  className={`w-3/6 mt-2 mb-1 p-2 border-[0.2rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
                     errors.judges?.[index]?.lastName && "text-MVP-red text-[0.8rem] mt-[0.3rem]"
                   }`}
                 />
@@ -543,7 +543,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="file-upload-container">
-          <label className="block font-bold text-lg mb-2 flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">
+          <label className="text-lg mb-2 flex items-center gap-[0.2rem] text-MVP-black text-[1.6rem] font-extrabold">
             Upload a Thumbnail Image
           </label>
           <div className="text-center w-80">
@@ -593,12 +593,12 @@ const EventForm: React.FC = () => {
         <div className="flex justify-end gap-[1rem]">
           <button
             type="button"
-            className="px-[0.6rem] py-[1rem] text-MVP-black border-[0.3rem] border-MVP-black cursor-pointer hover:bg-MVP-dark-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
+            className="text-MVP-black border-[0.3rem] cursor-pointer hover:bg-MVP-dark-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
             onClick={handleCancelClick}
           >
             Cancel
           </button>
-          <button type="submit" className="px-[0.6rem] py-[1rem] text-MVP-black border-[0.3rem] border-MVP-black cursor-pointer hover:bg-MVP-dark-blue bg-MVP-light-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black">
+          <button type="submit" className="text-MVP-black border-[0.3rem] cursor-pointer hover:bg-MVP-dark-blue bg-MVP-light-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black">
             Next
           </button>
         </div>
