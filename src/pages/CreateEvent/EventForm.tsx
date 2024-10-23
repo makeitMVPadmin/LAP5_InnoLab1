@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
@@ -28,7 +28,6 @@ const EventForm: React.FC = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     control,
     formState: { errors },
   } = useForm<EventFormInputs>({
@@ -248,7 +247,7 @@ const EventForm: React.FC = () => {
               className={`focus:outline-none w-full text-[1.2rem] ${selectedDisciplines.length === 3 && 'appearance-none'}`}
               disabled={selectedDisciplines.length === 3}
             >
-              <option value={""}>{selectedDisciplines.length == 0 && 'Select up to 3 disciplines'}</option>
+              <option value={""}>{selectedDisciplines.length === 0 && 'Select up to 3 disciplines'}</option>
               {allDisciplines
                 .filter(
                   (discipline) => !selectedDisciplines.includes(discipline)
@@ -293,7 +292,7 @@ const EventForm: React.FC = () => {
               className={`focus:outline-none w-full text-[1.2rem] ${selectedThemes.length === 3 && 'appearance-none'}`}
               disabled={selectedThemes.length === 3}
             >
-              <option value={""}>{selectedThemes.length == 0 && 'Select up to 3 themes'}</option>
+              <option value={""}>{selectedThemes.length === 0 && 'Select up to 3 themes'}</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
                 .map((theme) => (

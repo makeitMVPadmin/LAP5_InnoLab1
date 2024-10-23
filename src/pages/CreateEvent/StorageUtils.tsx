@@ -14,7 +14,7 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  thumbnail: FileList | null; //replace with truthy thumbnail type once thumbnail upload logic is complete
+  thumbnail: FileList | null;
 }
 
 interface ChallengeDetailsInputs {
