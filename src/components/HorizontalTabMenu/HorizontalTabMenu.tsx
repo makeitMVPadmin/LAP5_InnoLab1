@@ -87,7 +87,7 @@ const HorizontalTabMenu = ({
                         id={`tab-${index}`}
                         aria-controls={`panel-${index}`}
                     >
-                        <p className={`text-MVP-black font-gilroy text-[1.7rem] font-extrabold normal-case leading-[115.645%] ${index === activeTab && 'text-MVP-dark-blue'}`}>
+                        <p className={`text-MVP-black font-gilroy text-[1.3rem] font-extrabold normal-case leading-[115.645%] ${index === activeTab && 'text-MVP-dark-blue'}`}>
                             {tab.label}
                         </p>
                     </Button>
@@ -102,7 +102,7 @@ const HorizontalTabMenu = ({
             />
         </div>
         <p 
-            className='text-[#000] mx-auto w-[95%] font-poppins text-[1.4rem] font-normal leading-[115.645%]' 
+            className='text-[#000] mx-auto w-[95%] font-poppins text-[1.2rem] font-normal leading-[115.645%]' 
             id={`panel-${activeTab}`} 
             role="tabpanel"
             aria-labelledby={`tab-${activeTab}`}

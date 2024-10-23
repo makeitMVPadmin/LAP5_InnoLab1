@@ -8,7 +8,7 @@ export default function Filters({ filters, onFilterChange }) {
       target: { name, value, checked },
     } as any);
   };
-  const subHeading = "font-gilroy text-lg"
+  const subHeading = "font-gilroy text-lg font-bold"
   const filterLabel = "text-base font-poppins leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
   const filterGroupedInput = "space-y-4"
   return (

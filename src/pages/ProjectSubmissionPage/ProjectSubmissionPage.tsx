@@ -14,7 +14,6 @@ import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
-import Header from "../../components/Header/Header";
 import FileUploadZone from "../../components/FileUploadZone/FileUploadZone";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import ImportCard from "../../components/ImportCard/ImportCard"
@@ -144,7 +143,6 @@ const ProjectSubmissionPage = () => {
 
     return (
         <main className="font-gilroy">
-            <Header handleClick={handleBack} />
             <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
                 <div className="flex py-12 justify-end gap-2 items-center">
