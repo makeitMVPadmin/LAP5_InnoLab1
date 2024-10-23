@@ -5,14 +5,16 @@ import { createProjectSubmission } from "../../Firebase/FirebaseStore"
 import { submissionSchema } from "../../schema/submissionSchema";
 import { formatTextSections } from "../../utils/formatTextFunctions"
 import { renderObjectArrayContent, renderEditableImages } from "../../utils/renderHelpers"
+import { useToast } from "../../hooks/use-toast"
 import { STYLES } from "../../constants/styles";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Button } from "../../components/ui/button";
 import { Textarea } from "../../components/ui/textarea";
 import { Input } from "../../components/ui/input";
+import SubmissionModal from "../../components/SubmissionModal/SubmissionModal";
 import EditButton from "../../components/EditButton/EditButton";
 import Clock2 from "../../assets/images/clock-type2.svg"
-
+import BellIcon from "../../assets/images/bell.svg"
 
 const Section = ({ title, children, required, editButton }: SectionProps) => (
     <section className="space-y-2">
@@ -28,6 +30,7 @@ const ProjectReviewPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { eventId } = useParams()
+    const { toast } = useToast()
 
     const { submissionFormData } = location.state || {};
     const [formData, setFormData] = useState(submissionFormData);
@@ -123,8 +126,6 @@ const ProjectReviewPage = () => {
             </div>
         );
     };
-
-    const handleBack = () => { navigate(`/event/${eventId}/submit `, { state: { formData } }) }
     const handleCancelEdit = () => { setEditingSectionId(null); };
     const handleEditMode = () => { setIsEditMode(true) }
     const handleDeleteFile = (fileType: 'projectFiles' | 'pdfFiles', indexToRemove: number) => {
@@ -134,8 +135,7 @@ const ProjectReviewPage = () => {
             [fileType]: newFiles
         }));
     };
-    const handleSubmit = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
         setIsLoading(true);
 
         try {
@@ -165,6 +165,27 @@ const ProjectReviewPage = () => {
 
 
             await createProjectSubmission(submissionFormData);
+
+            setTimeout(() => {
+                toast({
+                    description: (
+                        <div className="flex items-center gap-3">
+                            <div className="flex gap-2 justify-start items-center">
+                                <img
+                                    src={BellIcon}
+                                    alt="success"
+                                    className="h-6 w-6"
+                                />
+                                <p className="font-bold font-gilroy">Project was submitted successfully!</p>
+                            </div>
+                            {/* TODO- add button to review*/}
+                        </div>
+                    ),
+                    className: "bg-white shadow-lg border-black border-3 rounded-[10px]",
+                    duration: 2000,
+                });
+                navigate(`/event/${eventId}`);
+            }, 2000);
 
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -397,13 +418,7 @@ const ProjectReviewPage = () => {
                         isEditing={false}
                         isEditMode={!isEditMode}
                     />
-                    <Button
-                        className={`${STYLES.primaryButton}`}
-                        onClick={handleSubmit}
-                        aria-label="submit button to submit project"
-                    >
-                        Submit Project
-                    </Button>
+                    <SubmissionModal handleSubmit={handleSubmit} />
                 </div>
             </section>
         </div>
