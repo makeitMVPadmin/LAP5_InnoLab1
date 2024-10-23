@@ -30,6 +30,7 @@ const ProjectReviewPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { eventId } = useParams()
+    const { toast } = useToast()
 
     const { submissionFormData } = location.state || {};
     const [formData, setFormData] = useState(submissionFormData);
@@ -166,6 +167,23 @@ const ProjectReviewPage = () => {
             await createProjectSubmission(submissionFormData);
 
             setTimeout(() => {
+                toast({
+                    description: (
+                        <div className="flex items-center gap-3">
+                            <div className="flex gap-2 justify-start items-center">
+                                <img
+                                    src={BellIcon}
+                                    alt="success"
+                                    className="h-6 w-6"
+                                />
+                                <p className="font-bold font-gilroy">Project was submitted successfully!</p>
+                            </div>
+                            {/* TODO- add button to review*/}
+                        </div>
+                    ),
+                    className: "bg-white shadow-lg border-black border-3 rounded-[10px]",
+                    duration: 2000,
+                });
                 navigate(`/event/${eventId}`);
             }, 2000);
 
