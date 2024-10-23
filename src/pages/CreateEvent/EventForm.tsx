@@ -5,6 +5,8 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
 import { STYLES } from "../../constants/styles";
 
+const { styledBorder, sectionHeader } = STYLES;
+
 interface EventFormInputs {
   title: string;
   organizer: string;
@@ -186,30 +188,30 @@ const EventForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-2/3 mx-auto py-[3.5rem] px-[1.5rem] rounded-lg font-gilroy">
       <section className="mb-[1.3rem]">
-        <h2 className="text-black font-bold text-[3rem] leading-[115.645%]">Create an Event</h2>
-        <div className="flex gap-[1rem] my-[3.5rem]">
-          <div className="flex flex-1 gap-[0.8rem] py-[0.6rem] justify-center items-center text-center text-[1.2rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black bg-MVP-yellow text-MVP-black font-extrabold"><div className="justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">1</div> Event Details</div>
-          <div className="flex flex-1 gap-[0.8rem] py-[0.6rem] justify-center items-center text-center text-[1.2rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black font-extrabold"><div className="justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">2</div> Challenge Details</div>
-          <div className="flex flex-1 gap-[0.8rem] py-[0.6rem] justify-center items-center text-center text-[1.2rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black font-extrabold"><div className="justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">3</div> Review</div>
+        <h2 className="font-bold text-[3rem] leading-[115.645%]">Create an Event</h2>
+        <div className="flex gap-[1rem] my-[3.5rem] font-extrabold text-[1.2rem]">
+          <div className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] px justify-center items-center text-center bg-MVP-yellow`}><div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">1</div> Event Details</div>
+          <div className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] justify-center items-center text-center`}><div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">2</div> Challenge Details</div>
+          <div className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] justify-center items-center text-center`}><div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">3</div> Review</div>
         </div>
         <div className="py-[0.5rem] px-[2rem]">
         <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="event title" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label htmlFor="event title" className={`${sectionHeader}`}>Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
           <input
             {...register("title", { required: "Event Title is required" })}
             placeholder="Enter Event Title" 
-            className={`form-control p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.title && "border-MVP-red" }`}
+            className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.title && "border-MVP-red" }`}
           />
           {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
         </div>
         <div className="mb-[1rem] flex flex-col">
-          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label className={`${sectionHeader}`}>Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
           <textarea
             {...register("description", {
               required: "Event description is required",
             })}
             placeholder="Enter any event descriptions"
-            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.description && "border-MVP-red"}`}
+            className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.description && "border-MVP-red"}`}
           />
           {errors.description && (
             <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
@@ -217,7 +219,7 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="skillLevel" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Skill Level<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label htmlFor="skillLevel" className={`${sectionHeader}`}>Skill Level<span className="mb-2/3 text-[2rem]">*</span></label>
           <Controller
             name="skillLevel"
             control={control}
@@ -225,7 +227,7 @@ const EventForm: React.FC = () => {
             render={({ field }) => (
               <>
                 <div className="flex flex-row gap-[2.5rem] px-[1rem]">
-                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] text-MVP-black font-semibold">
+                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
                     <input
                       {...field}
                       className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
@@ -236,7 +238,7 @@ const EventForm: React.FC = () => {
                     Beginner
                   </label>
 
-                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] text-MVP-black font-semibold">
+                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
                     <input
                       {...field}
                       className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
@@ -247,7 +249,7 @@ const EventForm: React.FC = () => {
                     Intermediate
                   </label>
 
-                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] text-MVP-black font-semibold">
+                  <label className="flex items-center gap-[0.8rem] text-[1.3rem] mb-[0.3rem] font-semibold">
                     <input
                       {...field}
                       className="p-[0.6rem] border-[0.2rem] border-MVP-black rounded-[0.6rem] text-[0.9rem] scale-150"
@@ -267,9 +269,9 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="discipline" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label htmlFor="discipline" className={`${sectionHeader}`}>Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
-            className={`border-2 rounded-lg p-2 gap-4 flex py-[1.3rem] px-[1rem] items-center self-stretch border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+            className={`${styledBorder} border-2 rounded-lg p-2 gap-4 flex items-center ${
               errors.disciplines && "border-MVP-red"
             }`}
           >
@@ -282,7 +284,7 @@ const EventForm: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => removeDiscipline(discipline)}
-                  className="ml-4 text-black"
+                  className="ml-4"
                 >
                   ✕
                 </button>
@@ -313,9 +315,9 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="theme" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Theme<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label htmlFor="theme" className={`${sectionHeader}`}>Theme<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
-            className={`flex gap-4 py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+            className={`${styledBorder} flex gap-4 items-center  ${
               errors.themes && "border-MVP-red"
             }`}
           >
@@ -327,7 +329,7 @@ const EventForm: React.FC = () => {
                 {theme}
                 <button
                   onClick={() => removeTheme(theme)}
-                  className="ml-4 text-black"
+                  className="ml-4"
                 >
                   ✕
                 </button>
@@ -352,11 +354,11 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label htmlFor="eventDuration" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Event Duration<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label htmlFor="eventDuration" className={`${sectionHeader}`}>Event Duration<span className="mb-2/3 text-[2rem]">*</span></label>
 
           <div className="sub-section">
-            <span className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Start<span className="mb-2/3 text-[2rem]">*</span></span>
-            <div className={`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue ${
+            <span className={`${sectionHeader}`}>Start<span className="mb-2/3 text-[2rem]">*</span></span>
+            <div className={`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${
                       (errors.startDate || errors.startTime) && "border-MVP-red"
                     }`}>
               <Controller
@@ -392,8 +394,8 @@ const EventForm: React.FC = () => {
           </div>
 
           <div>
-            <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">End<span className="mb-2/3 text-[2rem]">*</span></label>
-            <div className= {`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue ${
+            <label className={`${sectionHeader}`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
+            <div className= {`${styledBorder} w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] hover:border-MVP-dark-blue ${
                       (errors.endDate || errors.endTime) && "border-MVP-red"
                     }`}>
               <Controller
@@ -432,8 +434,8 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Timezone<span className="mb-2/3 text-[2rem]">*</span></label>
-          <div className={`rounded-[0.6rem] py-[1.3rem] px-[1rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.timezone && "border-MVP-red"}`}>
+          <label className={`${sectionHeader}`}>Timezone<span className="mb-2/3 text-[2rem]">*</span></label>
+          <div className={`${styledBorder} ${errors.timezone && "border-MVP-red"}`}>
           <select
             {...register("timezone", { required: "Timezone is required" })}
             className="text-[1.2rem] focus:outline-none w-full"
@@ -451,14 +453,14 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Meeting Link<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label className={`${sectionHeader}`}>Meeting Link<span className="mb-2/3 text-[2rem]">*</span></label>
           <input
             type="url"
             {...register("meetingLink", {
               required: "Meeting Link is required",
             })}
             placeholder="Enter meeting link"
-            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.meetingLink && "border-MVP-red"}`}
+            className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.meetingLink && "border-MVP-red"}`}
           />
           {errors.meetingLink && (
             <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
@@ -466,10 +468,10 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex flex-col">
-          <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Participant Count<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label className={`${sectionHeader}`}>Participant Count<span className="mb-2/3 text-[2rem]">*</span></label>
           <div className="flex">
             <div className="flex flex-col">
-              <label className="flex items-center text-MVP-black">Min</label>
+              <label className="flex items-center">Min</label>
               <input
                 type="number"
                 {...register("minParticipants", {
@@ -481,7 +483,7 @@ const EventForm: React.FC = () => {
                   },
                 })}
                 placeholder="4"
-                className={`w-fit rounded-[0.6rem] text-[0.9rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                className={`${styledBorder} w-1/3 form-control text-[1.2rem] text-center ${
                   errors.minParticipants && "border-MVP-red"
                 }`}
               />
@@ -489,9 +491,9 @@ const EventForm: React.FC = () => {
                 <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.minParticipants.message}</p>
               )}
             </div>
-            <p className="flex items-center text-[1rem] text-MVP-black">-</p>
+            <p className="flex items-center text-[1rem]">-</p>
             <div className="flex flex-col">
-              <label className="flex items-center text-MVP-black">Max</label>
+              <label className="flex items-center">Max</label>
               <input
                 type="number"
                 {...register("maxParticipants", {
@@ -504,7 +506,7 @@ const EventForm: React.FC = () => {
                   },
                 })}
                 placeholder="100"
-                className={`text-base rounded-[0.6rem] text-[0.9rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                className={`${styledBorder} w-1/3 form-control text-[1.2rem] text-center ${
                   errors.maxParticipants && "border-MVP-red"
                 }`}
               />
@@ -516,21 +518,21 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="mb-[1rem] flex-col">
-          <label htmlFor="judges" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Judges<span className="mb-2/3 text-[2rem]">*</span></label>
+          <label htmlFor="judges" className={`${sectionHeader}`}>Judges<span className="mb-2/3 text-[2rem]">*</span></label>
           {fields.map((field, index) => (
             <div
               key={field.id}
               className="justify-between flex-col flex whitespace-nowrap my-3"
             >
               <div className="flex gap-2 items-center">
-                <label className="flex items-center gap-[0.5rem] mb-[0.3rem] text-MVP-black">Judge #{index + 1}</label>
+                <label className="flex items-center gap-[0.5rem] mb-[0.3rem]">Judge #{index + 1}</label>
                 <input
                   type="text"
                   {...register(`judges.${index}.firstName`, {
                     required: "First name is required",
                   })}
                   placeholder="Enter first name"
-                  className={`w-3/6 mt-2 mb-1 p-2 border-[0.2rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                  className={`${styledBorder} text-[1.2rem] flex ${
                     errors.judges?.[index]?.firstName && "border-MVP-red"
                   }`}
                 />
@@ -541,7 +543,7 @@ const EventForm: React.FC = () => {
                     required: "Last name is required",
                   })}
                   placeholder="Enter last name"
-                  className={`w-3/6 mt-2 mb-1 p-2 border-[0.2rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
+                  className={`${styledBorder} text-[1.2rem] flex ${
                     errors.judges?.[index]?.lastName && "border-MVP-red"
                   }`}
                 />
@@ -575,7 +577,7 @@ const EventForm: React.FC = () => {
           <div className="flex justify-end mt-2">
             <button
               type="button"
-              className="px-4 py-2 rounded-[10px] bg-MVP-light-blue border-[3px] border-r-[5px] border-b-[5px] border-MVP-black text-MVP-black"
+              className={`${styledBorder} px-4 py-2 bg-MVP-light-blue`}
               onClick={() => append({ firstName: "", lastName: "" })}
             >
               Add Judge
@@ -585,14 +587,14 @@ const EventForm: React.FC = () => {
         </div>
 
         <div className="file-upload-container">
-          <label className="text-lg mb-2 flex items-center gap-[0.2rem] text-MVP-black text-[1.6rem] font-extrabold">
+          <label className="text-lg mb-2 flex items-center gap-[0.2rem] text-[1.6rem] font-extrabold">
             Upload a Thumbnail Image
           </label>
           <div className="text-center w-80">
             <div
               onDrop={handleDrop}
               onDragOver={handleDragOver}
-              className="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer hover:border-blue-400"
+              className="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -626,21 +628,21 @@ const EventForm: React.FC = () => {
             </div>
             {file && <p className="mt-2 text-sm">Selected file: {file.name}</p>}
 
-            <p className="text-xs text-black mb-1">
+            <p className="text-xs mb-1">
               supported formats: JPG, PNG, PDF, SVG, ZIP
             </p>
-            <p className="text-xs text-black">maximum size: 10MB</p>
+            <p className="text-xs">maximum size: 10MB</p>
           </div>
         </div>
         <div className="flex justify-end gap-[1rem]">
           <button
             type="button"
-            className="text-MVP-black border-[0.3rem] cursor-pointer hover:bg-MVP-dark-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
+            className="border-[0.3rem] cursor-pointer hover:bg-MVP-dark-blue flex items-center ${styledBorder}"
             onClick={handleCancelClick}
           >
             Cancel
           </button>
-          <button type="submit" className="text-MVP-black border-[0.3rem] cursor-pointer hover:bg-MVP-dark-blue bg-MVP-light-blue flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black">
+          <button type="submit" className="border-[0.3rem] cursor-pointer hover:bg-MVP-dark-blue bg-MVP-light-blue flex items-center ${styledBorder}">
             Next
           </button>
         </div>

@@ -10,4 +10,8 @@ export const STYLES = {
   secondaryButton:
     "font-gilroy font-bold bg-MVP-white text-MVP-black cursor-pointer h-12 justify-center items-center px-4 border-[3px] border-MVP-black text-xl rounded-[8px]",
   reviewText: "font-poppins text-lg max-w-prose",
+  styledBorder:
+  "focus:outline-none focus:border-MVP-dark-blue focus:shadow-md focus:shadow-MVP-dark-blue/25 py-[1.3rem] px-[1rem] rounded-[0.6rem] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-MVP-black",
+  sectionHeader:
+  "flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold"
 } as const;
