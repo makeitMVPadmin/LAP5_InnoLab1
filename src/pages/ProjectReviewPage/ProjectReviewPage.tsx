@@ -5,15 +5,16 @@ import { createProjectSubmission } from "../../Firebase/FirebaseStore"
 import { submissionSchema } from "../../schema/submissionSchema";
 import { formatTextSections } from "../../utils/formatTextFunctions"
 import { renderObjectArrayContent, renderEditableImages } from "../../utils/renderHelpers"
+import { useToast } from "../../hooks/use-toast"
 import { STYLES } from "../../constants/styles";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Button } from "../../components/ui/button";
 import { Textarea } from "../../components/ui/textarea";
 import { Input } from "../../components/ui/input";
+import SubmissionModal from "../../components/SubmissionModal/SubmissionModal";
 import EditButton from "../../components/EditButton/EditButton";
 import Clock2 from "../../assets/images/clock-type2.svg"
-import SubmissionModal from "../../components/SubmissionModal/SubmissionModal";
-
+import BellIcon from "../../assets/images/bell.svg"
 
 const Section = ({ title, children, required, editButton }: SectionProps) => (
     <section className="space-y-2">
@@ -133,8 +134,7 @@ const ProjectReviewPage = () => {
             [fileType]: newFiles
         }));
     };
-    const handleSubmit = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
         setIsLoading(true);
 
         try {
@@ -164,6 +164,10 @@ const ProjectReviewPage = () => {
 
 
             await createProjectSubmission(submissionFormData);
+
+            setTimeout(() => {
+                navigate(`/event/${eventId}`);
+            }, 2000);
 
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -396,13 +400,6 @@ const ProjectReviewPage = () => {
                         isEditing={false}
                         isEditMode={!isEditMode}
                     />
-                    {/* <Button
-                        className={`${STYLES.primaryButton}`}
-                        onClick={handleSubmit}
-                        aria-label="submit button to submit project"
-                    >
-                        Submit Project
-                    </Button> */}
                     <SubmissionModal handleSubmit={handleSubmit} />
                 </div>
             </section>

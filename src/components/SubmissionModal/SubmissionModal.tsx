@@ -11,10 +11,15 @@ import {
 import { STYLES } from "../../constants/styles"
 import ClockRunner from "../../assets/images/finish-clock.svg"
 
-const SubmissionModal = ({ handleSubmit }) => {
+interface SubmissionModalProps {
+    handleSubmit: () => Promise<void>;
+}
+
+const SubmissionModal = ({ handleSubmit }: SubmissionModalProps) => {
     const [open, setOpen] = useState(false)
 
-    const handleConfirm = () => {
+    const handleConfirm = (e) => {
+        e.preventDefault();
         setOpen(false)
         handleSubmit()
     }
