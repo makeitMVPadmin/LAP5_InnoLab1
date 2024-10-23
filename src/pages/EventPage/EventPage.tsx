@@ -159,7 +159,7 @@ const EventPage = () => {
                   <img className="w-5" src={ongoing} alt="Ongoing" />
                   <p className="pl-2">On-going</p>
                 </article>
-                <p>Organized by</p>
+                <p className="pt-4">Organized by</p>
                 <div className="flex gap-3 flex-wrap">
                   {event.judges.map((judge, index) => (
                     <ParticipantInfoChip
@@ -170,7 +170,7 @@ const EventPage = () => {
                     />
                   ))}
                 </div>
-                <p>Starts:</p>
+                <p className="pt-4">Starts:</p>
                 <div className="flex items-center">
                   <img src={calender} className="w-5 h-5" alt="Calendar" />
                   <div className="pl-2 text-sm">
@@ -180,7 +180,7 @@ const EventPage = () => {
                     </p>
                   </div>
                 </div>
-                <p>Ends:</p>
+                <p className="pt-4">Ends:</p>
                 <div className="flex items-center">
                   <img src={calender} className="w-5 h-5" alt="Calendar" />
                   <div className="pl-2 text-sm">
@@ -190,21 +190,22 @@ const EventPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center pt-4">
                   <img src={location} className="w-5 h-5" alt="Location" />
                   <p className="pl-2 text-sm">Location: Online</p>
                 </div>
-
-                <Link to={event.meetingLink}>
-                  <button
-                    type="button"
-                    className="flex items-center justify-center w-[10.5rem] h-[2.75rem] bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-[1.25rem] font-gilroy cursor-pointer"
-                    aria-label="Event link"
-                  >
-                    <img src={link} className="w-5" alt="Event Link" />
-                    <span>Event Link</span>
-                  </button>
-                </Link>
+                <div className="flex items-center pt-4">
+                  <Link to={event.meetingLink}>
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-[10.5rem] h-[2.75rem] bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-[1.25rem] font-gilroy cursor-pointer"
+                      aria-label="Event link"
+                    >
+                      <img src={link} className="w-5" alt="Event Link" />
+                      <span>Event Link</span>
+                    </button>
+                  </Link>
+                </div>
               </section>
             </div>
           </div>
@@ -226,13 +227,12 @@ const EventPage = () => {
             </div>
           </section>
           <section className="w-3/4 px-6 ">
-            <section className="event-details-bottom">
-              <h2 className="event-details-bottom__title">Challenge Details</h2>
-              <div className="event-details-bottom__wrapper">
-                <h3 className="event-details-bottom__subtitle">
-                  Problem Statement
-                </h3>
-                <p className="event-details-bottom__txt">
+            <section className="font-poppins font-gilroy">
+              <h2 className="text-2xl font-semibold">Challenge Details</h2>
+
+              <div className="py-4">
+                <h3 className="text-xl font-semibold">Problem Statement</h3>
+                <p className="mt-2">
                   The healthcare industry faces challenges in delivering
                   efficient, accurate, and scalable patient care. Current
                   diagnostic tools, care systems, and health data management
@@ -243,11 +243,10 @@ const EventPage = () => {
                   health data usage to improve outcomes.
                 </p>
               </div>
-              <div className="event-details-bottom__wrapper">
-                <h3 className="event-details-bottom__subtitle">
-                  Objective/Goals
-                </h3>
-                <ul>
+
+              <div className="py-4">
+                <h3 className="text-xl font-semibold">Objective/Goals</h3>
+                <ul className="list-decimal pl-5 mt-2">
                   <li>
                     1. Innovate AI-powered solutions: Develop novel AI tools
                     that enhance healthcare diagnostics and improve patient
@@ -265,11 +264,12 @@ const EventPage = () => {
                   </li>
                 </ul>
               </div>
-              <div className="event-details-bottom__wrapper">
-                <h3 className="event-details-bottom__subtitle">
+
+              <div className="py-4">
+                <h3 className="text-xl font-semibold">
                   Constraints/Limitations
                 </h3>
-                <ul>
+                <ul className="list-decimal pl-5 mt-2">
                   <li>
                     1. Scope limitation: Solutions should focus on specific
                     healthcare challenges, such as diagnostics, patient care, or
@@ -283,11 +283,10 @@ const EventPage = () => {
                   </li>
                 </ul>
               </div>
-              <div className="event-details-bottom__wrapper">
-                <h3 className="event-details-bottom__subtitle">
-                  Evaluation Criteria
-                </h3>
-                <ul>
+
+              <div className="py-4">
+                <h3 className="text-xl font-semibold">Evaluation Criteria</h3>
+                <ul className="list-decimal pl-5 mt-2">
                   <li>
                     1. Innovation and Creativity: The degree to which the
                     solution introduces new or unique approaches to solving
@@ -296,7 +295,7 @@ const EventPage = () => {
                   <li>
                     2. Impact on Healthcare: How significantly the proposed
                     solution improves diagnostics, patient care, or the use of
-                    health data.{" "}
+                    health data.
                   </li>
                   <li>
                     3. Technical Feasibility: The technical soundness and
@@ -306,15 +305,16 @@ const EventPage = () => {
                   <li>
                     4. Presentation and Communication: Clarity and effectiveness
                     in presenting the problem, solution, and its potential
-                    impact..{" "}
+                    impact.
                   </li>
                 </ul>
               </div>
-              <div className="event-details-bottom__wrapper">
-                <h3 className="event-details-bottom__subtitle">
+
+              <div className="py-4">
+                <h3 className="text-xl font-semibold">
                   Additional Information
                 </h3>
-                <p>
+                <p className="mt-2">
                   Post-hackathon Support: Selected projects may be considered
                   for continued development through partnerships with healthcare
                   organizations or incubators.
