@@ -1,8 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
-import { saveFormData } from "./StorageUtils";
+import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
+import { STYLES } from "../../constants/styles";
 
 interface EventFormInputs {
   title: string;
@@ -24,83 +25,116 @@ interface EventFormInputs {
 }
 
 const EventForm: React.FC = () => {
+  const savedData = getFormData("eventFormData");
+
   const {
+    watch,
     register,
     handleSubmit,
     setValue,
+    setError,
+    clearErrors,
     control,
     formState: { errors },
   } = useForm<EventFormInputs>({
     defaultValues: {
-      title: "",
-      organizer: "",
-      description: "",
-      skillLevel: "",
-      disciplines: [],
-      themes: [],
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      timezone: "",
-      meetingLink: "",
-      minParticipants: 0,
-      maxParticipants: 0,
-      judges: [{ firstName: "", lastName: "" }],
-      thumbnail: null,
+      title: savedData?.title || "",
+      organizer: savedData?.organizer || "",
+      description: savedData?.description || "",
+      skillLevel: savedData?.skillLevel || "",
+      disciplines: savedData?.disciplines || [],
+      themes: savedData?.themes || [],
+      startDate: savedData?.startDate || "",
+      startTime: savedData?.startTime || "",
+      endDate: savedData?.endDate || "",
+      endTime: savedData?.endTime || "",
+      timezone: savedData?.timezone || "",
+      meetingLink: savedData?.meetingLink || "",
+      minParticipants: savedData?.minParticipants || 0,
+      maxParticipants: savedData?.maxParticipants || 0,
+      judges: savedData?.judges || [{ firstName: "", lastName: "" }],
+      thumbnail: savedData?.thumbnail || null,
     },
   });
+  const [selectedThemes, setSelectedThemes] = useState([]);
+  const [selectedDisciplines, setSelectedDisciplines] = useState([]);
+
+  useEffect(() => {
+    if (savedData?.disciplines && savedData.disciplines.length > 0) {
+      if (JSON.stringify(savedData.disciplines) !== JSON.stringify(selectedDisciplines)) {
+        setSelectedDisciplines(savedData.disciplines);
+      }
+    }
+  
+    if (savedData?.themes && savedData.themes.length > 0) {
+      if (JSON.stringify(savedData.themes) !== JSON.stringify(selectedThemes)) {
+        setSelectedThemes(savedData.themes);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0 || errors.judges?.length > 0) {
+      validateField("disciplines", selectedDisciplines);
+      validateField("themes", selectedThemes);
+    }
+}, [errors]);
+
+  const watchedDisciplines = watch("disciplines");
+  const watchedThemes = watch("themes");
 
   const navigate = useNavigate();
-  const [selectedThemes, setSelectedThemes] = useState([]);
   const allThemes = ["AI & Machine Learning", "Sustainability & Climate", "Health & Wellness", "Fintech & Blockchain", "Education & Learning", "Gaming & VR"];
-
-  const [selectedDisciplines, setSelectedDisciplines] = useState([]);
   const allDisciplines = ["Design", "Data Science and Analytics", "Software Development", "Web Development"];
 
-  const onSubmit = (data: EventFormInputs) => {
-    saveFormData("eventFormData", data);
-    navigate("/ChallengeDetails");
+  const validateField = (field, arrayValue) => {
+    if (arrayValue.length === 0) {
+      setError(field, {
+        type: "manual",
+        message: "At least one must be selected.",
+      });
+    } else {
+      clearErrors(field);
+    }
+
+    return arrayValue.length !==0;
+  };
+
+  const handleSelectionChange = (e, selectedArray, setSelected, validateField, setValue, fieldName) => {
+    const value = e.target.value;
+    if (value && !selectedArray.includes(value)) {
+      const updatedSelection = [...selectedArray, value];
+      setSelected(updatedSelection);
+      validateField(fieldName, updatedSelection);
+      setValue(fieldName, updatedSelection);
+    }
   };
 
   const handleThemesChange = (e) => {
-    const value = e.target.value;
-    if (
-      value &&
-      !selectedThemes.includes(value)
-    ) {
-      const updatedThemes = [...selectedThemes, value];
-      setSelectedThemes(updatedThemes);
-      setValue("themes", updatedThemes);
-    };
+    handleSelectionChange(e, selectedThemes, setSelectedThemes, validateField, setValue, "themes");
+  };
+  
+  const handleDisciplineChange = (e) => {
+    handleSelectionChange(e, selectedDisciplines, setSelectedDisciplines, validateField, setValue, "disciplines");
   };
 
+  const removeItem = (item, selectedArray, setSelected, validateField, setValue, fieldName) => {
+    const updatedSelection = selectedArray.filter((i) => i !== item);
+    setSelected(updatedSelection);
+    validateField(fieldName, updatedSelection);
+    setValue(fieldName, updatedSelection);
+  };
 
   const removeTheme = (theme) => {
-    const updatedThemes = selectedThemes.filter((t) => t !== theme);
-    setSelectedThemes(updatedThemes);
-    setValue("themes", updatedThemes);
+    removeItem(theme, selectedThemes, setSelectedThemes, validateField, setValue, "themes");
   };
-
-  const handleDisciplineChange = (e) => {
-    const value = e.target.value;
-    if (
-      value &&
-      !selectedDisciplines.includes(value)
-    ) {
-      const updatedDisciplines = [...selectedDisciplines, value];
-      setSelectedDisciplines(updatedDisciplines);
-      setValue("disciplines", updatedDisciplines);
-    };
-  };
-
+  
   const removeDiscipline = (discipline) => {
-    const updatedDisciplines = selectedDisciplines.filter((d) => d !== discipline);
-    setSelectedDisciplines(updatedDisciplines);
-    setValue("disciplines", updatedDisciplines);
+    removeItem(discipline, selectedDisciplines, setSelectedDisciplines, validateField, setValue, "disciplines");
   };
 
   const handleCancelClick = () => {
+    clearFormData("eventFormData");
     navigate("/hackathons");
   };
 
@@ -132,6 +166,17 @@ const EventForm: React.FC = () => {
     fileInputRef.current.click();
   };
 
+  const onSubmit = (data: EventFormInputs) => {
+    const validTheme = validateField("themes", watchedThemes);
+    const validDiscipline = validateField("disciplines", watchedDisciplines);
+    if (!(validTheme || validDiscipline)) {
+      return;
+    }
+    
+    saveFormData("eventFormData", data);
+    navigate("/ChallengeDetails");
+  };
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "judges",
@@ -152,7 +197,7 @@ const EventForm: React.FC = () => {
           <input
             {...register("title", { required: "Event Title is required" })}
             placeholder="Enter Event Title" 
-            className={`form-control p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.title && "text-MVP-red" }`}
+            className={`form-control p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.title && "border-MVP-red" }`}
           />
           {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
         </div>
@@ -163,7 +208,7 @@ const EventForm: React.FC = () => {
               required: "Event description is required",
             })}
             placeholder="Enter any event descriptions"
-            className="p-[0.6rem] border-[0.2rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black"
+            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] resize-vertical flex py-[1.3rem] pl-[1.3rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.description && "border-MVP-red"}`}
           />
           {errors.description && (
             <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
@@ -224,7 +269,7 @@ const EventForm: React.FC = () => {
           <label htmlFor="discipline" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
             className={`border-2 rounded-lg p-2 gap-4 flex py-[1.3rem] px-[1rem] items-center self-stretch border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
-              errors.disciplines ? "border-red-500" : "border-black"
+              errors.disciplines && "border-MVP-red"
             }`}
           >
             {selectedDisciplines.map((discipline) => (
@@ -270,7 +315,7 @@ const EventForm: React.FC = () => {
           <label htmlFor="theme" className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Theme<span className="mb-2/3 text-[2rem]">*</span></label>
           <div
             className={`flex gap-4 py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
-              errors.disciplines ? "border-red-500" : "border-black"
+              errors.themes && "border-MVP-red"
             }`}
           >
             {selectedThemes.map((theme) => (
@@ -288,10 +333,10 @@ const EventForm: React.FC = () => {
               </div>
             ))}
              <select
-              onChange={handleThemesChange}
-              className={`focus:outline-none w-full text-[1.2rem] ${selectedThemes.length === 3 && 'appearance-none'}`}
-              disabled={selectedThemes.length === 3}
-            >
+                onChange={handleThemesChange}
+                className={`focus:outline-none w-full text-[1.2rem] ${selectedThemes.length === 3 && 'appearance-none'}`}
+                disabled={selectedThemes.length === 3}
+              >
               <option value={""}>{selectedThemes.length === 0 && 'Select up to 3 themes'}</option>
               {allThemes
                 .filter((theme) => !selectedThemes.includes(theme))
@@ -310,7 +355,9 @@ const EventForm: React.FC = () => {
 
           <div className="sub-section">
             <span className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Start<span className="mb-2/3 text-[2rem]">*</span></span>
-            <div className="w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue">
+            <div className={`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue ${
+                      (errors.startDate || errors.startTime) && "border-MVP-red"
+                    }`}>
               <Controller
                 name="startDate"
                 control={control}
@@ -319,9 +366,7 @@ const EventForm: React.FC = () => {
                   <input
                     type="date"
                     {...field}
-                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1 ${
-                      errors.startDate && "text-MVP-red"
-                    }`}
+                    className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1"
                   />
                 )}
               />
@@ -334,25 +379,22 @@ const EventForm: React.FC = () => {
                   <input
                     type="time"
                     {...field}
-                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${
-                      errors.startTime && "text-MVP-red"
-                    }`}
+                    className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
                   />
                 )}
               />
             </div>
-
-            {errors.startDate && (
-              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>
-            )}
-            {errors.startTime && (
-              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>
-            )}
+            <div className="flex">
+              {errors.startDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>}
+              {errors.startTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>}
+            </div>
           </div>
 
           <div>
             <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">End<span className="mb-2/3 text-[2rem]">*</span></label>
-            <div className="w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue">
+            <div className= {`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black hover:border-MVP-dark-blue ${
+                      (errors.endDate || errors.endTime) && "border-MVP-red"
+                    }`}>
               <Controller
                 name="endDate"
                 control={control}
@@ -361,9 +403,7 @@ const EventForm: React.FC = () => {
                   <input
                     type="date"
                     {...field}
-                    className={`form-control bg-transparent outline-none text-inherit cursor-pointer border-0 ${
-                      errors.startTime && "text-MVP-red"
-                    }`}
+                    className="form-control bg-transparent outline-none text-inherit cursor-pointer border-0"
                   />
                 )}
               />
@@ -376,7 +416,7 @@ const EventForm: React.FC = () => {
                   <input
                     type="time"
                     {...field}
-                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "text-MVP-red text-[0.8rem] mt-[0.3rem]"}`}
+                    className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "border-MVP-red"}`}
                   />
                 )}
               />
@@ -384,16 +424,18 @@ const EventForm: React.FC = () => {
           </div>
 
           {/* Error messages */}
-          {errors.endDate && <p className="text-MVP-red">{errors.endDate.message}</p>}
-          {errors.endTime && <p className="text-MVP-red">{errors.endTime.message}</p>}
+          <div className="flex">
+            {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endDate.message}</p>}
+            {errors.endTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endTime.message}</p>}
+          </div>
         </div>
 
         <div className="mb-[1rem] flex flex-col">
           <label className="flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold">Timezone<span className="mb-2/3 text-[2rem]">*</span></label>
-          <div className="rounded-[0.6rem] py-[1.3rem] px-[1rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black">
+          <div className={`rounded-[0.6rem] py-[1.3rem] px-[1rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.timezone && "border-MVP-red"}`}>
           <select
             {...register("timezone", { required: "Timezone is required" })}
-            className={`text-[1.2rem] focus:outline-none w-full ${errors.timezone && "text-MVP-red"}`}
+            className="text-[1.2rem] focus:outline-none w-full"
           >
             <option value="">Select a timezone</option>
             <option value="GMT-0700">PST (GMT-0700)</option>
@@ -401,10 +443,10 @@ const EventForm: React.FC = () => {
             <option value="GMT-0600">CST (GMT-0600)</option>
             <option value="GMT-0500">EST (GMT-0500)</option>
           </select>
-          {errors.timezone && (
+        </div>
+        {errors.timezone && (
             <p className="text-MVP-red">{errors.timezone.message}</p>
           )}
-        </div>
         </div>
 
         <div className="mb-[1rem] flex flex-col">
@@ -415,7 +457,7 @@ const EventForm: React.FC = () => {
               required: "Meeting Link is required",
             })}
             placeholder="Enter meeting link"
-            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.meetingLink && "text-MVP-red text-[0.8rem] mt-[0.3rem]"}`}
+            className={`p-[0.6rem] border-[0.2rem] text-[1.2rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${errors.meetingLink && "border-MVP-red"}`}
           />
           {errors.meetingLink && (
             <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
@@ -439,11 +481,11 @@ const EventForm: React.FC = () => {
                 })}
                 placeholder="4"
                 className={`w-fit rounded-[0.6rem] text-[0.9rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
-                  errors.minParticipants && "text-MVP-red"
+                  errors.minParticipants && "border-MVP-red"
                 }`}
               />
               {errors.minParticipants && (
-                <p className="text-MVP-red">{errors.minParticipants.message}</p>
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.minParticipants.message}</p>
               )}
             </div>
             <p className="flex items-center text-[1rem] text-MVP-black">-</p>
@@ -462,11 +504,11 @@ const EventForm: React.FC = () => {
                 })}
                 placeholder="100"
                 className={`text-base rounded-[0.6rem] text-[0.9rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
-                  errors.maxParticipants && "text-MVP-red"
+                  errors.maxParticipants && "border-MVP-red"
                 }`}
               />
               {errors.maxParticipants && (
-                <p className="text-MVP-red">{errors.maxParticipants.message}</p>
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.maxParticipants.message}</p>
               )}
             </div>
           </div>
@@ -488,7 +530,7 @@ const EventForm: React.FC = () => {
                   })}
                   placeholder="Enter first name"
                   className={`w-3/6 mt-2 mb-1 p-2 border-[0.2rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
-                    errors.judges?.[index]?.firstName && "text-MVP-red text-[0.8rem] mt-[0.3rem]"
+                    errors.judges?.[index]?.firstName && "border-MVP-red"
                   }`}
                 />
 
@@ -499,7 +541,7 @@ const EventForm: React.FC = () => {
                   })}
                   placeholder="Enter last name"
                   className={`w-3/6 mt-2 mb-1 p-2 border-[0.2rem] text-[0.9rem] flex py-[1.3rem] px-[1rem] items-center self-stretch rounded-[0.6rem] border-t-[0.2rem] border-l-[0.2rem] border-b-[0.3rem] border-r-[0.3rem] border-MVP-black ${
-                    errors.judges?.[index]?.lastName && "text-MVP-red text-[0.8rem] mt-[0.3rem]"
+                    errors.judges?.[index]?.lastName && "border-MVP-red"
                   }`}
                 />
                 {fields.length > 1 && (

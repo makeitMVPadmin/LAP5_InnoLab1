@@ -3,7 +3,7 @@ import "./ChallengeDetails.scss";
 import { useNavigate } from "react-router-dom";
 // import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
-import { saveFormData, getFormData } from "./StorageUtils";
+import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
@@ -16,6 +16,8 @@ interface ChallengeDetailsFormInputs {
 }
 
 const ChallengeDetailsForm: React.FC = () => {
+  const savedData = getFormData("challengeDetailsData");
+
   const {
     register,
     handleSubmit,
@@ -24,28 +26,40 @@ const ChallengeDetailsForm: React.FC = () => {
     watch,
   } = useForm<ChallengeDetailsFormInputs>({
     defaultValues: {
-      challengeReleaseDate: "",
-      problemStatement: "",
-      objectivesGoals: "",
-      constraints: "",
-      evaluationCriteria: "",
-      additionalInformation: "",
+      challengeReleaseDate: savedData?.challengeReleaseDate || "",
+      challengeReleaseTime: savedData?.challengeReleaseTime || "",
+      problemStatement: savedData?.problemStatement || "",
+      objectivesGoals: savedData?.objectivesGoals || "",
+      constraints: savedData?.constraints || "",
+      evaluationCriteria: savedData?.evaluationCriteria || "",
+      additionalInformation: savedData?.additionalInformation || "",
     },
   });
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data: ChallengeDetailsFormInputs) => {
-    saveFormData("challengeDetailsData", data);
+    // saveFormData("challengeDetailsData", data);
     const eventData = getFormData("eventFormData");
     const combinedData = {
       ...eventData,
       ...data,
     };
-    await saveEventToFirestore(combinedData);
+
+    try {
+      await saveEventToFirestore(combinedData);
+      clearFormData("eventFormData");
+      clearFormData("challengeDetailsData")
+  } catch (error) {
+      console.error("Error saving event data:", error);
+  } finally {
+      navigate("/hackathons");
+  }
   };
 
-  const navigate = useNavigate();
-
   const handlePreviousClick = () => {
+    const data = watch();
+    saveFormData("challengeDetailsData", data);
     navigate("/EventForm");
   };
 
