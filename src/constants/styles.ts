@@ -13,5 +13,5 @@ export const STYLES = {
   styledBorder:
   "focus:outline-none focus:border-MVP-dark-blue focus:shadow-md focus:shadow-MVP-dark-blue/25 py-[1.3rem] px-[1rem] rounded-[0.6rem] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-MVP-black",
   sectionHeader:
-  "flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.6rem] font-extrabold"
+  "flex items-center gap-[0.2rem] mb-[0.3rem] text-MVP-black text-[1.5rem] font-extrabold"
 } as const;

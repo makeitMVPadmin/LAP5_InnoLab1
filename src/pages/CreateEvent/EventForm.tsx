@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-// import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
 import { STYLES } from "../../constants/styles";
 import { ReactComponent as CloseIcon } from "../../assets/images/closeIcon.svg";
@@ -199,24 +198,39 @@ const EventForm: React.FC = () => {
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="event title" className={`${sectionHeader}`}>Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
             <input
-              {...register("title", { required: "Event Title is required" })}
+              {...register("title", { required: "Event Title is required", maxLength: 80 })}
               placeholder="Enter Event Title"
-              className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.title && "border-MVP-red"}`}
+              maxLength={80}
+              className={`${styledBorder} text-[1.2rem] flex items-center ${errors.title && "border-MVP-red"}`}
             />
-            {errors.title && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>}
+            <div className="flex">
+              {errors.title && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.title.message}</p>
+              )}
+              <p className="ml-auto font-bold">
+                {watch("title")?.length || 0}/80 characters
+              </p>
+            </div>
           </div>
           <div className="mb-[1rem] flex flex-col">
             <label className={`${sectionHeader}`}>Event Description<span className="mb-2/3 text-[2rem]">*</span></label>
             <textarea
               {...register("description", {
                 required: "Event description is required",
+                maxLength: 500
               })}
               placeholder="Enter any event descriptions"
-              className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.description && "border-MVP-red"}`}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.description && "border-MVP-red"}`}
+              maxLength={500}
             />
-            {errors.description && (
-              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
-            )}
+            <div className="flex">
+              {errors.description && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.description.message}</p>
+              )}
+              <p className="ml-auto font-bold">
+                {watch("description")?.length || 0}/500 characters
+              </p>
+            </div>
           </div>
 
           <div className="mb-[1rem] flex flex-col">
@@ -269,16 +283,17 @@ const EventForm: React.FC = () => {
             )}
           </div>
 
-          <div className="mb-[1rem] flex flex-col">
+          <div className="mb-[1rem] flex flex-col w-full">
             <label htmlFor="discipline" className={`${sectionHeader}`}>Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
             <div
               className={`${styledBorder} gap-4 flex w-full items-center ${errors.disciplines && "border-MVP-red"
                 }`}
             >
               {selectedDisciplines.map((discipline) => (
+                
                 <div
                   key={discipline}
-                  className="rounded-[40px] bg-MVP-yellow flex items-center justify-between w-full h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]"
+                  className={`rounded-[40px] bg-MVP-yellow flex items-center justify-between gap-[1rem] h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]`}
                 >
                   <p>{discipline}</p>
                   <button
@@ -322,7 +337,7 @@ const EventForm: React.FC = () => {
               {selectedThemes.map((theme) => (
                 <div
                   key={theme}
-                  className="rounded-[40px] bg-MVP-yellow flex items-center justify-between w-full h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]"
+                  className={`rounded-[40px] bg-MVP-yellow flex items-center justify-between gap-[1rem] h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]`}
                 >
                   <p>{theme}</p>
                   <button
@@ -354,9 +369,9 @@ const EventForm: React.FC = () => {
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="eventDuration" className={`${sectionHeader}`}>Event Duration<span className="mb-2/3 text-[2rem]">*</span></label>
 
-            <div className="sub-section">
-              <span className={`${sectionHeader}`}>Start<span className="mb-2/3 text-[2rem]">*</span></span>
-              <div className={`w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${(errors.startDate || errors.startTime) && "border-MVP-red"
+            <div>
+              <span className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>Start<span className="mb-2/3 text-[2rem]">*</span></span>
+              <div className={`w-fit h-[3rem] !px-[1rem] !py-0 flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${(errors.startDate || errors.startTime) && "border-MVP-red"
                 }`}>
                 <Controller
                   name="startDate"
@@ -366,7 +381,7 @@ const EventForm: React.FC = () => {
                     <input
                       type="date"
                       {...field}
-                      className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1"
+                      className="bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 flex-1"
                     />
                   )}
                 />
@@ -379,7 +394,7 @@ const EventForm: React.FC = () => {
                     <input
                       type="time"
                       {...field}
-                      className="form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
+                      className="bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
                     />
                   )}
                 />
@@ -391,8 +406,8 @@ const EventForm: React.FC = () => {
             </div>
 
             <div>
-              <label className={`${sectionHeader}`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
-              <div className={`${styledBorder} w-fit h-[3rem] px-[1rem] flex items-center justify-center gap-[1rem] hover:border-MVP-dark-blue ${(errors.endDate || errors.endTime) && "border-MVP-red"
+              <label className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
+              <div className={`${styledBorder} w-fit h-[3rem] !px-[1rem] !py-0 flex items-center justify-center gap-[1rem] ${(errors.endDate || errors.endTime) && "border-MVP-red"
                 }`}>
                 <Controller
                   name="endDate"
@@ -402,7 +417,7 @@ const EventForm: React.FC = () => {
                     <input
                       type="date"
                       {...field}
-                      className="form-control bg-transparent outline-none text-inherit cursor-pointer border-0"
+                      className="bg-transparent outline-none text-inherit cursor-pointer border-0"
                     />
                   )}
                 />
@@ -415,14 +430,12 @@ const EventForm: React.FC = () => {
                     <input
                       type="time"
                       {...field}
-                      className={`form-control bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "border-MVP-red"}`}
+                      className={`bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "border-MVP-red"}`}
                     />
                   )}
                 />
               </div>
             </div>
-
-            {/* Error messages */}
             <div className="flex gap-[3.5rem]">
               {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endDate.message}</p>}
               {errors.endTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endTime.message}</p>}
@@ -454,20 +467,27 @@ const EventForm: React.FC = () => {
               type="url"
               {...register("meetingLink", {
                 required: "Meeting Link is required",
+                maxLength: 80
               })}
               placeholder="Enter meeting link"
-              className={`${styledBorder} form-control text-[1.2rem] flex items-center ${errors.meetingLink && "border-MVP-red"}`}
+              className={`${styledBorder} text-[1.2rem] flex items-center ${errors.meetingLink && "border-MVP-red"}`}
+              maxLength={80}
             />
-            {errors.meetingLink && (
-              <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
-            )}
+              <div className="flex">
+              {errors.meetingLink && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
+              )}
+              <p className="ml-auto font-bold">
+                {watch("description")?.length || 0}/80 characters
+              </p>
+            </div>
           </div>
 
           <div className="mb-[1rem]">
             <label className={`${sectionHeader}`}>Participant Count<span className="mb-2/3 text-[2rem]">*</span></label>
             <div className="flex items-center gap-4">
               <div className="flex-col">
-                <label className={`${sectionHeader}`}>Min</label>
+                <label className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>Min</label>
                 <input
                   type="number"
                   {...register("minParticipants", {
@@ -479,7 +499,7 @@ const EventForm: React.FC = () => {
                     },
                   })}
                   placeholder="4"
-                  className={`${styledBorder} w-[90px] h-[64px] form-control text-[1.2rem] ${errors.minParticipants && "border-MVP-red"
+                  className={`${styledBorder} w-[90px] h-[64px] text-[1.2rem] text-center ${errors.minParticipants && "border-MVP-red"
                     }`}
                 />
                 {errors.minParticipants && (
@@ -488,7 +508,7 @@ const EventForm: React.FC = () => {
               </div>
               <hr className="border-t-4 border-MVP-black w-4 mt-8" />
               <div className="flex-col">
-                <label className={`${sectionHeader}`}>Max</label>
+                <label className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>Max</label>
                 <input
                   type="number"
                   {...register("maxParticipants", {
@@ -501,7 +521,7 @@ const EventForm: React.FC = () => {
                     },
                   })}
                   placeholder="100"
-                  className={`${styledBorder} w-[90px] h-[64px] form-control text-[1.2rem] text-center ${errors.maxParticipants && "border-MVP-red"
+                  className={`${styledBorder} w-[90px] h-[64px] text-[1.2rem] text-center ${errors.maxParticipants && "border-MVP-red"
                     }`}
                 />
                 {errors.maxParticipants && (
@@ -511,46 +531,48 @@ const EventForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="mb-[1rem] flex-col">
+          <div className="mb-[3rem] flex-col">
             <label htmlFor="judges" className={`${sectionHeader}`}>Judges<span className="mb-2/3 text-[2rem]">*</span></label>
             {fields.map((field, index) => (
               <div
                 key={field.id}
                 className="flex-col flex whitespace-nowrap my-5"
               >
-                <div className={`flex gap-[2rem] items-center`}>
-                  <label className="flex items-center font-extrabold text-2xl mr-[3rem]">Judge #{index + 1}</label>
-                  <div>
-                    <input
-                      type="text"
-                      {...register(`judges.${index}.firstName`, {
-                        required: "First name is required",
-                      })}
-                      placeholder="Enter first name"
-                      className={`${styledBorder} flex-1 text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${errors.judges?.[index]?.firstName && "border-MVP-red"
-                        }`}
-                    />
-                    {errors.judges?.[index]?.firstName && (
-                      <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
-                        {errors.judges[index].firstName.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      {...register(`judges.${index}.lastName`, {
-                        required: "Last name is required",
-                      })}
-                      placeholder="Enter last name"
-                      className={`${styledBorder} flex-1 text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${errors.judges?.[index]?.lastName && "border-MVP-red"
-                        }`}
-                    />
-                    {errors.judges?.[index]?.lastName && (
-                      <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
-                        {errors.judges[index].lastName.message}
-                      </p>
-                    )}
+                <div className={`w-full flex gap-[2rem] items-center justify-between`}>
+                  <label className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>Judge #{index + 1}</label>
+                  <div className="flex gap-[3rem] w-full">
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        {...register(`judges.${index}.firstName`, {
+                          required: "First name is required",
+                        })}
+                        placeholder="Enter first name"
+                        className={`${styledBorder} w-full text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${errors.judges?.[index]?.firstName && "border-MVP-red"
+                          }`}
+                      />
+                      {errors.judges?.[index]?.firstName && (
+                        <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
+                          {errors.judges[index].firstName.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        {...register(`judges.${index}.lastName`, {
+                          required: "Last name is required",
+                        })}
+                        placeholder="Enter last name"
+                        className={`${styledBorder} w-full text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${errors.judges?.[index]?.lastName && "border-MVP-red"
+                          }`}
+                      />
+                      {errors.judges?.[index]?.lastName && (
+                        <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
+                          {errors.judges[index].lastName.message}
+                        </p>
+                      )}
+                    </div>  
                   </div>
                   {fields.length > 1 && (
                     <button
