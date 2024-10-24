@@ -232,14 +232,15 @@ const EventPage = () => {
               <div className="py-4">
                 <h3 className="text-xl font-semibold">Problem Statement</h3>
                 <p className="mt-2">
-                  The healthcare industry faces challenges in delivering
+                  {/* {event.problemStatement} */}
+                  {/* The healthcare industry faces challenges in delivering
                   efficient, accurate, and scalable patient care. Current
                   diagnostic tools, care systems, and health data management
                   struggle with limitations in accessibility, accuracy, and
                   timely response. AI-powered technologies have the potential to
                   revolutionize these areas, but innovative solutions are needed
                   to address specific gaps in diagnostics, patient care, and
-                  health data usage to improve outcomes.
+                  health data usage to improve outcomes. */}
                 </p>
               </div>
 
