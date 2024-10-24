@@ -159,16 +159,13 @@ const EventPage = () => {
                   <p className="pl-2">On-going</p>
                 </article>
                 <p className="pt-4">Organized by</p>
-                <div className="flex gap-3 flex-wrap">
-                  {event.judges.map((judge, index) => (
-                    <ParticipantInfoChip
-                      key={index}
-                      integer={index}
-                      fullName={judge}
-                      role="Software Developer"
-                    />
-                  ))}
+                <div className="flex items-center gap-[0.5rem] py-[0.4rem] pl-[0.6rem] pr-[1rem] font-gilroy rounded-[2rem] border border-black bg-MVP-white">
+                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center border border-gray-400"></div>
+                  <p className="text-MVP-black text-[1.3rem] font-extrabold leading-[115.645%] font-poppins">
+                    {event.organizer}
+                  </p>
                 </div>
+
                 <p className="pt-4">Starts:</p>
                 <div className="flex items-center">
                   <img src={calender} className="w-5 h-5" alt="Calendar" />
@@ -232,7 +229,7 @@ const EventPage = () => {
               <div className="py-4">
                 <h3 className="text-xl font-semibold">Problem Statement</h3>
                 <p className="mt-2">
-                  {/* {event.problemStatement} */}
+                  {event.problemStatement}
                   {/* The healthcare industry faces challenges in delivering
                   efficient, accurate, and scalable patient care. Current
                   diagnostic tools, care systems, and health data management
