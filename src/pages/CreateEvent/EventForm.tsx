@@ -285,41 +285,56 @@ const EventForm: React.FC = () => {
 
           <div className="mb-[1rem] flex flex-col w-full">
             <label htmlFor="discipline" className={`${sectionHeader}`}>Discipline<span className="mb-2/3 text-[2rem]">*</span></label>
-            <div
-              className={`${styledBorder} gap-4 flex w-full items-center ${errors.disciplines && "border-MVP-red"
-                }`}
-            >
+            <div className={`${styledBorder} gap-4 flex flex-wrap min-h-[50px] w-full items-center relative ${errors?.disciplines ? "border-red-500" : ""
+              }`}>
               {selectedDisciplines.map((discipline) => (
-                
                 <div
                   key={discipline}
-                  className={`rounded-[40px] bg-MVP-yellow flex items-center justify-between gap-[1rem] h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]`}
+                  className="rounded-full bg-yellow-400 inline-flex items-center justify-between gap-4 h-10 px-8 py-3 font-bold text-lg"
                 >
-                  <p>{discipline}</p>
+                  <p className="whitespace-nowrap">{discipline}</p>
                   <button
                     type="button"
                     onClick={() => removeDiscipline(discipline)}
+                    className="hover:text-gray-700 transition-colors"
                   >
                     ✕
                   </button>
                 </div>
               ))}
-              <select
-                onChange={handleDisciplineChange}
-                className={`focus:outline-none w-full text-[1.2rem] ${selectedDisciplines.length === 3 && 'appearance-none'}`}
-                disabled={selectedDisciplines.length === 3}
-              >
-                <option value={""}>{selectedDisciplines.length === 0 && 'Select up to 3 disciplines'}</option>
-                {allDisciplines
-                  .filter(
-                    (discipline) => !selectedDisciplines.includes(discipline)
-                  )
-                  .map((discipline) => (
-                    <option key={discipline} value={discipline}>
-                      {discipline}
-                    </option>
-                  ))}
-              </select>
+
+              <div className="relative flex-1 min-w-[200px]">
+                <select
+                  onChange={handleDisciplineChange}
+                  className={`
+            w-full 
+            text-lg 
+            py-2 
+            px-4
+            bg-transparent
+            focus:outline-none
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+            ${selectedDisciplines.length === 3 ? 'appearance-none' : 'cursor-pointer'}
+          `}
+                  disabled={selectedDisciplines.length === 3}
+                >
+                  <option value="" className="py-2">
+                    {selectedDisciplines.length === 0 ? 'Select up to 3 disciplines' : ''}
+                  </option>
+                  {allDisciplines
+                    .filter((discipline) => !selectedDisciplines.includes(discipline))
+                    .map((discipline) => (
+                      <option
+                        key={discipline}
+                        value={discipline}
+                        className="py-2"
+                      >
+                        {discipline}
+                      </option>
+                    ))}
+                </select>
+              </div>
             </div>
             {errors.disciplines && (
               <p className="text-red-500 mt-1 text-sm">
@@ -331,13 +346,13 @@ const EventForm: React.FC = () => {
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="theme" className={`${sectionHeader}`}>Theme<span className="mb-2/3 text-[2rem]">*</span></label>
             <div
-              className={`${styledBorder} gap-4 flex w-full items-center ${errors.themes && "border-MVP-red"
+              className={`${styledBorder} gap-4 flex flex-wrap min-h-[50px] w-full items-center ${errors.themes && "border-MVP-red"
                 }`}
             >
               {selectedThemes.map((theme) => (
                 <div
                   key={theme}
-                  className={`rounded-[40px] bg-MVP-yellow flex items-center justify-between gap-[1rem] h-full px-8 py-3 font-gilroy font-extrabold text-[1.2rem]`}
+                  className={`rounded-full bg-yellow-400 inline-flex items-center justify-between gap-4 h-10 px-8 py-3 font-bold text-lg`}
                 >
                   <p>{theme}</p>
                   <button
@@ -473,7 +488,7 @@ const EventForm: React.FC = () => {
               className={`${styledBorder} text-[1.2rem] flex items-center ${errors.meetingLink && "border-MVP-red"}`}
               maxLength={80}
             />
-              <div className="flex">
+            <div className="flex">
               {errors.meetingLink && (
                 <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.meetingLink.message}</p>
               )}
@@ -572,7 +587,7 @@ const EventForm: React.FC = () => {
                           {errors.judges[index].lastName.message}
                         </p>
                       )}
-                    </div>  
+                    </div>
                   </div>
                   {fields.length > 1 && (
                     <button
