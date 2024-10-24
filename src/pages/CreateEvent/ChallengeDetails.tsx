@@ -228,7 +228,6 @@ const ChallengeDetailsForm: React.FC = () => {
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="constraints" className={`${sectionHeader}`}>
               Constraints/Limitations
-              <span className="mb-2/3 text-[2rem]">*</span>
             </label>
             <textarea
               {...register("constraints", { maxLength: 500 })}
@@ -245,7 +244,7 @@ const ChallengeDetailsForm: React.FC = () => {
 
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="evaluationCriteria" className={`${sectionHeader}`}>
-              Evaluation Criteria<span className="mb-2/3 text-[2rem]">*</span>
+              Evaluation Criteria
             </label>
             <textarea
               {...register("evaluationCriteria", { maxLength: 500 })}
@@ -266,7 +265,6 @@ const ChallengeDetailsForm: React.FC = () => {
               className={`${sectionHeader}`}
             >
               Additional Information
-              <span className="mb-2/3 text-[2rem]">*</span>
             </label>
             <textarea
               {...register("additionalInformation", { maxLength: 500 })}
