@@ -41,7 +41,7 @@ const EventForm: React.FC = () => {
     clearErrors,
     control,
     formState: { errors },
-    getValues
+    getValues,
   } = useForm<EventFormInputs>({
     defaultValues: {
       title: savedData?.title || "",
@@ -661,66 +661,66 @@ const EventForm: React.FC = () => {
             </div>
 
             <div className="mb-[1rem]">
-  <label className={`${sectionHeader}`}>
-    Participant Count<span className="mb-2/3 text-[2rem]">*</span>
-  </label>
-  <div className="flex items-center gap-4">
-    <div className="flex-col">
-      <label
-        className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}
-      >
-        Min
-      </label>
-      <input
-        type="number"
-        {...register("minParticipants", {
-          valueAsNumber: true,
-          required: "Minimum participant count is required",
-          min: {
-            value: 1,
-            message: "Minimum participants must be at least 1",
-          },
-        })}
-        placeholder="4"
-        className={`${styledBorder} w-[90px] h-[64px] text-[1.2rem] text-center ${
-          errors.minParticipants && "border-MVP-red"
-        }`}
-      />
-      {errors.minParticipants && (
-        <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
-          {errors.minParticipants.message}
-        </p>
-      )}
-    </div>
-    <hr className="border-t-4 border-MVP-black w-4 mt-8" />
-    <div className="flex-col">
-      <label
-        className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}
-      >
-        Max
-      </label>
-      <input
-        type="number"
-        {...register("maxParticipants", {
-          valueAsNumber: true,
-          required: "Maximum participant count is required",
-          validate: (value) =>
-            value > getValues("minParticipants") + 1 ||
-            "Max participants must be at least 1 more than min participants",
-        })}
-        placeholder="100"
-        className={`${styledBorder} w-[90px] h-[64px] text-[1.2rem] text-center ${
-          errors.maxParticipants && "border-MVP-red"
-        }`}
-      />
-      {errors.maxParticipants && (
-        <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
-          {errors.maxParticipants.message}
-        </p>
-      )}
-    </div>
-  </div>
-</div>
+              <label className={`${sectionHeader}`}>
+                Participant Count<span className="mb-2/3 text-[2rem]">*</span>
+              </label>
+              <div className="flex items-center gap-4">
+                <div className="flex-col">
+                  <label
+                    className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}
+                  >
+                    Min
+                  </label>
+                  <input
+                    type="number"
+                    {...register("minParticipants", {
+                      valueAsNumber: true,
+                      required: "Minimum participant count is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum participants must be at least 1",
+                      },
+                    })}
+                    placeholder="4"
+                    className={`${styledBorder} w-[90px] h-[64px] text-[1.2rem] text-center ${
+                      errors.minParticipants && "border-MVP-red"
+                    }`}
+                  />
+                  {errors.minParticipants && (
+                    <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
+                      {errors.minParticipants.message}
+                    </p>
+                  )}
+                </div>
+                <hr className="border-t-4 border-MVP-black w-4 mt-8" />
+                <div className="flex-col">
+                  <label
+                    className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}
+                  >
+                    Max
+                  </label>
+                  <input
+                    type="number"
+                    {...register("maxParticipants", {
+                      valueAsNumber: true,
+                      required: "Maximum participant count is required",
+                      validate: (value) =>
+                        value > getValues("minParticipants") + 1 ||
+                        "Max participants must be at least 1 more than min participants",
+                    })}
+                    placeholder="100"
+                    className={`${styledBorder} w-[90px] h-[64px] text-[1.2rem] text-center ${
+                      errors.maxParticipants && "border-MVP-red"
+                    }`}
+                  />
+                  {errors.maxParticipants && (
+                    <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
+                      {errors.maxParticipants.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
 
             <div className="mb-[3rem] flex-col">
               <label htmlFor="judges" className={`${sectionHeader}`}>
@@ -785,12 +785,17 @@ const EventForm: React.FC = () => {
                 </div>
               ))}
 
-              {fields.length < 3 && (
+              {fields.length < 4 && (
                 <div className="flex justify-end mt-2">
                   <button
                     type="button"
                     className={`${styledBorder} !py-[0.6rem] bg-MVP-light-blue font-extrabold text-xl`}
                     onClick={() => append({ firstName: "", lastName: "" })}
+                    disabled={
+                      fields.length > 0 &&
+                      (!getValues(`judges.${fields.length - 1}.firstName`) ||
+                        !getValues(`judges.${fields.length - 1}.lastName`))
+                    }
                   >
                     Add Judge
                   </button>
