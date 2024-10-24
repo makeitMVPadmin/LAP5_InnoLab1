@@ -239,11 +239,12 @@ const EventForm: React.FC = () => {
   const onSubmit = (data: EventFormInputs) => {
     const validTheme = validateField("themes", watchedThemes);
     const validDiscipline = validateField("disciplines", watchedDisciplines);
+    const startDate = getValues("startDate");
     if (!(validTheme || validDiscipline)) {
       return;
     }
     saveFormData("eventFormData", data);
-    navigate("/ChallengeDetails");
+    navigate("/ChallengeDetails", { state: { startDate } });
   };
 
   const { fields, append, remove } = useFieldArray({
