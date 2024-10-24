@@ -14,7 +14,7 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  imageUrl: FileList | null;
+  imageUrl: string[] | null;
 }
 
 interface ChallengeDetailsInputs {
