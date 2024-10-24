@@ -194,7 +194,7 @@ const EventForm: React.FC = () => {
           <div className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center`}><div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">2</div> Challenge Details</div>
           <div className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center`}><div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">3</div> Review</div>
         </div>
-        <div className="py-[0.5rem] px-[2rem]">
+        <div className="py-[0.5rem] px-[1.6rem]">
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="event title" className={`${sectionHeader}`}>Event Title<span className="mb-2/3 text-[2rem]">*</span></label>
             <input
@@ -290,7 +290,7 @@ const EventForm: React.FC = () => {
               {selectedDisciplines.map((discipline) => (
                 <div
                   key={discipline}
-                  className="rounded-full bg-yellow-400 inline-flex items-center justify-between gap-4 h-10 px-8 py-3 font-bold text-lg"
+                  className={`rounded-full bg-MVP-yellow inline-flex items-center justify-between gap-4 h-10 px-6 py-3 font-semibold text-lg`}
                 >
                   <p className="whitespace-nowrap">{discipline}</p>
                   <button
@@ -303,20 +303,21 @@ const EventForm: React.FC = () => {
                 </div>
               ))}
 
-              <div className="relative flex-1 min-w-[200px]">
+              <div className="relative flex-1">
                 <select
                   onChange={handleDisciplineChange}
                   className={`
-            w-full 
-            text-lg 
-            py-2 
-            px-4
-            bg-transparent
-            focus:outline-none
-            disabled:cursor-not-allowed
-            disabled:opacity-50
-            ${selectedDisciplines.length === 3 ? 'appearance-none' : 'cursor-pointer'}
-          `}
+                    w-full 
+                    h-full
+                    text-lg 
+                    py-2 
+                    px-4
+                    bg-transparent
+                    focus:outline-none
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                    ${selectedDisciplines.length === 3 ? 'hidden' : 'cursor-pointer'}
+                  `}
                   disabled={selectedDisciplines.length === 3}
                 >
                   <option value="" className="py-2">
@@ -345,14 +346,12 @@ const EventForm: React.FC = () => {
 
           <div className="mb-[1rem] flex flex-col">
             <label htmlFor="theme" className={`${sectionHeader}`}>Theme<span className="mb-2/3 text-[2rem]">*</span></label>
-            <div
-              className={`${styledBorder} gap-4 flex flex-wrap min-h-[50px] w-full items-center ${errors.themes && "border-MVP-red"
-                }`}
-            >
+            <div className={`${styledBorder} gap-4 flex flex-wrap min-h-[50px] w-full items-center relative ${errors?.themes ? "border-red-500" : ""
+              }`}>
               {selectedThemes.map((theme) => (
                 <div
                   key={theme}
-                  className={`rounded-full bg-yellow-400 inline-flex items-center justify-between gap-4 h-10 px-8 py-3 font-bold text-lg`}
+                  className={`rounded-full bg-MVP-yellow inline-flex items-center justify-between gap-4 h-10 px-6 py-3 font-semibold text-lg`}
                 >
                   <p>{theme}</p>
                   <button
@@ -363,20 +362,33 @@ const EventForm: React.FC = () => {
                   </button>
                 </div>
               ))}
-              <select
-                onChange={handleThemesChange}
-                className={`focus:outline-none w-full text-[1.2rem] ${selectedThemes.length === 3 && 'appearance-none'}`}
-                disabled={selectedThemes.length === 3}
-              >
-                <option value={""}>{selectedThemes.length === 0 && 'Select up to 3 themes'}</option>
-                {allThemes
-                  .filter((theme) => !selectedThemes.includes(theme))
-                  .map((theme) => (
-                    <option key={theme} value={theme}>
-                      {theme}
-                    </option>
-                  ))}
-              </select>
+              <div className="relative flex-1">
+                <select
+                  onChange={handleThemesChange}
+                  className={`
+                    w-full
+                    h-full
+                    text-lg 
+                    py-2 
+                    px-4
+                    bg-transparent
+                    focus:outline-none
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                    ${selectedThemes.length === 3 ? 'hidden' : 'cursor-pointer'}
+                  `}
+                  disabled={selectedThemes.length === 3}
+                >
+                  <option value={""}>{selectedThemes.length === 0 && 'Select up to 3 themes'}</option>
+                  {allThemes
+                    .filter((theme) => !selectedThemes.includes(theme))
+                    .map((theme) => (
+                      <option key={theme} value={theme}>
+                        {theme}
+                      </option>
+                    ))}
+                </select> 
+              </div>
             </div>
             {errors.themes && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.themes.message}</p>}
           </div>
