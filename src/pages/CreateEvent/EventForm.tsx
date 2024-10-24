@@ -706,7 +706,7 @@ const EventForm: React.FC = () => {
                       valueAsNumber: true,
                       required: "Maximum participant count is required",
                       validate: (value) =>
-                        value > getValues("minParticipants") + 1 ||
+                        value >= getValues("minParticipants") + 1 ||
                         "Max participants must be at least 1 more than min participants",
                     })}
                     placeholder="100"
