@@ -1,72 +1,77 @@
-interface EventDetails {
-  title: string;
-  organizer: string;
-  description: string;
-  skillLevel: string;
-  themes: string[];
-  duration: string;
-  meetingLink: string;
-  participantCount: string;
-  judges: string[];
-  challengeDetails: {
-    releaseDate: string;
-    problemStatement: string;
-    objectives: string[];
-    constraints: string[];
-    evaluationCriteria: string[];
+import { useNavigate, useLocation } from "react-router-dom";
+import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
+import { clearFormData } from "./StorageUtils";
+import { STYLES } from "../../constants/styles";
+
+const { styledBorder, sectionHeader } = STYLES;
+
+const PreviewEvent = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const eventData = location.state?.eventData;
+
+  const handlePublish = async () => {
+    try {
+      await saveEventToFirestore(eventData);
+      clearFormData("eventFormData");
+      clearFormData("challengeDetailsData");
+      navigate("/hackathons");
+    } catch (error) {
+      console.error("Error saving event data:", error);
+    }
   };
-}
 
-const PreviewEvent: React.FC<{ event: EventDetails }> = ({ event }) => {
   return (
-    <div className="bg-white p-6 rounded-md shadow-md max-w-4xl mx-auto mt-8">
-      <h2 className="text-2xl font-semibold mb-4">Create an Event</h2>
-      <div className="flex justify-between mb-4">
-        <button className="btn">Event Details</button>
-        <button className="btn">Challenge Details</button>
-        <button className="btn active">Review</button>
+    <div>
+              <div className="flex gap-[2rem] my-[3.5rem] font-extrabold text-[1.2rem]">
+          <div
+            className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center bg-MVP-yellow`}
+          >
+            <div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">
+              1
+            </div>{" "}
+            Event Details
+          </div>
+          <div
+            className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center bg-MVP-yellow`}
+          >
+            <div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">
+              2
+            </div>{" "}
+            Challenge Details
+          </div>
+          <div
+            className={`${styledBorder} rounded-none bg-MVP-yellow flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center`}
+          >
+            <div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">
+              3
+            </div>{" "}
+            Review
+          </div>
+        </div>
+      <h1 className={`${sectionHeader}`}>Event Details</h1>
+      <div>
+        <h2>Event Title: {eventData.title}</h2>
+        <p>Organizer: {eventData.organizer}</p>
+        <p>Event Description: {eventData.basicProjectSummary}</p>
+        <p>Skill Level: {eventData.skillLevel}</p>
+        <p>Theme(s): {eventData.themes}</p>
+        <p>Event Duration: {eventData.eventStartDate} - {eventData.eventEndDate}</p>
+        <p>Meeting Link: {eventData.meetingLink}</p>
+        <p>Participant Count: {eventData.minParticipants} - {eventData.maxParticipants}</p>
+        <h1 className={`${sectionHeader}`}>Challenge Details</h1>
+
+        <p>Challenge Release Date: {eventData.challengeReleaseDate} ({eventData.challengeReleaseTime})</p>
+        <p>Problem Statement: {eventData.problemStatement}</p>
+        <p>Objective/Goals: {eventData.objectivesGoals}</p>
+        <p>Constraints/Limitations: {eventData.constraints}</p>
+        <p>Evaluation Criteria: {eventData.evaluationCriteria}</p>
+        <p>Additional Information: {eventData.additionalInformation}</p>
       </div>
 
-      <h3 className="text-xl font-bold mt-6">Event Details</h3>
-      <div className="space-y-4 mt-2">
-        <p><strong>Event Title:</strong> {event.title}</p>
-        <p><strong>Organized by:</strong> {event.organizer}</p>
-        <p><strong>Event Description:</strong> {event.description}</p>
-        <p><strong>Skill Level:</strong> {event.skillLevel}</p>
-        <p><strong>Themes:</strong> {event.themes.join(', ')}</p>
-        <p><strong>Event Duration:</strong> {event.duration}</p>
-        <p><strong>Meeting Link:</strong> <a href={event.meetingLink} className="text-blue-500">{event.meetingLink}</a></p>
-        <p><strong>Participant Count:</strong> {event.participantCount}</p>
-        <p><strong>Judges:</strong> {event.judges.join(', ')}</p>
-      </div>
-
-      <h3 className="text-xl font-bold mt-8">Challenge Details</h3>
-      <div className="space-y-4 mt-2">
-        <p><strong>Challenge Details Release Date:</strong> {event.challengeDetails.releaseDate}</p>
-        <p><strong>Problem Statement:</strong> {event.challengeDetails.problemStatement}</p>
-        <p><strong>Objectives/Goals:</strong></p>
-        <ul className="list-decimal ml-6">
-          {event.challengeDetails.objectives.map((objective, index) => (
-            <li key={index}>{objective}</li>
-          ))}
-        </ul>
-        <p><strong>Constraints/Limitations:</strong></p>
-        <ul className="list-decimal ml-6">
-          {event.challengeDetails.constraints.map((constraint, index) => (
-            <li key={index}>{constraint}</li>
-          ))}
-        </ul>
-        <p><strong>Evaluation Criteria:</strong></p>
-        <ul className="list-decimal ml-6">
-          {event.challengeDetails.evaluationCriteria.map((criterion, index) => (
-            <li key={index}>{criterion}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mt-8 flex justify-between">
-        <button className="btn">Previous</button>
-        <button className="btn-primary">Publish Event</button>
+      <div className="buttons">
+        <button onClick={() => navigate("/challengedetails", { state: { eventData } })}>Previous</button>
+        <button onClick={handlePublish}>Publish Event</button>
       </div>
     </div>
   );
