@@ -49,7 +49,7 @@ const PreviewEvent = () => {
             Review
           </div>
         </div>
-      <h1>Event Details</h1>
+      <h1 className={`${sectionHeader}`}>Event Details</h1>
       <div>
         <h2>Event Title: {eventData.title}</h2>
         <p>Organizer: {eventData.organizer}</p>
@@ -59,7 +59,7 @@ const PreviewEvent = () => {
         <p>Event Duration: {eventData.eventStartDate} - {eventData.eventEndDate}</p>
         <p>Meeting Link: {eventData.meetingLink}</p>
         <p>Participant Count: {eventData.minParticipants} - {eventData.maxParticipants}</p>
-        <h1>Challenge Details</h1>
+        <h1 className={`${sectionHeader}`}>Challenge Details</h1>
 
         <p>Challenge Release Date: {eventData.challengeReleaseDate} ({eventData.challengeReleaseTime})</p>
         <p>Problem Statement: {eventData.problemStatement}</p>
