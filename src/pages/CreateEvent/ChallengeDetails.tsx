@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
-import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
+import { saveFormData, getFormData } from "./StorageUtils";
 import { STYLES } from "../../constants/styles";
 
 const { styledBorder, sectionHeader } = STYLES;
@@ -50,12 +50,10 @@ const ChallengeDetailsForm: React.FC = () => {
 
     try {
       await saveEventToFirestore(combinedData);
-      //  clearFormData("eventFormData");
-      // clearFormData("challengeDetailsData")
     } catch (error) {
       console.error("Error saving event data:", error);
     } finally {
-      navigate("/hackathons");
+      navigate("/previewevent", { state: { eventData: combinedData } });
     }
   };
 

@@ -244,7 +244,7 @@ const EventForm: React.FC = () => {
       return;
     }
     saveFormData("eventFormData", data);
-    navigate("/ChallengeDetails", { state: { startDate } });
+    navigate("/challengedetails", { state: { startDate } });
   };
 
   const { fields, append, remove } = useFieldArray({
