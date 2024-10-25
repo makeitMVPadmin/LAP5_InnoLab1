@@ -14,14 +14,12 @@ import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../../components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../components/ui/select"
-import Header from "../../components/Header/Header";
-import ImageUploadZone from "../../components/ImageUploadZone/ImageUploadZone";
+import FileUploadZone from "../../components/FileUploadZone/FileUploadZone";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import ImportCard from "../../components/ImportCard/ImportCard"
 import Clock from "../../assets/images/clock-type2.svg"
 import CloseButton from "../../assets/images/Close.svg"
 import ErrorIcon from "../../assets/images/error.svg"
-
 
 const ProjectSubmissionPage = () => {
     const navigate = useNavigate();
@@ -30,6 +28,7 @@ const ProjectSubmissionPage = () => {
     const { currentUser } = useAuth();
     const { eventId } = useParams()
     const [file, setFile] = useState<File[]>([]);
+    const [pdfFile, setPdfFile] = useState<File[]>([]);
 
     //Set default values for form
     const form = useForm<ProjectSubmissionFormValues>({
@@ -44,6 +43,7 @@ const ProjectSubmissionPage = () => {
         //To set the data if the user goes back from the review page
         if (formData) {
             setValue("teamName", formData.teamName);
+            setValue("title", formData.title);
             setValue("techStack", formData.techStack);
             setValue("designTools", formData.designTools);
             setValue("designFeatures", formData.designFeatures);
@@ -63,8 +63,11 @@ const ProjectSubmissionPage = () => {
                     url: link.url || ''
                 })));
             }
-            if (Array.isArray(formData.imageFiles)) {
-                setValue("imageFiles", formData.imageFiles);
+            if (Array.isArray(formData.projectFiles)) {
+                setValue("projectFiles", formData.projectFiles);
+            }
+            if (Array.isArray(formData.pdfFiles)) {
+                setValue("pdfFiles", formData.pdfFiles);
             }
         }
     }, [formData, setValue])
@@ -93,9 +96,10 @@ const ProjectSubmissionPage = () => {
             userId: currentUser.uid,
             eventId: eventId as string
         };
-        console.log(submissionFormData)
+        console.log("Submission part 1", submissionFormData)
         navigate(`/event/${eventId}/review-submit`, { state: { submissionFormData } })
     }
+
 
     const handleFileChange = (newFiles: File[]) => {
         const MAX_FILES = 3
@@ -104,25 +108,41 @@ const ProjectSubmissionPage = () => {
                 return prevFiles
             }
             const updatedFiles = [...prevFiles, ...newFiles];
-            setValue('imageFiles', updatedFiles, { shouldValidate: true });
+            setValue('projectFiles', updatedFiles, { shouldValidate: true });
             return updatedFiles;
         });
     };
+
+    const handlePdfChange = (newFiles: File[]) => {
+        const MAX_FILES = 1
+        setPdfFile(prevFiles => {
+            if (prevFiles.length >= MAX_FILES) {
+                return prevFiles
+            }
+            const updatedFiles = [...prevFiles, ...newFiles];
+            setValue('pdfFiles', updatedFiles, { shouldValidate: true });
+            return updatedFiles;
+        });
+    }
 
 
     const handleAddLink = () => { appendLink({ url: "" }); };
     const handleAddMember = () => appendMember({ name: "", role: "" });
     const handleDeleteLink = (index: number) => { removeLink(index) }
     const handleDeleteMember = (index: number) => removeMember(index);
-    const handleDeleteImage = (indexToRemove: Number) => {
+    const handleDeleteFile = (indexToRemove: Number) => {
         const newFiles = file.filter((_, index) => index !== indexToRemove);
         setFile(newFiles)
+
+    }
+    const handleDeletePdf = (indexToRemove) => {
+        const newFiles = pdfFile.filter((_, index) => index !== indexToRemove);
+        setPdfFile(newFiles)
     }
     const handleBack = () => { navigate(-1) }
 
     return (
         <main className="font-gilroy">
-            <Header handleClick={handleBack} />
             <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
                 <div className="flex py-12 justify-end gap-2 items-center">
@@ -132,6 +152,16 @@ const ProjectSubmissionPage = () => {
                 </div>
                 <Form {...form} >
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <CustomInput
+                            errors={errors?.title}
+                            form={form}
+                            register={register}
+                            inputName="title"
+                            name="Title"
+                            formValues={formValues.title}
+                            placeHolder={PLACEHOLDERS.ENTER_TITLE}
+                            type="Input"
+                        />
                         {/* Team Name */}
                         <CustomInput
                             errors={errors?.teamName}
@@ -320,25 +350,67 @@ const ProjectSubmissionPage = () => {
                         />
 
                         {/* Upload image */}
-                        <div className="w-1/2">
-                            <ImageUploadZone onFileChange={handleFileChange}
-                            />
-                        </div>
-                        <div className="pb-6">
-                            <div className="flex gap-4">
-                                {file.length > 0 && file.map((item, index) => {
-                                    return (
-                                        <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteImage(index)} />
-                                    )
-                                })}
-                            </div>
-                            {errors.imageFiles && (
-                                <div className="flex items-center gap-2">
-                                    <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
-                                    <p className="text-red-500">{errors.imageFiles.message}</p>
+                        <div className="">
+                            <h3 className={`${STYLES.label}`}>Upload Files</h3>
+                            <div className="flex gap-6">
+                                <div className="w-1/2">
+                                    <h4 className={`${STYLES.label} px-2`}>Project Files</h4>
+                                    <div className="pt-2">
+                                        <FileUploadZone
+                                            onFileChange={handleFileChange}
+                                            acceptedTypes={['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml']}
+                                        />
+                                        <p className={`${STYLES.label} px-2 pt-2`}>supported formats: JPEG, PNG, PDF, SVG</p>
+                                        <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>
+                                    </div>
+                                    <div className="pb-6">
+                                        <div className="flex gap-4">
+                                            {file.length > 0 && file.map((item, index) => {
+                                                return (
+                                                    <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteFile(index)} />
+                                                )
+                                            })}
+                                        </div>
+                                        {errors.projectFiles && (
+                                            <div className="flex items-center gap-2">
+                                                <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
+                                                <p className="text-red-500">{errors.projectFiles.message}</p>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            )}
+                                <div className="w-1/2">
+                                    <h4 className={`${STYLES.label} px-2`}>Presentation Deck*</h4>
+                                    <div className="pt-2">
+                                        <FileUploadZone
+                                            onFileChange={handlePdfChange}
+                                            acceptedTypes={['application/pdf']}
+
+                                        />
+                                        <p className={`${STYLES.label} px-2 pt-2`}>supported formats: PDF</p>
+                                        <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>
+                                    </div>
+                                    <div className="pb-6">
+                                        <div className="flex gap-4">
+                                            {pdfFile.length > 0 && pdfFile.map((item, index) => {
+                                                return (
+                                                    <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeletePdf(index)} />
+                                                )
+                                            })}
+                                        </div>
+                                        {errors.pdfFiles && (
+                                            <div className="flex items-center gap-2">
+                                                <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
+                                                <p className="text-red-500">{errors.pdfFiles.message}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                            </div>
+
                         </div>
+
 
                         {/* Project Links */}
                         <div>
@@ -384,7 +456,7 @@ const ProjectSubmissionPage = () => {
                             <Button type="button" className={STYLES.secondaryButton} onClick={handleBack}>
                                 Cancel
                             </Button>
-                            <Button type="submit" className={STYLES.primaryButton}>
+                            <Button type="submit" className={`${STYLES.primaryButton}`}>
                                 Review Submission
                             </Button>
                         </div>

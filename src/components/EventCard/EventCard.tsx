@@ -34,7 +34,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
         setIsFavorite(!isFavorite);
     };
 
-    const tagStyle = "flex items-center justify-center px-4 font-gilroy h-7 rounded-full";
+    const tagStyle = "flex items-center justify-center px-4 font-gilroy font-extrabold h-7 rounded-full";
 
     return (
         <article className="flex flex-col w-full md:w-80 h-[34.5625rem] mb-4">
@@ -48,7 +48,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
                 >
                     <img className="w-full h-full" src={isFavorite || isHovered ? HeartIconActive : HeartIconInactive} alt="favorite icon" />
                 </button>
-                <Link to={`/join-event/${id}`}>
+                <Link to={`/event/${id}`}>
                     <div className="relative h-[18.4375rem] border-[3px] border-MVP-black rounded-[24.2px] bg-cover bg-center w-full" style={{ backgroundImage: `url(${imageUrl})` }}>
                         <div className="absolute flex gap-2 flex-wrap top-3 right-2.5">
                             {joined &&
@@ -72,10 +72,10 @@ const EventCard: React.FC<EventCardProps> = ({ title, id, startTime, endTime, ti
                         ))}
                     </div>
                 </div>
-                <Link to={`/join-event/${id}`}>
+                <Link to={`/event/${id}`}>
                     <button
                         type="button"
-                        className="flex items-center justify-center w-[12.625rem] h-[3.9375rem] bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-[1.6875rem] font-gilroy cursor-pointer"
+                        className="flex font-semibold items-center justify-center w-[12.625rem] h-[3.9375rem] bg-MVP-light-blue border-[3px] border-t-[3px] border-r-[5px] border-b-[5px] border-l-[3px] border-MVP-black rounded-[0.625rem] text-[1.6875rem] font-gilroy cursor-pointer"
                         aria-label="View Event"
                     >
                         <span>View Event</span>

@@ -25,7 +25,7 @@ export const handleSignUp = async (
     );
 
     const { user } = userCredential;
-    const photoURL = user.photoURL || null;
+    const photoURL = `https://i.pravatar.cc/150?img=${email.length}`;
 
     // Update or create user in Firestore
     await updateUserInFirestore(user, { email, fullName, photoURL });
@@ -49,7 +49,6 @@ export const handleSignIn = async (
     const photoURL = user.photoURL || null;
 
     // Update user in Firestore on sign-in (if needed)
-    await updateUserInFirestore(user, { email, fullName: user.displayName || '', photoURL });
   } catch (error) {
     console.error("Sign-in error:", error);
   }

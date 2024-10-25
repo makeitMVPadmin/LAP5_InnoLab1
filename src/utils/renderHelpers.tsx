@@ -2,7 +2,7 @@ import { TeamMember, ProjectLink } from "../types/submissionTypes"
 import { STYLES } from "../constants/styles";
 import { Input } from "../components/ui/input";
 import ImportCard from '../components/ImportCard/ImportCard';
-import ImageUploadZone from "../components/ImageUploadZone/ImageUploadZone"
+import FileUploadZone from "../components/FileUploadZone/FileUploadZone"
 import CloseIcon from "../assets/images/Close.svg"
 
 
@@ -24,7 +24,7 @@ export const renderObjectArrayContent = (
           : (content as ProjectLink[]).map((link, i) => (
             <li
               key={i}
-              className="text-gray-700 font-poppins font-semibold underline decoration-2"
+              className="text-gray-700 font-poppins"
             >
               <a href={link.url}> {link.url}</a>
             </li>
@@ -127,7 +127,9 @@ export const renderEditableImages = ({ sectionId,
   content,
   isEditing,
   handleSaveSection,
-  handleDeleteImage,
+  handleDeleteFile,
+  acceptedTypes,
+  fileType
 }
 ) => {
   if (!isEditing) {
@@ -135,7 +137,7 @@ export const renderEditableImages = ({ sectionId,
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
           {content.map((file, index) => (
-            <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteImage(index)} />
+            <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteFile(fileType, index)} />
           ))}
         </div>
       </div>
@@ -143,10 +145,10 @@ export const renderEditableImages = ({ sectionId,
   }
   return (
     <div className="flex flex-col gap-4">
-      <ImageUploadZone onFileChange={(files) => handleSaveSection(sectionId, files)} />
+      <FileUploadZone onFileChange={(files) => handleSaveSection(sectionId, files)} acceptedTypes={acceptedTypes} />
       <div className="flex gap-4">
         {content.map((file, index) => (
-          <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteImage(index)} />
+          <ImportCard key={`file-${index}`} fileName={file.name} handleDelete={() => handleDeleteFile(fileType, index)} />
         ))}
       </div>
     </div>
