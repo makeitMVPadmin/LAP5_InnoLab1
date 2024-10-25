@@ -62,8 +62,6 @@ const EventForm: React.FC = () => {
         imageUrl: savedData?.imageUrl || null,
         },
     });
-    const [selectedThemes, setSelectedThemes] = useState([]);
-    const [selectedDisciplines, setSelectedDisciplines] = useState([]);
 
     useEffect(() => {
         setValue("minParticipants", 1);
@@ -78,50 +76,32 @@ const EventForm: React.FC = () => {
 
     useEffect(() => {
         if (savedData?.disciplines && savedData.disciplines.length > 0) {
-            if (
-                JSON.stringify(savedData.disciplines) !==
-                JSON.stringify(selectedDisciplines)
-            ) {
-                setSelectedDisciplines(savedData.disciplines);
-            }
+            setValue("disciplines", savedData.disciplines)
         }
 
         if (savedData?.themes && savedData.themes.length > 0) {
-            if (JSON.stringify(savedData.themes) !== JSON.stringify(selectedThemes)) {
-                setSelectedThemes(savedData.themes);
-            }
+            setValue("themes", savedData.themes)
         }
     }, []);
 
-    useEffect(() => {
-        if (Object.keys(errors).length > 0 || errors.judges?.length > 0) {
-            validateField("disciplines", selectedDisciplines);
-            validateField("themes", selectedThemes);
-        }
-    }, [errors]);
-    
-
-    const watchedDisciplines = watch("disciplines");
-    const watchedThemes = watch("themes");
-
     const navigate = useNavigate();
     const allThemes = [
-    "AI & Machine Learning",
-    "Sustainability & Climate",
-    "Health & Wellness",
-    "Fintech & Blockchain",
-    "Education & Learning",
-    "Gaming & VR",
-    ];
+        "AI & Machine Learning",
+        "Sustainability & Climate",
+        "Health & Wellness",
+        "Fintech & Blockchain",
+        "Education & Learning",
+        "Gaming & VR",
+        ];
     const allDisciplines = [
-    "Design",
-    "Data Science and Analytics",
-    "Software Development",
-    "Web Development",
-    ];
+        "Design",
+        "Data Science and Analytics",
+        "Software Development",
+        "Web Development",
+        ];
 
-    const validateField = (field, arrayValue) => {
-        if (arrayValue.length === 0) {
+    const validateField = (field, array) => {
+        if (array.length === 0) {
             setError(field, {
             type: "manual",
             message: "At least one must be selected.",
@@ -129,84 +109,31 @@ const EventForm: React.FC = () => {
         } else {
             clearErrors(field);
         }
-
-        return arrayValue.length !== 0;
     };
 
-    const handleSelectionChange = (
-        e,
-        selectedArray,
-        setSelected,
-        validateField,
-        setValue,
-        fieldName
-    ) => {
+    const addItem = (e, fieldName) => {
         const value = e.target.value;
+        const selectedArray = getValues(fieldName)
         if (value && !selectedArray.includes(value)) {
             const updatedSelection = [...selectedArray, value];
-            setSelected(updatedSelection);
-            validateField(fieldName, updatedSelection);
             setValue(fieldName, updatedSelection);
+            validateField(fieldName, updatedSelection);
         }
     };
 
-    const handleThemesChange = (e) => {
-        handleSelectionChange(
-            e,
-            selectedThemes,
-            setSelectedThemes,
-            validateField,
-            setValue,
-            "themes"
-        );  
-    };
+    const addTheme = (e) => {addItem(e, "themes")};
 
-    const handleDisciplineChange = (e) => {
-        handleSelectionChange(
-            e,
-            selectedDisciplines,
-            setSelectedDisciplines,
-            validateField,
-            setValue,
-            "disciplines"
-        );
-    };
+    const addDiscipline = (e) => {addItem(e, "disciplines")};
 
-    const removeItem = (
-        item,
-        selectedArray,
-        setSelected,
-        validateField,
-        setValue,
-        fieldName
-    ) => {
+    const removeItem = (item, fieldName) => {
+        const selectedArray = getValues(fieldName);
         const updatedSelection = selectedArray.filter((i) => i !== item);
-        setSelected(updatedSelection);
         validateField(fieldName, updatedSelection);
         setValue(fieldName, updatedSelection);
     };
 
-    const removeTheme = (theme) => {
-        removeItem(
-            theme,
-            selectedThemes,
-            setSelectedThemes,
-            validateField,
-            setValue,
-            "themes"
-        );
-    };
-
-    const removeDiscipline = (discipline) => {
-        removeItem(
-            discipline,
-            selectedDisciplines,
-            setSelectedDisciplines,
-            validateField,
-            setValue,
-            "disciplines"
-        );
-    };
+    const removeTheme = (theme) => {removeItem(theme, "themes")};
+    const removeDiscipline = (discipline) => {removeItem(discipline, "disciplines")};
 
     const handleCancelClick = () => {
         clearFormData("eventFormData");
@@ -243,14 +170,7 @@ const EventForm: React.FC = () => {
     };
 
     const onSubmit = (data: EventFormInputs) => {
-        const validTheme = validateField("themes", watchedThemes);
-        const validDiscipline = validateField("disciplines", watchedDisciplines);
         const startDate = getValues("startDate");
-
-        if (!(validTheme || validDiscipline)) {
-            return;
-        }
-
         saveFormData("eventFormData", data);
         navigate("/ChallengeDetails", { state: { startDate } });
     };
@@ -259,11 +179,17 @@ const EventForm: React.FC = () => {
         control,
         name: "judges",
     });
-    console.log(fields, fields.length, !(getValues(`judges.${fields.length - 1}.firstName`)), !(getValues(`judges.${fields.length - 1}.lastName`)));
+
+    const handleFormValidation = (e) => {
+        e.preventDefault();
+        validateField("disciplines", getValues("disciplines"));
+        validateField("themes", getValues("themes"))
+        handleSubmit(onSubmit)();
+    };
 
     return (
         <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleFormValidation}
             className="w-2/3 mx-auto py-[3.5rem] px-[1.5rem] rounded-lg font-gilroy"
         >
             <section className="mb-[1.3rem]">
@@ -408,7 +334,7 @@ const EventForm: React.FC = () => {
                             className={`${styledBorder} gap-4 flex flex-wrap min-h-[50px] w-full items-center 
                             ${errors?.disciplines ? "border-MVP-red" : ""}`}
                         >
-                            {selectedDisciplines.map((discipline) => (
+                            {watch("disciplines").map((discipline) => (
                                 <div
                                     key={discipline}
                                     className={`rounded-full bg-MVP-yellow inline-flex items-center justify-between gap-4 h-10 px-6 py-3 font-semibold text-lg`}
@@ -424,19 +350,19 @@ const EventForm: React.FC = () => {
                             ))}
                         <div className="flex-1">
                             <select
-                                onChange={handleDisciplineChange}
+                                onChange={addDiscipline}
                                 className={`w-full h-full text-lg py-2 px-4 bg-transparent focus:outline-none 
                                     disabled:cursor-not-allowed disabled:opacity-50 ${
-                                    selectedDisciplines.length === 3 ? "hidden" : "cursor-pointer"
+                                    watch("disciplines").length === 3 ? "hidden" : "cursor-pointer"
                                 }`}
-                                disabled={selectedDisciplines.length === 3}
+                                disabled={watch("disciplines").length === 3}
                             >
                                 <option value={""}>
-                                    {selectedDisciplines.length === 0 &&
+                                    {watch("disciplines").length === 0 &&
                                     "Select up to 3 disciplines"}
                                 </option>
                                 {allDisciplines
-                                .filter((discipline) => !selectedDisciplines.includes(discipline))
+                                .filter((discipline) => !watch("disciplines").includes(discipline))
                                 .map((discipline) => (
                                     <option key={discipline} value={discipline}>
                                         {discipline}
@@ -445,9 +371,9 @@ const EventForm: React.FC = () => {
                             </select>
                         </div>
                         </div>
-                        {errors.disciplines && (
+                        {errors?.disciplines && (
                         <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
-                            {errors.disciplines.message}
+                            {errors?.disciplines.message}
                         </p>
                         )}
                     </div>
@@ -459,7 +385,7 @@ const EventForm: React.FC = () => {
                             className={`${styledBorder} gap-4 flex flex-wrap min-h-[50px] w-full items-center 
                             ${errors?.themes ? "border-MVP-red" : ""}`}
                         >
-                            {selectedThemes.map((theme) => (
+                            {watch("themes").map((theme) => (
                                 <div
                                     key={theme}
                                     className={`rounded-full bg-MVP-yellow inline-flex items-center justify-between gap-4 h-10 px-6 py-3 font-semibold text-lg`}
@@ -472,16 +398,16 @@ const EventForm: React.FC = () => {
                             ))}
                             <div className="flex-1">
                                 <select
-                                onChange={handleThemesChange}
+                                onChange={addTheme}
                                 className={`w-full h-full text-lg py-2 px-4 bg-transparent focus:outline-none disabled:cursor-not-allowed
-                                    disabled:opacity-50 ${selectedThemes.length === 3 ? "hidden" : "cursor-pointer"}`}
-                                disabled={selectedThemes.length === 3}
+                                    disabled:opacity-50 ${watch("themes").length === 3 ? "hidden" : "cursor-pointer"}`}
+                                disabled={watch("themes").length === 3}
                                 >
                                     <option value={""}>
-                                        {selectedThemes.length === 0 && "Select up to 3 themes"}
+                                        {watch("themes").length === 0 && "Select up to 3 themes"}
                                     </option>
                                     {allThemes
-                                        .filter((theme) => !selectedThemes.includes(theme))
+                                        .filter((theme) => !watch("themes").includes(theme))
                                         .map((theme) => (
                                             <option key={theme} value={theme}>
                                                 {theme}
@@ -704,24 +630,23 @@ const EventForm: React.FC = () => {
                                 Judge #{index + 1}
                                 </label>
                                 <div className="flex gap-[3rem] w-full">
-                                <div className="flex-1">
-                                    <input
-                                    type="text"
-                                    {...register(`judges.${index}.firstName`, {
-                                        required: "First name is required",
-                                    })}
-                                    placeholder="Enter first name"
-                                    className={`${styledBorder} w-full text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${
-                                        errors.judges?.[index]?.firstName &&
-                                        "border-MVP-red"
-                                    }`}
-                                    />
-                                    {errors.judges?.[index]?.firstName && (
-                                    <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
-                                        {errors.judges[index].firstName.message}
-                                    </p>
-                                    )}
-                                </div>
+                                    <div className="flex-1">
+                                        <input
+                                        type="text"
+                                        {...register(`judges.${index}.firstName`, {
+                                            required: "First name is required",
+                                        })}
+                                        placeholder="Enter first name"
+                                        className={`${styledBorder} w-full text-[1.2rem] !px-[0.9rem] !py-[0.7rem] ${
+                                        errors.judges?.[index]?.firstName && "border-MVP-red"
+                                        }`}
+                                        />
+                                        {errors.judges?.[index]?.firstName && (
+                                        <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
+                                            {errors.judges?.[index]?.firstName.message}
+                                        </p>
+                                        )}
+                                    </div>
                                 <div className="flex-1">
                                     <input
                                     type="text"
@@ -733,11 +658,11 @@ const EventForm: React.FC = () => {
                                         errors.judges?.[index]?.lastName && "border-MVP-red"
                                     }`}
                                     />
-                                    {errors.judges?.[index]?.lastName && (
+                                    {errors.judges?.[index]?.lastName &&
                                     <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
                                         {errors.judges[index].lastName.message}
                                     </p>
-                                    )}
+                                    }
                                 </div>
                                 </div>
                                 {fields.length > 1 && (
