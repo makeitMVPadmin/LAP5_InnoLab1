@@ -49,19 +49,29 @@ const PreviewEvent = () => {
             Review
           </div>
         </div>
-      <h1>Preview Your Event</h1>
+      <h1>Event Details</h1>
       <div>
-        <h2>{eventData.title}</h2>
+        <h2>Event Title: {eventData.title}</h2>
         <p>Organizer: {eventData.organizer}</p>
-        <p>Start Date: {eventData.eventStartDate}</p>
-        <p>End Date: {eventData.eventEndDate}</p>
-        <p>Challenge Release Date: {eventData.challengeReleaseDate}</p>
-        <p>Challenge Release Time: {eventData.challengeReleaseTime}</p>
+        <p>Event Description: {eventData.basicProjectSummary}</p>
+        <p>Skill Level: {eventData.skillLevel}</p>
+        <p>Theme(s): {eventData.themes}</p>
+        <p>Event Duration: {eventData.eventStartDate} - {eventData.eventEndDate}</p>
+        <p>Meeting Link: {eventData.meetingLink}</p>
+        <p>Participant Count: {eventData.minParticipants} - {eventData.maxParticipants}</p>
+        <h1>Challenge Details</h1>
+
+        <p>Challenge Release Date: {eventData.challengeReleaseDate} ({eventData.challengeReleaseTime})</p>
+        <p>Problem Statement: {eventData.problemStatement}</p>
+        <p>Objective/Goals: {eventData.objectivesGoals}</p>
+        <p>Constraints/Limitations: {eventData.constraints}</p>
+        <p>Evaluation Criteria: {eventData.evaluationCriteria}</p>
+        <p>Additional Information: {eventData.additionalInformation}</p>
       </div>
 
       <div className="buttons">
-        <button onClick={() => navigate("/ChallengeDetails", { state: { eventData } })}>Back</button>
-        <button onClick={handlePublish}>Publish</button>
+        <button onClick={() => navigate("/challengedetails", { state: { eventData } })}>Previous</button>
+        <button onClick={handlePublish}>Publish Event</button>
       </div>
     </div>
   );
