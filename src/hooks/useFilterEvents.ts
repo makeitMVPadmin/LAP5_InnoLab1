@@ -1,7 +1,5 @@
-// useFilterEvents.ts
 import { useState } from "react";
 import { HackathonEventType } from "../Firebase/FirebaseQueries";
-import { Dispatch, SetStateAction } from "react";
 
 type ModifiedHackationEvent = HackathonEventType & {
     id: string;
