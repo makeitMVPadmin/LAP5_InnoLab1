@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useJoinedEvents } from "../../Firebase/FirebaseQueries";
 import { ReactComponent as CalendarRewind } from "../../assets/images/ic_round-event-repeat.svg";
 import { useAuth } from "../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
