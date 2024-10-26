@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useEvents from "./useEvents";
 
 type EventDetails = {
@@ -9,19 +9,34 @@ type EventDetails = {
 };
 
 const useEventCountdown = (eventId: string): EventDetails => {
-    const { singleEvent: event, isLoading, error } = useEvents([], eventId); // grabs the event using the eventId props
+    const { singleEvent: event, isLoading, error } = useEvents([], eventId);
     const { endTime } = event || {};
-
+    const [ended, setEnded] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(0);
+    const formattedTimeRef = useRef<string>("");
 
     useEffect(() => {
-        setTimeRemaining(new Date(endTime).getTime() - Date.now());
-        const interval = setInterval(() => {
-            setTimeRemaining(new Date(endTime).getTime() - Date.now());
-        }, 1000);
+        if (!eventId || !endTime) {
+            setEnded(false);
+            formattedTimeRef.current = "";
+            return;
+        }
+
+        const calculateRemainingTime = () => {
+            const remainingTime = new Date(endTime).getTime() - Date.now();
+            setTimeRemaining(Math.max(remainingTime, 0));
+            setEnded(remainingTime <= 0);
+
+            // Update the formattedTimeRef
+            formattedTimeRef.current = formatTime(Math.max(remainingTime, 0));
+        };
+
+        calculateRemainingTime(); // Initial calculation
+
+        const interval = setInterval(calculateRemainingTime, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [eventId, endTime]);
 
     const formatTime = (time: number) => {
         const hours = Math.floor((time % (1000 * 3600 * 24)) / (1000 * 3600));
@@ -30,13 +45,11 @@ const useEventCountdown = (eventId: string): EventDetails => {
         return `${hours}h ${minutes}m ${seconds}s`;
     };
 
-    const formattedTime = formatTime(timeRemaining); // returns in format of hh:mm:ss
-
     return {
-        timeRemaining: timeRemaining > 0 ? timeRemaining : 0, // if no time remaining, passes 0
-        formattedTime,
+        timeRemaining: timeRemaining > 0 ? timeRemaining : 0,
+        formattedTime: formattedTimeRef.current,
         formatTime,
-        ended: timeRemaining <= 0 // returns boolean for if theres time remaining
+        ended,
     };
 };
 

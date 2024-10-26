@@ -78,10 +78,8 @@ const useEvents = (joinedEvents: string[], eventId?: string) => {
         if (!events?.length) return null;
         const now = new Date();
         return events.find(event => {
-            console.log(event);
             const endTime = new Date(event.endTime);
             const timeLeft = endTime.getTime() - now.getTime();
-            console.log(timeLeft);
             return timeLeft > 0 && timeLeft <= 2 * 60 * 60 * 1000; // 2 hours
         });
     }, []);

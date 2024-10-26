@@ -22,7 +22,7 @@ const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => 
         }
     }, [joinedCurrentEvents]);
 
-    const { formattedTime, ended } = useEventCountdown(eventAlert && eventAlert.eventId); // passes event id if theres an event ending
+    const { formattedTime, ended } = useEventCountdown(eventAlert?.eventId || ''); // passes event id if theres an event ending
     // returns formattedTime which is a dynamic string and ended boolean
 
     useEffect(() => {
@@ -37,6 +37,7 @@ const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => 
     }
 
     const { title } = eventAlert;
+
 
     return (
         <div className="flex flex-wrap mx-8 my-4 min-h-fit rounded-[12px] h-[8%] bg-MVP-soft-blue px-8 py-4 font-poppins justify-between items-center">
