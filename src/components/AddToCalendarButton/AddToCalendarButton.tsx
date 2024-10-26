@@ -67,10 +67,10 @@ const AddToCalendarButton = ({
     location,
 }) => {
 
-    const formattedStartTime = formatCalendarDateTime(startDate, startTime, timezone);
-    const formattedEndTime = formatCalendarDateTime(endDate, endTime, timezone);
+    // const formattedStartTime = formatCalendarDateTime(startDate, startTime, timezone);
+    // const formattedEndTime = formatCalendarDateTime(endDate, endTime, timezone);
 
-    console.log('Formatted times:', { formattedStartTime, formattedEndTime });
+    // console.log('Formatted times:', { formattedStartTime, formattedEndTime });
 
 
     const generateGoogleCalendarUrl = () => {
@@ -79,7 +79,8 @@ const AddToCalendarButton = ({
             text: `${title} - ${description}`,
             details: description,
             location: location,
-            dates: `${formattedStartTime.replace(/[-:]/g, '')}/${formattedEndTime.replace(/[-:]/g, '')}`
+            // dates: `${formattedStartTime.replace(/[-:]/g, '')}/${formattedEndTime.replace(/[-:]/g, '')}`
+             dates: `${startTime.replace(/[-:]/g, '')}/${endTime.replace(/[-:]/g, '')}`
         });
 
         return `https://calendar.google.com/calendar/render?${params.toString()}`;

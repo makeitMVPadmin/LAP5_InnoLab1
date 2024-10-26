@@ -58,6 +58,7 @@ export const formatStringToNumberedListWithOptions = (
   text: string,
   options: NumberedListOptions = {}
 ): JSX.Element => {
+  console.log(text);
   const {
     spacing = 'space-y-4',
     padding = 'pl-4',

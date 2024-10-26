@@ -16,15 +16,25 @@ import Clock from "../../assets/images/clockIcon.svg"
 import CalendarIcon from "../../assets/images/calendar2.svg"
 import LocationIcon from "../../assets/images/location.png"
 import LinkIcon from "../../assets/images/linkIcon.svg"
-
+import useEventCountdown from "../../hooks/useEventCountdown";
 
 const EventPage = () => {
   const [event, setEvent] = useState<HackathonEventType | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState(null);
+
   const { eventId } = useParams()
   const navigate = useNavigate()
   const { submissions, participantCount, formattedUserNames, exportData, exportFields, } = useEventData(eventId);
+
+  const { formattedTime, ended } = useEventCountdown(eventId || '', "start");
+
+  useEffect(() => {
+      if (ended) {
+          setStatus("ongoing");
+      }
+  }, [ended]);
   useEffect(() => {
     async function loadEvent() {
       setIsLoading(true);
@@ -48,6 +58,25 @@ const EventPage = () => {
 
     loadEvent();
   }, [eventId]);
+
+  useEffect(() => {
+    if (event) {
+      const startTime = new Date(event.startTime).getTime();
+      const endTime = new Date(event.endTime).getTime();
+      const now = Date.now();
+  
+      if (now < endTime) {
+        if (now < startTime) {
+          setStatus("not started");
+        } else {
+          setStatus("ongoing");
+        }
+      } else {
+        setStatus("ended");
+      }
+    }
+  }, [event]);
+
   if (!event) {
     return <div>No event data available</div>;
   }
@@ -55,13 +84,33 @@ const EventPage = () => {
   const { date: eventStartDate, time: eventStartTime } = convertDate(event.startDate, event.startTime, event.timeZone);
   const { date: eventEndDate, time: eventEndTime } = convertDate(event.endDate, event.endTime, event.timeZone);
   const formatThemes = [...(event?.themes || []), ...(event?.disciplines || [])];
-  const eventSubheading = "font-bold text-3xl font-gilroy pb-2"
-
-  console.log(event)
+  const eventSubheading = "font-bold text-3xl font-gilroy pb-2";
 
 
   if (isLoading) { return <p>Loading...</p>; }
   if (error) { return <p>Error: {error}</p>; }
+
+  const eventState = () => {
+    if (status === 'not started') {
+        return (
+            <span className="font-gilroy text-xl font-bold">
+                Event Starts in: {formattedTime}
+            </span>
+        );
+    } else if (status === 'ongoing') {
+        return (
+            <span className="font-gilroy text-xl font-bold">
+                Event is ongoing, happy hacking!
+            </span>
+        );
+    } else if (status === 'ended') {
+        return (
+            <span className="font-gilroy text-xl font-bold">
+                Event ended
+            </span>
+        );
+    }
+  };
 
   return (
     <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
@@ -75,7 +124,7 @@ const EventPage = () => {
             <div className="px-6 flex flex-col gap-6 w-3/4">
               <div className="flex items-center gap-2 mt-8" role="alert">
                 <img className="h-4" src={Clock} alt="Clock icon indicating time remaining" />
-                <span className="font-gilroy text-xl font-bold">Event Starts in: 10h 55m 55s</span>
+                {eventState()}
               </div>
               <h1 className="text-3xl md:text-6xl font-gilroy mt-8 font-bold">{event.title}</h1>
               <DetailCard text={event.skillLevel} />
@@ -150,7 +199,7 @@ const EventPage = () => {
             <div className="flex justify-start gap-8">
               <div className="flex gap-3 items-center">
                 <h3 className="font-bold font-gilroy text-2xl my-3">Registrants</h3>
-                <span>({submissions.length}/{participantCount})</span>
+                <span>({submissions.length}/{event.maxParticipants})</span>
               </div>
               {submissions.length === 0 ?
                 <div className={`${STYLES.primaryButton} bg-MVP-white border-MVP-gray text-MVP-gray rounded-[10px] flex items-center`} >

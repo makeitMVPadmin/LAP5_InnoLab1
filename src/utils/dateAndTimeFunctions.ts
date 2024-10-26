@@ -45,7 +45,7 @@ export const convertDate = (startDate: string, startTime: string, timezone: stri
   // Format the time
   const formattedTime = timezone?.startsWith('GMT')
     ? startTime
-    : new Date(`${startDate}T${startTime}`).toLocaleTimeString('en-US', {
+    : new Date(startTime).toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true
@@ -56,6 +56,8 @@ export const convertDate = (startDate: string, startTime: string, timezone: stri
     time: `${formattedTime} ${timezone || ''}`
   };
 };
+
+
 
 export const getEventStatus = (
   startTime: string | Date,

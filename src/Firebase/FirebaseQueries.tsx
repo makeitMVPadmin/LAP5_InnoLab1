@@ -1,79 +1,40 @@
-import {
-  getDocs,
-  collection,
-  doc,
-  getDoc,
-  query,
-  where,
-  runTransaction,
-  arrayRemove,
-} from "firebase/firestore";
+import { getDocs, collection, doc, getDoc, query, where, runTransaction, arrayRemove } from "firebase/firestore";
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
 import { convertToUTC, getTimeZoneFromOffset } from "../utils/dateAndTimeFunctions";
 
 
-// export type HackathonEventType = {
-//   basicProjectSummary: string;
-//   createdAt: string;
-//   disciplines: string[];
-//   email: string;
-//   endTime: string;
-//   firstName: string;
-//   fullDetails: string[];
-//   imageUrl: string;
-//   judges: string[];
-//   lastName: string;
-//   meetingLink: string;
-//   participantCount: number;
-//   skillLevel: string;
-//   startTime: string;
-//   themes: string[];
-//   timeZone: string;
-//   title: string;
-// };
-export type JudgeType = {
-  firstName: string;
-  lastName: string;
-};
-
 export type HackathonEventType = {
-  createdAt: string;
+  additionalInformation: string;
+  basicProjectSummary: string;
+  challengeReleaseDate: string;
+  challengeReleaseTime: string;
+  constraints: string;
   disciplines: string[];
-  email: string;
-  judges: JudgeType[];
-  organizer: string;
+  endDate: string;
+  endTime: string;
+  evaluationCriteria: string;
+  imageUrl: string;
+  judges: {firstName: string, lastName: string}[];
   meetingLink: string;
   minParticipants: number;
   maxParticipants: number;
-  skillLevel: string;
-  themes: string[];
-  challengeReleaseTime: string;
-  challengeReleaseDate: string;
-  title: string;
-  imageUrl: string;
-  timeZone: string;
-  startTime: string;
-  startDate: string;
-  endDate: string;
-  endTime: string;
-  problemStatement: string;
-  basicProjectSummary: string;
   objectivesGoals: string;
-  evaluationCriteria?: string;
-  constraints?: string;
-  additionalInformation?: string;
+  organizer: string;
+  participantCount: number;
+  problemStatement: string;
+  skillLevel: string;
+  startDate: string;
+  startTime: string;
+  submissionsId?: string[];
+  themes: string[];
+  timeZone: string;
+  title: string;
 };
 
-export const fetchHackathonEvents = async (
-  hackathonId?: string
-): Promise<{
-  event?: HackathonEventType;
-  events: Record<string, HackathonEventType>;
-  loading: boolean;
-  error: string | null;
-}> => {
+
+export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ event?: HackathonEventType; events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
   let loading = true;
   let error: string | null = null;
   let event: HackathonEventType | undefined;
@@ -84,7 +45,16 @@ export const fetchHackathonEvents = async (
     const querySnapshot = await getDocs(colRef);
 
     events = querySnapshot.docs.reduce((acc, doc) => {
-      acc[doc.id] = doc.data() as HackathonEventType;
+
+      const data = doc.data() as HackathonEventType;
+      const { startDate, startTime, endDate, endTime, timeZone } = data;
+
+      data.startTime = convertToUTC(startDate, startTime, timeZone.slice(3));
+      data.endTime = convertToUTC(endDate, endTime, timeZone.slice(3));
+      data.timeZone = getTimeZoneFromOffset(timeZone);
+
+      acc[doc.id] = data;
+
       return acc;
     }, {} as Record<string, HackathonEventType>);
     if (hackathonId) {
@@ -108,13 +78,13 @@ type JudgeCommentType = {
   judgeName: string;
   rating: number;
   suggestions: string;
-};
+}
 
 type CommunityCommentType = {
   commentEntry: string;
   commentTimestamp: Timestamp;
   commenterName: string;
-};
+}
 
 type HackathonSubmissionType = {
   id?: string;
@@ -127,20 +97,14 @@ type HackathonSubmissionType = {
   nextSteps: string;
   problemStatement: string;
   projectLinks: { url: string }[];
-  teamMembers: { name: string; role: string }[];
+  teamMembers: { name: string, role: string }[];
   teamName: string;
   techStack: string[];
   judgesComments: JudgeCommentType[];
   comments?: CommunityCommentType[];
 };
 
-export const fetchHackathonSubmissions = async (
-  id: string
-): Promise<{
-  submissions: Record<string, HackathonSubmissionType>;
-  loading: boolean;
-  error: string | null;
-}> => {
+export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {
   let loading = true;
   let error: string | null = null;
   let submissions: Record<string, HackathonSubmissionType> = {};
@@ -181,6 +145,7 @@ export const fetchAllEventProjectSubmissions = async (eventId: string) => {
         ...doc.data(),
       } as HackathonSubmissionType);
     });
+
   } catch (err) {
     error = (err as Error).message;
   } finally {
@@ -190,18 +155,11 @@ export const fetchAllEventProjectSubmissions = async (eventId: string) => {
   return { submissions, loading, error };
 };
 
-export const deleteSubmission = async (
-  submissionId: string,
-  eventId: string
-) => {
+export const deleteSubmission = async (submissionId: string, eventId: string) => {
   try {
     const result = await runTransaction(db, async (transaction) => {
       // Get references to both documents
-      const submissionRef = doc(
-        db,
-        "hackathonProjectSubmissions",
-        submissionId
-      );
+      const submissionRef = doc(db, "hackathonProjectSubmissions", submissionId);
       const eventRef = doc(db, "hackathonEvents", eventId);
 
       // Check if submission exists
@@ -219,9 +177,7 @@ export const deleteSubmission = async (
       // Check if submission ID exists in event's submissionIds array
       const eventData = eventDoc.data();
       if (!eventData.submissionsId?.includes(submissionId)) {
-        throw new Error(
-          `Submission ${submissionId} not found in event ${eventId}`
-        );
+        throw new Error(`Submission ${submissionId} not found in event ${eventId}`);
       }
 
       // Delete the submission document
@@ -229,7 +185,7 @@ export const deleteSubmission = async (
 
       // Remove submission ID from the event's submissionIds array
       await transaction.update(eventRef, {
-        submissionsId: arrayRemove(submissionId),
+        submissionsId: arrayRemove(submissionId)
       });
 
       return true;
@@ -241,13 +197,15 @@ export const deleteSubmission = async (
 
     return {
       success: true,
-      message: `Submission ${submissionId} successfully deleted and event ${eventId} updated`,
+      message: `Submission ${submissionId} successfully deleted and event ${eventId} updated`
     };
+
   } catch (error) {
     console.error("Delete submission error:", error);
     throw error;
   }
 };
+
 
 export const fetchHackathonParticipants = async (eventId: string) => {
   try {
@@ -268,15 +226,14 @@ export const fetchHackathonParticipants = async (eventId: string) => {
     const numberOfParticipants = userIds.length;
 
     return { userIds, numberOfParticipants, eventData };
+
   } catch (err) {
     console.error("Error fetching hackathon participants:", err);
     return null;
   }
 };
 
-export const useJoinedEvents = (
-  userId: string | undefined
-): { joinedEvents: string[]; loading: boolean; error: string | null } => {
+export const useJoinedEvents = (userId: string | undefined): { joinedEvents: string[], loading: boolean, error: string | null } => {
   const [joinedEvents, setJoinedEvents] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

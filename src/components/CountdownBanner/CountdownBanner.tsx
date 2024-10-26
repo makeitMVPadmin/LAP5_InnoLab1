@@ -22,7 +22,7 @@ const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => 
         }
     }, [joinedCurrentEvents]);
 
-    const { formattedTime, ended } = useEventCountdown(eventAlert?.eventId || ''); // passes event id if theres an event ending
+    const { formattedTime, ended } = useEventCountdown(eventAlert?.eventId || '', "end"); // passes event id if theres an event ending
     // returns formattedTime which is a dynamic string and ended boolean
 
     useEffect(() => {

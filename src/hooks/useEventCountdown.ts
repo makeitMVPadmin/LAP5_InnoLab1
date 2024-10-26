@@ -8,22 +8,23 @@ type EventDetails = {
     ended: boolean;
 };
 
-const useEventCountdown = (eventId: string): EventDetails => {
+const useEventCountdown = (eventId: string, timeType: "start" | "end"): EventDetails => {
     const { singleEvent: event, isLoading, error } = useEvents([], eventId);
-    const { endTime } = event || {};
+    const { endTime, startTime } = event || {};
+    const targetTime = timeType === "start" ? startTime : endTime;
     const [ended, setEnded] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(0);
     const formattedTimeRef = useRef<string>("");
 
     useEffect(() => {
-        if (!eventId || !endTime) {
+        if (!eventId || !targetTime) {
             setEnded(false);
             formattedTimeRef.current = "";
             return;
         }
 
         const calculateRemainingTime = () => {
-            const remainingTime = new Date(endTime).getTime() - Date.now();
+            const remainingTime = new Date(targetTime).getTime() - Date.now();
             setTimeRemaining(Math.max(remainingTime, 0));
             setEnded(remainingTime <= 0);
 
@@ -36,7 +37,7 @@ const useEventCountdown = (eventId: string): EventDetails => {
         const interval = setInterval(calculateRemainingTime, 1000);
 
         return () => clearInterval(interval);
-    }, [eventId, endTime]);
+    }, [eventId, targetTime]);
 
     const formatTime = (time: number) => {
         const hours = Math.floor((time % (1000 * 3600 * 24)) / (1000 * 3600));

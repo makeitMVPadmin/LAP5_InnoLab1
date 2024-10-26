@@ -22,6 +22,7 @@ const HackathonEventsPage = () => {
     if (eventEndingSoon) {
         setAlertEvent(true);
     }
+    console.log(events);
   }, [joinedCurrentEvents]);
 
 
