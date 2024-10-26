@@ -4,7 +4,7 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
 import { STYLES } from "../../constants/styles";
 import { ReactComponent as CloseIcon } from "../../assets/images/closeIcon.svg";
-
+import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 const { styledBorder, sectionHeader } = STYLES;
 
 interface EventFormInputs {
@@ -170,14 +170,16 @@ const EventForm: React.FC = () => {
   };
 
   const onSubmit = (data: EventFormInputs) => {
-    const validTheme = validateField("themes", watchedThemes);
-    const validDiscipline = validateField("disciplines", watchedDisciplines);
-    if (!(validTheme || validDiscipline)) {
-      return;
-    }
+    console.log(data)
 
-    saveFormData("eventFormData", data);
-    navigate("/ChallengeDetails");
+    // const validTheme = validateField("themes", watchedThemes);
+    // const validDiscipline = validateField("disciplines", watchedDisciplines);
+    // if (!(validTheme || validDiscipline)) {
+    //   return;
+    // }
+
+    // saveFormData("eventFormData", data);
+    // navigate("/ChallengeDetails");
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -387,7 +389,7 @@ const EventForm: React.FC = () => {
                         {theme}
                       </option>
                     ))}
-                </select> 
+                </select>
               </div>
             </div>
             {errors.themes && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.themes.message}</p>}
@@ -398,7 +400,7 @@ const EventForm: React.FC = () => {
 
             <div>
               <span className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>Start<span className="mb-2/3 text-[2rem]">*</span></span>
-              <div className={`w-fit h-[3rem] !px-[1rem] !py-0 flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${(errors.startDate || errors.startTime) && "border-MVP-red"
+              {/* <div className={`w-fit h-[3rem] !px-[1rem] !py-0 flex items-center justify-center gap-[1rem] ${styledBorder} hover:border-MVP-dark-blue ${(errors.startDate || errors.startTime) && "border-MVP-red"
                 }`}>
                 <Controller
                   name="startDate"
@@ -425,7 +427,16 @@ const EventForm: React.FC = () => {
                     />
                   )}
                 />
-              </div>
+              </div> */}
+              <DateTimePicker
+                control={control}
+                dateFieldName="startDate"
+                timeFieldName="startTime"
+                label="Start Date"
+                minDate={new Date()}
+                maxDate={watch('endDate') ? new Date(watch('endDate')) : undefined} // If you want to prevent selecting dates after end date
+              />
+
               <div className="flex gap-[3rem]">
                 {errors.startDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>}
                 {errors.startTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>}
@@ -434,34 +445,14 @@ const EventForm: React.FC = () => {
 
             <div>
               <label className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
-              <div className={`${styledBorder} w-fit h-[3rem] !px-[1rem] !py-0 flex items-center justify-center gap-[1rem] ${(errors.endDate || errors.endTime) && "border-MVP-red"
-                }`}>
-                <Controller
-                  name="endDate"
-                  control={control}
-                  rules={{ required: "End date is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="date"
-                      {...field}
-                      className="bg-transparent outline-none text-inherit cursor-pointer border-0"
-                    />
-                  )}
-                />
-                <div className="border-l-[0.18rem] border-MVP-black h-[70%]" />
-                <Controller
-                  name="endTime"
-                  control={control}
-                  rules={{ required: "End time is required" }}
-                  render={({ field }) => (
-                    <input
-                      type="time"
-                      {...field}
-                      className={`bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0 ${errors.endTime && "border-MVP-red"}`}
-                    />
-                  )}
-                />
-              </div>
+              <DateTimePicker
+                control={control}
+                dateFieldName="endDate"
+                timeFieldName="endTime"
+                label="End Date"
+                minDate={watch('startDate') ? new Date(watch('startDate')) : undefined}
+                maxDate=""
+              />
             </div>
             <div className="flex gap-[3.5rem]">
               {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endDate.message}</p>}
