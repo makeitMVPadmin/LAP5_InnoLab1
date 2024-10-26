@@ -8,6 +8,7 @@ import useEventData from "../../hooks/usEventData";
 import { formatStringToNumberedListWithOptions } from "../../utils/formatTextFunctions"
 import DetailCard from "../../components/DetailCard/DetailCard";
 import ParticipantInfoChip from "../../components/ParticipantInfoChip/ParticipantInfoChip";
+import AddToCalendarButton from "../../components/AddToCalendarButton/AddToCalendarButton";
 import StackedProfiles from "../../components/StackedProfiles/StackedProfiles";
 import ExportButton from "../../components/ExportButton/ExportButton";
 import EventPageStatusTag from "../../components/EventPageStatusTag/EventPageStatusTag";
@@ -128,6 +129,14 @@ const EventPage = () => {
                 <img src={LocationIcon} alt="location icon" />
                 <span className="font-gilroy font-bold text-xl"> Location:  Online</span>
               </div>
+              <AddToCalendarButton
+                description={event.title}
+                startDate={event.startDate}
+                startTime={event.startTime}
+                endDate={event.endDate}
+                endTime={event.endTime}
+                timezone={event.timeZone}
+                location={event.meetingLink} />
               <Link to={`${event.meetingLink}`}>
                 <button className={`${STYLES.primaryButton} rounded-[10px] flex gap-4 justify-center items-center`} type="button" aria-label="link to online hackathon meeting">
                   <img src={LinkIcon} alt="Link icon" />
