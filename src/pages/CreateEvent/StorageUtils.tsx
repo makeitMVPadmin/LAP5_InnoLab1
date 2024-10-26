@@ -14,7 +14,6 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  imageUrl: string[] | null;
 }
 
 interface ChallengeDetailsInputs {
@@ -30,15 +29,15 @@ interface ChallengeDetailsInputs {
 type FormData = EventFormInputs | ChallengeDetailsInputs;
 
 export const saveFormData = (key: string, data: FormData) => {
-    localStorage.setItem(key, JSON.stringify(data));
-  };
-  
-  export const getFormData = (key: string) => {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
-  };
-  
-  export const clearFormData = (key: string) => {
-    localStorage.removeItem(key);
-  };
-  
+  localStorage.setItem(key, JSON.stringify(data));
+};
+
+export const getFormData = (key: string) => {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : null;
+};
+
+export const clearFormData = (key: string) => {
+  localStorage.removeItem(key);
+};
+

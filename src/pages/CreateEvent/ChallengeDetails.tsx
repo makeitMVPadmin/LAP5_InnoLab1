@@ -2,7 +2,9 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
 import { saveFormData, getFormData } from "./StorageUtils";
+import { uploadFiles } from "../../Firebase/FirebaseStore"
 import { STYLES } from "../../constants/styles";
+
 
 const { styledBorder, sectionHeader } = STYLES;
 
@@ -47,9 +49,18 @@ const ChallengeDetailsForm: React.FC = () => {
       ...eventData,
       ...data,
     };
+    console.log(combinedData)
 
     try {
-      await saveEventToFirestore(combinedData);
+      const projectFileURL = await uploadFiles(combinedData.file);
+      const dataWithImageUrl = {
+        ...combinedData,
+        imageUrl: projectFileURL
+      }
+      delete dataWithImageUrl.file
+      console.log(dataWithImageUrl)
+
+      await saveEventToFirestore(dataWithImageUrl);
     } catch (error) {
       console.error("Error saving event data:", error);
     } finally {
@@ -108,10 +119,9 @@ const ChallengeDetailsForm: React.FC = () => {
               <span className="mb-2/3 text-[2rem]">*</span>
             </label>
             <div
-              className={`${styledBorder} flex w-fit h-[3rem] !px-[1rem] !py-0 items-center justify-center gap-[1rem] ${
-                (errors.challengeReleaseDate || errors.challengeReleaseTime) &&
+              className={`${styledBorder} flex w-fit h-[3rem] !px-[1rem] !py-0 items-center justify-center gap-[1rem] ${(errors.challengeReleaseDate || errors.challengeReleaseTime) &&
                 "border-MVP-red"
-              }`}
+                }`}
             >
               <Controller
                 name="challengeReleaseDate"
@@ -178,9 +188,8 @@ const ChallengeDetailsForm: React.FC = () => {
                 required: "Problem statement is required",
                 maxLength: 500,
               })}
-              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${
-                errors.problemStatement && "border-MVP-red"
-              }`}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.problemStatement && "border-MVP-red"
+                }`}
               placeholder="Enter the Problem Statement"
               maxLength={500}
             />
@@ -205,9 +214,8 @@ const ChallengeDetailsForm: React.FC = () => {
                 required: "Objectives/Goals are required",
                 maxLength: 500,
               })}
-              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${
-                errors.objectivesGoals && "border-MVP-red"
-              }`}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.objectivesGoals && "border-MVP-red"
+                }`}
               placeholder="Enter the objectives/goals"
               maxLength={500}
             />
@@ -230,9 +238,8 @@ const ChallengeDetailsForm: React.FC = () => {
             <textarea
               {...register("constraints", { maxLength: 500 })}
               placeholder="Enter the constraints/limitations"
-              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${
-                errors.constraints && "border-MVP-red"
-              }`}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.constraints && "border-MVP-red"
+                }`}
               maxLength={500}
             />
             <p className="ml-auto font-bold">
@@ -248,9 +255,8 @@ const ChallengeDetailsForm: React.FC = () => {
               {...register("evaluationCriteria", { maxLength: 500 })}
               placeholder="Enter the evaluation criteria"
               maxLength={500}
-              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${
-                errors.evaluationCriteria && "border-MVP-red"
-              }`}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.evaluationCriteria && "border-MVP-red"
+                }`}
             />
             <p className="ml-auto font-bold">
               {watch("evaluationCriteria")?.length || 0}/500 characters
@@ -268,9 +274,8 @@ const ChallengeDetailsForm: React.FC = () => {
               {...register("additionalInformation", { maxLength: 500 })}
               placeholder="Enter any additional information needed"
               maxLength={500}
-              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${
-                errors.additionalInformation && "border-MVP-red"
-              }`}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.additionalInformation && "border-MVP-red"
+                }`}
             />
             <p className="ml-auto font-bold">
               {watch("additionalInformation")?.length || 0}/500 characters

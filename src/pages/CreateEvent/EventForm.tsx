@@ -29,7 +29,7 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  imageUrl: string[];
+  // imageUrl: string[];
   file: File;
 }
 
@@ -64,7 +64,7 @@ const EventForm: React.FC = () => {
       minParticipants: savedData?.minParticipants || 0,
       maxParticipants: savedData?.maxParticipants || 0,
       judges: savedData?.judges || [{ firstName: "", lastName: "" }],
-      imageUrl: savedData?.imageUrl || null,
+      // imageUrl: savedData?.imageUrl || null,
       file: null,
     },
   });
