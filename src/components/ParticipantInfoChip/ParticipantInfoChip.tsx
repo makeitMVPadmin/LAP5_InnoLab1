@@ -1,10 +1,10 @@
 const ParticipantInfoChip = ({ integer, fullName, role }) => {
     return (
-        <div className="flex items-center gap-[0.5rem] py-[0.1rem] pl-[0.5rem] pr-[1.2rem] font-gilroy rounded-[2rem] border border-black bg-MVP-white">
-            <img 
-                className="h-[2.6rem] w-[2.6rem] rounded-full" 
-                src={`https://i.pravatar.cc/300?img=${integer + 10}`} 
-                alt={`Profile image of ${fullName}`} 
+        <div className="flex items-center gap-[0.5rem] py-[0.4rem] pl-[0.6rem] pr-[1rem] font-gilroy rounded-[2rem] border border-black bg-MVP-white">
+            <img
+                className="h-[2.2rem] w-[2.2rem] rounded-full"
+                src={`https://i.pravatar.cc/300?img=${integer + 10}`}
+                alt={`Profile image of ${fullName}`}
                 loading="lazy"
             />
             <div className="flex flex-col justify-between">

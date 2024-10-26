@@ -29,6 +29,36 @@ export function convertToTimeZone(
   return formattedDate;
 }
 
+
+export const convertDate = (startDate: string, startTime: string, timezone: string) => {
+  if (!startDate || !startTime) return { date: '', time: '' };
+
+  const date = new Date(startDate);
+
+  // Format the date
+  const formattedDate = date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  // Format the time
+  const formattedTime = timezone?.startsWith('GMT')
+    ? startTime
+    : new Date(startTime).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+  return {
+    date: formattedDate,
+    time: `${formattedTime} ${timezone || ''}`
+  };
+};
+
+
+
 export const getEventStatus = (
   startTime: string | Date,
   endTime: string | Date
@@ -68,3 +98,25 @@ export const getEventStatus = (
     };
   }
 };
+
+export const convertToUTC = (date: string, time: string, gmtOffset: string): string => {
+  const dateTimeString = `${date}T${time}:00`;
+  
+  const localDateTime = new Date(dateTimeString + gmtOffset);
+
+  return localDateTime.toISOString().slice(0, -5) + "Z";
+};
+
+
+export const getTimeZoneFromOffset = (offset: string) => {
+    const timeZoneMap = {
+        'GMT-0500': 'EST',
+        'GMT-0600': 'CST',
+        'GMT-0700': 'MST',
+        'GMT-0800': 'PST',
+    };
+
+    return timeZoneMap[offset];
+}
+
+
