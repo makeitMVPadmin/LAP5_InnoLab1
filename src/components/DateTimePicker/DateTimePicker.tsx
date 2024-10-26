@@ -47,6 +47,7 @@ const TimeSpinner = ({ value, onChange, min, max, disabled }) => (
 );
 
 const DateTimePicker = ({ control,
+    errorDate,
     disabled = false,
     dateFieldName,
     timeFieldName,
@@ -159,7 +160,7 @@ const DateTimePicker = ({ control,
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant="outline"
-                                            className={`justify-start text-left min-w-[260px] ${STYLES.styledBorder} max-w-[280px]`}
+                                            className={`justify-start text-left min-w-[260px] ${STYLES.styledBorder} max-w-[280px] ${errorDate ? "border-MVP-red" : ""}`}
                                             disabled={disabled}
                                         >
                                             {dateField.value ? (

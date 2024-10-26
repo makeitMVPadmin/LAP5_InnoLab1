@@ -163,7 +163,7 @@ const EventForm: React.FC = () => {
     console.log(data)
     const startDate = getValues("startDate");
     saveFormData("eventFormData", data);
-    // navigate("/ChallengeDetails", { state: { startDate } });
+    navigate("/ChallengeDetails", { state: { startDate } });
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -425,6 +425,8 @@ const EventForm: React.FC = () => {
                 label="Start Date"
                 minDate={new Date()}
                 maxDate={watch('endDate') ? new Date(watch('endDate')) : undefined} // If you want to prevent selecting dates after end date
+                errorDate={errors.startDate}
+
               />
 
               <div className="flex gap-[3rem]">
@@ -436,6 +438,7 @@ const EventForm: React.FC = () => {
             <div>
               <label className={`${sectionHeader} !text-[1.3rem] !mb-[0.1rem] !font-bold`}>End<span className="mb-2/3 text-[2rem]">*</span></label>
               <DateTimePicker
+                errorDate={errors.endDate}
                 control={control}
                 dateFieldName="endDate"
                 timeFieldName="endTime"
