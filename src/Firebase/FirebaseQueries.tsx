@@ -12,26 +12,57 @@ import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
 
+
+// export type HackathonEventType = {
+//   basicProjectSummary: string;
+//   createdAt: string;
+//   disciplines: string[];
+//   email: string;
+//   endTime: string;
+//   firstName: string;
+//   fullDetails: string[];
+//   imageUrl: string;
+//   judges: string[];
+//   lastName: string;
+//   meetingLink: string;
+//   participantCount: number;
+//   skillLevel: string;
+//   startTime: string;
+//   themes: string[];
+//   timeZone: string;
+//   title: string;
+// };
+export type JudgeType = {
+  firstName: string;
+  lastName: string;
+};
+
 export type HackathonEventType = {
-  basicProjectSummary: string;
   createdAt: string;
   disciplines: string[];
   email: string;
-  endTime: string;
-  firstName: string;
-  fullDetails: string[];
-  imageUrl: string;
-  judges: string[];
-  lastName: string;
-  meetingLink: string;
-  participantCount: number;
-  skillLevel: string;
-  startTime: string;
-  themes: string[];
-  timeZone: string;
-  title: string;
+  judges: JudgeType[];
   organizer: string;
+  meetingLink: string;
+  minParticipants: number;
+  maxParticipants: number;
+  skillLevel: string;
+  themes: string[];
+  challengeReleaseTime: string;
+  challengeReleaseDate: string;
+  title: string;
+  imageUrl: string;
+  timeZone: string;
+  startTime: string;
+  startDate: string;
+  endDate: string;
+  endTime: string;
   problemStatement: string;
+  basicProjectSummary: string;
+  objectivesGoals: string;
+  evaluationCriteria: string;
+  constraints: string;
+  additionalInformation: string;
 };
 
 export const fetchHackathonEvents = async (
