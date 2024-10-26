@@ -68,3 +68,25 @@ export const getEventStatus = (
     };
   }
 };
+
+export const convertToUTC = (date: string, time: string, gmtOffset: string): string => {
+  const dateTimeString = `${date}T${time}:00`;
+  
+  const localDateTime = new Date(dateTimeString + gmtOffset);
+
+  return localDateTime.toISOString().slice(0, -5) + "Z";
+};
+
+
+export const getTimeZoneFromOffset = (offset: string) => {
+    const timeZoneMap = {
+        'GMT-0500': 'EST',
+        'GMT-0600': 'CST',
+        'GMT-0700': 'MST',
+        'GMT-0800': 'PST',
+    };
+
+    return timeZoneMap[offset];
+}
+
+

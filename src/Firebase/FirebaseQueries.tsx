@@ -2,27 +2,37 @@ import { getDocs, collection, doc, getDoc, query, where, runTransaction, arrayRe
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
+import { convertToUTC, getTimeZoneFromOffset } from "../utils/dateAndTimeFunctions";
 
 
 export type HackathonEventType = {
+  additionalInformation: string;
   basicProjectSummary: string;
-  createdAt: string;
+  challengeReleaseDate: string;
+  challengeReleaseTime: string;
+  constraints: string;
   disciplines: string[];
-  email: string;
+  endDate: string;
   endTime: string;
-  firstName: string;
-  fullDetails: string[];
+  evaluationCriteria: string;
   imageUrl: string;
-  judges: string[];
-  lastName: string;
+  judges: {firstName: string, lastName: string}[];
   meetingLink: string;
+  minParticipants: number;
+  maxParticipants: number;
+  objectiveGoals: string;
+  organizer: string;
   participantCount: number;
+  problemStatement: string;
   skillLevel: string;
+  startDate: string;
   startTime: string;
+  submissionsId?: string[];
   themes: string[];
   timeZone: string;
   title: string;
 };
+
 
 export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ event?: HackathonEventType; events: Record<string, HackathonEventType>; loading: boolean; error: string | null }> => {
   let loading = true;
@@ -35,7 +45,16 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
     const querySnapshot = await getDocs(colRef);
 
     events = querySnapshot.docs.reduce((acc, doc) => {
-      acc[doc.id] = doc.data() as HackathonEventType;
+
+      const data = doc.data() as HackathonEventType;
+      const { startDate, startTime, endDate, endTime, timeZone } = data;
+
+      data.startTime = convertToUTC(startDate, startTime, timeZone.slice(3));
+      data.endTime = convertToUTC(endDate, endTime, timeZone.slice(3));
+      data.timeZone = getTimeZoneFromOffset(timeZone);
+
+      acc[doc.id] = data;
+
       return acc;
     }, {} as Record<string, HackathonEventType>);
     if (hackathonId) {
@@ -52,6 +71,7 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
 
   return { event, events, loading, error };
 };
+
 
 type JudgeCommentType = {
   comment: string;

@@ -13,12 +13,15 @@ const HackathonEventsPage = () => {
   const { currentUser } = useAuth();
   const { joinedEvents } = useJoinedEvents(currentUser?.uid);
   const { events, isLoading, getEndingEvent } = useEvents(joinedEvents);
-  const { allCurrentEvents = [], joinedCurrentEvents = [] } = events || {};
-  const { filters, setFilters, filteredEvents = [] } = useFilterEvents(allCurrentEvents);
+  const { allCurrentEvents, joinedCurrentEvents } = events || {};
+  const { filters, setFilters, filteredEvents } = useFilterEvents(allCurrentEvents);
   const [alertEvent, setAlertEvent] = useState(false);
 
   useEffect(() => {
-    setAlertEvent(getEndingEvent(joinedCurrentEvents));
+    const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
+    if (eventEndingSoon) {
+        setAlertEvent(true);
+    }
   }, [joinedCurrentEvents]);
 
 
@@ -53,7 +56,7 @@ const HackathonEventsPage = () => {
         </div>
       </div>
       <div className="w-full flex justify-end gap-6 px-12 py-8 text-2xl font-gilroy font-extrabold">
-        <Link to="joined" className="flex py-2.5 px-6 justify-center text-xl items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white font-gilroy font-extrabold">
+        <Link to="joined" className="relative flex py-2.5 px-6 justify-center text-xl items-center gap-2.5 rounded-lg border-t-[0.2rem] border-r-[0.3rem] border-b-[0.3rem] border-l-[0.2rem] border-black bg-MVP-white font-gilroy font-extrabold">
           <CalendarRewind className="w-7 h-7" />
           My Events
           {alertEvent &&

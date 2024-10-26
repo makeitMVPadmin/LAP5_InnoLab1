@@ -1,74 +1,50 @@
 import { Link } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useEvents from "../../hooks/useEvents";
+import useEventCountdown from "../../hooks/useEventCountdown";
 
 const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => void }> = ({ joinedEvents, onCountdownEnd }) => {
-    const { events, getEndingEvent } = useEvents(joinedEvents);
+    const { events, getEndingEvent } = useEvents(joinedEvents); // grabs events joined
     const { joinedCurrentEvents } = events;
-    const [countdown, setCountdown] = useState("");
     const [eventAlert, setEventAlert] = useState(null);
 
     useEffect(() => {
-        const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
+        const eventEndingSoon = getEndingEvent(joinedCurrentEvents); // checks if the event is ending (within 2 hours)
         if (eventEndingSoon) {
             const { title, id, endTime } = eventEndingSoon;
             setEventAlert({
                 title: title,
                 eventId: id,
-                endTime: endTime
+                endTime: endTime // returns id and end time, and event title
             });
         } else {
-            setEventAlert(null);
+            setEventAlert(null); // otherwise no banner shown
         }
     }, [joinedCurrentEvents]);
 
-    const updateCountdown = useCallback(() => {
-        if (!eventAlert) return;
-
-        const { endTime } = eventAlert;
-        const eventEndTime = new Date(endTime);
-        const now = new Date();
-        const timeLeftInMilliseconds = eventEndTime.getTime() - now.getTime();
-
-        if (timeLeftInMilliseconds <= 0) {
-            setCountdown("");
-            setEventAlert(null);
-            onCountdownEnd();
-            return;
-        }
-
-        const minutesLeft = Math.floor((timeLeftInMilliseconds / 1000 / 60) % 60);
-        const secondsLeft = Math.floor((timeLeftInMilliseconds / 1000) % 60);
-        const newCountdown = `${minutesLeft}m: ${String(secondsLeft).padStart(2, '0')}s`;
-
-        setCountdown(newCountdown);
-    }, [eventAlert, onCountdownEnd]);
+    const { formattedTime, ended } = useEventCountdown(eventAlert && eventAlert.eventId); // passes event id if theres an event ending
+    // returns formattedTime which is a dynamic string and ended boolean
 
     useEffect(() => {
-        if (!eventAlert) {
-            setCountdown("");
-            return;
+        if (ended) {
+            setEventAlert(null);
+            onCountdownEnd(); // triggers event refetching. This function is passed from MyEventsPage
         }
-
-        const intervalId = setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        return () => clearInterval(intervalId);
-    }, [eventAlert, updateCountdown]);
+    }, [ended, onCountdownEnd]);
 
     if (!eventAlert) {
-        return null;
+        return null; // Banner is not shown in MyEventsPage if no joined event is ending soon
     }
 
-    const { title, eventId } = eventAlert;
+    const { title } = eventAlert;
 
     return (
         <div className="flex flex-wrap mx-8 my-4 min-h-fit rounded-[12px] h-[8%] bg-MVP-soft-blue px-8 py-4 font-poppins justify-between items-center">
             <div className="flex flex-col gap-1 h-fit">
                 <h1 className="text-2xl">{title}</h1>
-                <h2 className="font-gilroy text-xl">Submissions Close in {countdown}</h2>
+                <h2 className="font-gilroy text-xl">Submissions Close in {formattedTime}</h2>
             </div>
-            <Link to={`/join-event/${eventId}`} className="h-fit rounded-[10px] border-y-[3px] border-x-[5px] py-3 px-6 border-MVP-black bg-MVP-yellow text-[#161616] text-center font-gilroy text-xl normal-case font-extrabold leading-[115.645%] tracking-tight">
+            <Link to={`/join-event/${eventAlert.eventId}`} className="h-fit rounded-[10px] border-y-[3px] border-x-[5px] py-3 px-6 border-MVP-black bg-MVP-yellow text-[#161616] text-center font-gilroy text-xl normal-case font-extrabold leading-[115.645%] tracking-tight">
                 Submit Project
             </Link>
         </div>

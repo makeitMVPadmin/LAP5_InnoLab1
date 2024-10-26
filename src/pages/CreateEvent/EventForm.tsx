@@ -521,8 +521,8 @@ const EventForm: React.FC = () => {
                                 className="text-[1.2rem] focus:outline-none w-full"
                             >
                                 <option value="">Select a timezone</option>
-                                <option value="GMT-0700">PST (GMT-0700)</option>
-                                <option value="GMT-0600">MST (GMT-0600)</option>
+                                <option value="GMT-0700">PST (GMT-0800)</option>
+                                <option value="GMT-0600">MST (GMT-0700)</option>
                                 <option value="GMT-0600">CST (GMT-0600)</option>
                                 <option value="GMT-0500">EST (GMT-0500)</option>
                             </select>
