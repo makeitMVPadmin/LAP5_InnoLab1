@@ -24,7 +24,6 @@ const EventPage = () => {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const { submissions, participantCount, formattedUserNames, exportData, exportFields, } = useEventData(eventId);
-
   useEffect(() => {
     async function loadEvent() {
       setIsLoading(true);
@@ -188,9 +187,9 @@ const EventPage = () => {
               </p>
             </div>
           </section>
+
         </section>
       </div>
-
       {/* Banner */}
       <section className="h-[100px] z-50  w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white flex justify-between items-center">
         <div className="flex gap-2 ">
