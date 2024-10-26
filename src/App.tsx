@@ -9,16 +9,17 @@ import HackathonEventsPage from "./pages/HackathonEventsPage/HackathonEventsPage
 import JoinEvent from "./pages/JoinEvent/JoinEvent";
 import EventPage from "./pages/EventPage/EventPage";
 import ProjectSubmissionPage from "./pages/ProjectSubmissionPage/ProjectSubmissionPage";
-import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage"
+import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage";
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
 import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
+import EventDetailsPage from "./pages/EventDetails/EventDetailsPage";
+import EventDetails from "./components/EventDetails/EventDetails";
 import OrganizerReviewPage from "./pages/OrganizerReviewPage/OrganizerReviewPage";
 import Layout from "./components/Layout/Layout";
 import { Toaster } from "./components/ui/toaster"
-
 
 const App = () => {
   return (
@@ -34,7 +35,7 @@ const App = () => {
           <Route path="/hackathons/joined" element={<Layout redirect="/hackathons"><MyEventsPage /></Layout>} />
           <Route path="/hackathons/submissions/:submissionId" element={<Layout navigateback><ProjectShowcasePage /></Layout>} />
           <Route path="/join-event/:eventId" element={<Layout redirect="/hackathons" ><JoinEvent /></Layout>} />
-          <Route path="/event/:eventId" element={<Layout redirect="/hackathons"><EventPage /></Layout>} />
+          <Route path="/event/:eventId" element={<Layout navigateback ><EventPage /></Layout>} />
           <Route path="/event/:eventId/admin" element={<Layout navigateback><OrganizerReviewPage /></Layout>} />
           <Route path="/event/:eventId/submit" element={<Layout navigateback ><ProjectSubmissionPage /></Layout>} />
           <Route path="/event/:eventId/review-submit" element={<Layout navigateback><ProjectReviewPage /></Layout>} />
@@ -46,6 +47,6 @@ const App = () => {
     </AuthProvider>
 
   );
-}
+};
 
 export default App;
