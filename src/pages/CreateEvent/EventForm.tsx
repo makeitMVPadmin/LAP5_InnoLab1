@@ -7,6 +7,10 @@ import { useFetchHackathonUser } from "../../Firebase/FirebaseQueries";
 import { auth } from "../../Firebase/FirebaseConfig";
 import { ReactComponent as CloseIcon } from "../../assets/images/closeIcon.svg";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
+import FileUploadZone from "../../components/FileUploadZone/FileUploadZone";
+import ImportCard from "../../components/ImportCard/ImportCard";
+import ErrorIcon from "../../assets/images/error.svg"
+
 const { styledBorder, sectionHeader } = STYLES;
 
 interface EventFormInputs {
@@ -26,6 +30,7 @@ interface EventFormInputs {
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
   imageUrl: string[];
+  file: File;
 }
 
 const EventForm: React.FC = () => {
@@ -60,6 +65,7 @@ const EventForm: React.FC = () => {
       maxParticipants: savedData?.maxParticipants || 0,
       judges: savedData?.judges || [{ firstName: "", lastName: "" }],
       imageUrl: savedData?.imageUrl || null,
+      file: null,
     },
   });
 
@@ -142,37 +148,22 @@ const EventForm: React.FC = () => {
   };
 
   const [file, setFile] = useState(null);
-  const fileInputRef = useRef(null);
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+  const handleDeleteFile = (indexToRemove) => {
+    const newFiles = file.filter((_, index) => index !== indexToRemove);
+    setFile(newFiles)
+  }
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const chosenFile = e.target.files[0];
-    if (chosenFile) {
-      setFile(chosenFile);
-    }
-  };
-
-  const handleFileClick = () => {
-    fileInputRef.current.click();
+  const handleFileChange = (chosenFile: File) => {
+    setFile(chosenFile);
+    setValue('file', chosenFile)
   };
 
   const onSubmit = (data: EventFormInputs) => {
+    console.log(data)
     const startDate = getValues("startDate");
     saveFormData("eventFormData", data);
-    navigate("/ChallengeDetails", { state: { startDate } });
+    // navigate("/ChallengeDetails", { state: { startDate } });
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -644,48 +635,28 @@ const EventForm: React.FC = () => {
             <label className={`${sectionHeader} mb-[1rem]`}>
               Upload a Thumbnail Image
             </label>
-            <div className="text-center font-extrabold w-[40%] text-xl">
-              <div
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                className="flex flex-col gap-2 items-center justify-center border-2 border-dashed border-MVP-black rounded-lg p-6 cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="size-10"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <p className="">
-                  drag and drop file or{" "}
-                  <span
-                    className="text-blue-500 underline cursor-pointer"
-                    onClick={handleFileClick}
-                  >
-                    choose file
-                  </span>
-                </p>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                  accept="image/*,.pdf,.svg,.zip"
-                />
+            <div className="pt-2">
+              <FileUploadZone
+                onFileChange={handleFileChange}
+                acceptedTypes={['image/jpeg', 'image/png', 'application/pdf', 'image/svg+xml']}
+              />
+              <p className={`${STYLES.label} px-2 pt-2`}>supported formats: JPG, PNG, PDF, SVG</p>
+              <p className={`${STYLES.label} px-2`}>maximum size: 10MB</p>
+            </div>
+            <div className="pb-6">
+              <div className="flex gap-4">
+                {file?.length > 0 && file.map((item, index) => {
+                  return (
+                    <ImportCard key={`file-${index}`} fileName={item.name} handleDelete={() => handleDeleteFile(index)} />
+                  )
+                })}
               </div>
-              {file && (
-                <p className="mt-2 text-sm">Selected file: {file.name}</p>
+              {errors.file && (
+                <div className="flex items-center gap-2">
+                  <img className="w-10 h-11 basis-3 p-6" src={ErrorIcon} alt="error icon" />
+                  <p className="text-red-500">{errors.file.message}</p>
+                </div>
               )}
-              <p className="my-2 text-sm ">
-                supported formats: JPG, PNG, PDF, SVG, ZIP
-              </p>
-              <p className="text-sm">maximum size: 10MB</p>
             </div>
           </div>
           <div className="flex justify-end gap-[2rem] font-extrabold text-2xl">
