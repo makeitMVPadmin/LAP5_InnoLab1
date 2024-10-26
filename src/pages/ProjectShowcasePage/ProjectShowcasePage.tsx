@@ -55,7 +55,7 @@ const ProjectShowcasePage = () => {
     };
 
     return (
-        <main className='w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat'>
+        <main className='w-full h-full bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat font-gilroy'>
             <div className='flex flex-col items-center font-gilroy pb-[5rem]'>
                 <section className='w-[66%] flex flex-col'>
                     <h1 className='text-MVP-black font-sans text-[2.9rem] font-extrabold leading-[115.645%] mt-[1.9rem]'>{event && event.title}</h1>
@@ -64,7 +64,7 @@ const ProjectShowcasePage = () => {
                         <p className="font-extrabold">Submitted on</p>
                         <p className="font-light"> {createdAt?.toDate().toLocaleString('en-US', options)}</p>
                     </div>
-                    <h2 className="text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Team Name</h2>
+                    <h2 className="text-MVP-black text-[1.5rem] font-semibold leading-[115.645%] font-gilroy ligature-off">Team Name</h2>
                     <p className="text-MVP-black text-[1.3rem] font-normal leading-[115.645%] font-gilroy my-[0.5rem]">{teamName}</p>   
                     <div className="h-full flex gap-[0.9rem] my-[1rem]">
                         {teamMembers?.map(({ name, role }, index) => (
@@ -72,8 +72,8 @@ const ProjectShowcasePage = () => {
                         ))}
                     </div>
                     <div className="flex justify-between items-center my-[0.6rem]">
-                        <h2 className="text-center text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-sans ligature-off">Project Files</h2>
-                        <button onClick={handleDownloadAll} className='rounded-[0.5rem] border-t-[0.15rem] border-r-[0.25rem] border-b-[0.25rem] border-l-[0.15rem] border-MVP-black bg-MVP-white flex p-[0.8rem] px-[1.6rem] justify-center items-center gap-[0.5rem] text-center text-MVP-black text-[1.4rem] font-extrabold leading-[115.645%] font-sans ligature-off'>Download All Files</button>
+                        <h2 className="text-center text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Project Files</h2>
+                        <button onClick={handleDownloadAll} className='rounded-[0.5rem] border-t-[0.15rem] border-r-[0.25rem] border-b-[0.25rem] border-l-[0.15rem] border-MVP-black bg-MVP-white flex p-[0.8rem] px-[1.6rem] justify-center items-center gap-[0.5rem] text-center text-MVP-black text-[1.2rem] font-extrabold leading-[115.645%] font-gilroy ligature-off'>Download All Files</button>
                     </div>
                     <PDFViewer pdfFileName={pdfFiles} />
                     <div className='flex justify-evenly my-[2rem]'>
@@ -81,7 +81,7 @@ const ProjectShowcasePage = () => {
                             <DownloadWithFilename key={index} filename={getFileNameFromUrl(projectFile)} ref={el => downloadRefs.current[index] = el} />
                         )}
                     </div>
-                    <h2 className="my-[0.6rem] text-MVP-black text-[1.5rem] font-extrabold leading-[130.645%] font-gilroy ligature-off">Tech Stack: *</h2>
+                    <h2 className="mt-[0.6rem] text-MVP-black text-[1.5rem] font-extrabold leading-[130.645%] font-gilroy ligature-off">Tech Stack: *</h2>
                     <ul>
                         {techStack?.split(",").map(item => item.trim()).map((tech, index) => (
                             <li key={index} className="text-MVP-black font-normal text-[1.3rem] leading-[130.645%] font-poppins my-[0.2rem]">
@@ -89,7 +89,7 @@ const ProjectShowcasePage = () => {
                             </li>
                         ))}
                     </ul>
-                    <h2 className="my-[1.3rem] text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Design Tool Used: *</h2>
+                    <h2 className="mt-[1.3rem] text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Design Tool Used: *</h2>
                     <ul>
                         {designTools?.split(",").map(item => item.trim()).map((tool, index) => (
                             <li key={index} className="text-MVP-black font-normal text-[1.3rem] leading-[115.645%] font-poppins my-[0.2rem]">
@@ -97,10 +97,10 @@ const ProjectShowcasePage = () => {
                             </li>
                         ))}
                     </ul>
-                    <h2 className="my-[1.3rem] text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Project Links:</h2>
+                    <h2 className="mt-[1.3rem] text-MVP-black text-[1.5rem] font-extrabold leading-[115.645%] font-gilroy ligature-off">Project Links:</h2>
                     <ul>
                         {projectLinks?.map(({url}, index) => (
-                            <li key={index} className="text-MVP-black font-normal text-[1.3rem] leading-[115.645%] font-poppins my-[0.4rem] hover:underline">
+                            <li key={index} className="text-MVP-black font-normal text-[1.3rem] leading-[115.645%] font-poppins my-[0.8rem] hover:underline">
                                 <Link to={url}>
                                     {url}
                                 </Link>
@@ -116,7 +116,7 @@ const ProjectShowcasePage = () => {
                         ]}
                     />
                     <h1 className="flex-1 text-MVP-black font-gilroy text-[1.5rem] font-extrabold leading-[1.8rem]">
-                        Comments
+                        Judges' Comments
                     </h1>
                     <CommentSection submissionId={submissionId} />
                 </section>
