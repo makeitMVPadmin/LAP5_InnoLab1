@@ -41,13 +41,28 @@ export const formatUserNames = (submissions: Submission[] = []) => {
             .filter(member => member && member.name)
             .map(member => member.name);
 
-        // Remove duplicates
-        const uniqueNames = [...new Set(allTeamMembers)];
+        // Remove duplicates and sort alphabetically
+        const uniqueNames = [...new Set(allTeamMembers)].sort((a, b) =>
+            a.localeCompare(b)
+        );
 
-        // Sort alphabetically
-        return uniqueNames.sort((a, b) => a.localeCompare(b));
+        // Format based on length
+        if (uniqueNames.length === 0) {
+            return "";
+        }
+        if (uniqueNames.length === 1) {
+            return uniqueNames[0];
+        }
+        if (uniqueNames.length === 2) {
+            return `${uniqueNames[0]} and ${uniqueNames[1]}`;
+        }
+
+        // More than 2 names
+        const othersCount = uniqueNames.length - 2;
+        return `${uniqueNames[0]}, ${uniqueNames[1]} and ${othersCount} others`;
+
     } catch (error) {
         console.error('Error formatting user names:', error);
-        return []; // Return empty array as fallback
+        return ""; // Return empty string as fallback for better display
     }
 };
