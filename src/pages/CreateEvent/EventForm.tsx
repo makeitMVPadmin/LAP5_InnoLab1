@@ -229,8 +229,8 @@ const EventForm: React.FC = () => {
             />
             <div className="flex">
               {errors.title && (
-                <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
-                  {errors.title.message}
+                <p className="text-MVP-red text-[1rem] mt-[0.3rem] flex font-bold gap-2">
+                  <img src={ErrorIcon} alt="error icon" className="w-3" /> {errors.title.message}
                 </p>
               )}
               <p className="ml-auto font-bold">
@@ -254,7 +254,8 @@ const EventForm: React.FC = () => {
             />
             <div className="flex">
               {errors.basicProjectSummary && (
-                <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
+                <p className="text-MVP-red text-[1rem] mt-[0.3rem] flex gap-2 font-bold">
+                  <img src={ErrorIcon} alt="error icon" className="w-3" />
                   {errors.basicProjectSummary.message}
                 </p>
               )}
@@ -310,7 +311,8 @@ const EventForm: React.FC = () => {
               )}
             />
             {errors.skillLevel && (
-              <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
+              <p className="text-MVP-red text-[1rem] mt-[0.3rem] flex gap-2 font-bold">
+                <img src={ErrorIcon} alt="error icon" className="w-3" />
                 {errors.skillLevel.message}
               </p>
             )}
@@ -360,7 +362,8 @@ const EventForm: React.FC = () => {
               </div>
             </div>
             {errors?.disciplines && (
-              <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
+              <p className="text-MVP-red text-[1rem] mt-[0.3rem] flex gap-2 font-bold">
+                <img src={ErrorIcon} alt="error icon" className="w-3" />
                 {errors?.disciplines.message}
               </p>
             )}
@@ -406,7 +409,8 @@ const EventForm: React.FC = () => {
               </div>
             </div>
             {errors.themes && (
-              <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
+              <p className="text-MVP-red text-[1rem] mt-[0.3rem] flex gap-2 font-bold">
+                <img src={ErrorIcon} alt="error icon" className="w-3" />
                 {errors.themes.message}
               </p>
             )}
@@ -430,8 +434,13 @@ const EventForm: React.FC = () => {
               />
 
               <div className="flex gap-[3rem]">
-                {errors.startDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startDate.message}</p>}
-                {errors.startTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.startTime.message}</p>}
+                {errors.startDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem] flex gap-2 font-bold">
+                  <img src={ErrorIcon} alt="error icon" className="w-3" />{errors.startDate.message}
+                </p>}
+                {errors.startTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem] flex gap-2 font-bold">
+                  <img src={ErrorIcon} alt="error icon" className="w-3" />
+                  {errors.startTime.message}
+                </p>}
               </div>
             </div>
 
@@ -448,8 +457,12 @@ const EventForm: React.FC = () => {
               />
             </div>
             <div className="flex gap-[3.5rem]">
-              {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endDate.message}</p>}
-              {errors.endTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">{errors.endTime.message}</p>}
+              {errors.endDate && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem] flex gap-2 font-bold">
+                <img src={ErrorIcon} alt="error icon" className="w-3" />
+                {errors.endDate.message}</p>}
+              {errors.endTime && <p className="text-MVP-red text-[0.8rem] mt-[0.3rem] flex gap-2 font-bold">
+                <img src={ErrorIcon} alt="error icon" className="w-3" />{errors.endTime.message}
+              </p>}
             </div>
           </div>
           <div className="mb-[1rem] flex flex-col">
@@ -493,7 +506,8 @@ const EventForm: React.FC = () => {
             />
             <div className="flex">
               {errors.meetingLink && (
-                <p className="text-MVP-red text-[1rem] mt-[0.3rem]">
+                <p className="text-MVP-red text-[1rem] mt-[0.3rem] flex gap-2 font-bold">
+                  <img src={ErrorIcon} alt="error icon" className="w-3" />
                   {errors.meetingLink.message}
                 </p>
               )}
@@ -586,7 +600,8 @@ const EventForm: React.FC = () => {
                           }`}
                       />
                       {errors.judges?.[index]?.firstName && (
-                        <p className="text-MVP-red text-[0.8rem] mt-[0.2rem]">
+                        <p className="text-MVP-red text-[0.8rem] mt-[0.2rem] flex gap-2 font-bold">
+                          <img src={ErrorIcon} alt="error icon" className="w-3" />
                           {errors.judges?.[index]?.firstName.message}
                         </p>
                       )}
@@ -671,8 +686,8 @@ const EventForm: React.FC = () => {
               Cancel
             </button>
             <button
-              type="submit"
               className={`${styledBorder} !bg-MVP-light-blue !py-[0.7rem] !px-[1.5rem]`}
+              onClick={handleFormValidation}
             >
               Next
             </button>
