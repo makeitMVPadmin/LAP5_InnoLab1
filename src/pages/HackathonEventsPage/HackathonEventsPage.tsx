@@ -20,11 +20,10 @@ const HackathonEventsPage = () => {
   useEffect(() => {
     const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
     if (eventEndingSoon) {
-        setAlertEvent(true);
+      setAlertEvent(true);
     }
-    console.log(events);
-  }, [joinedCurrentEvents]);
 
+  }, [joinedCurrentEvents]);
 
   const displayCards = filteredEvents?.map(event => (
     <EventCard

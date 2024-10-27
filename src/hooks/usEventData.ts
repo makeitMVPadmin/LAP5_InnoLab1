@@ -1,9 +1,23 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { fetchAllEventProjectSubmissions, fetchHackathonEvents, fetchHackathonParticipants } from '../Firebase/FirebaseQueries';
-import { formatUserNames } from "../utils/sortHelpers"
+import { formatUserNames } from "../utils/sortHelpers";
+
+// Define types for better type safety
+interface Submission {
+    teamName: string;
+    title: string;
+    teamMembers: Array<{ name: string }>;
+}
+
+interface EventDataState {
+    submissions: Submission[];
+    participantCount: number;
+    isLoading: boolean;
+    error: string | null;
+}
 
 function useEventData(eventId: string) {
-    const [state, setState] = useState({
+    const [state, setState] = useState<EventDataState>({
         submissions: [],
         participantCount: 0,
         isLoading: false,
@@ -23,17 +37,18 @@ function useEventData(eventId: string) {
             ]);
 
             // Validate event data
-            if (eventResponse.error || !eventResponse.event) {
-                throw new Error(eventResponse.error || "Invalid event ID.");
+            if (eventResponse?.error || !eventResponse?.event) {
+                throw new Error(eventResponse?.error || "Invalid event ID.");
             }
 
             // Fetch submissions after validating event
-            const { submissions } = await fetchAllEventProjectSubmissions(eventId);
+            const response = await fetchAllEventProjectSubmissions(eventId);
+            const submissions = response?.submissions || [];
 
             setState(prev => ({
                 ...prev,
                 submissions,
-                participantCount: submissionsResponse.numberOfParticipants,
+                participantCount: submissionsResponse?.numberOfParticipants || 0,
                 isLoading: false
             }));
         } catch (error) {
@@ -46,20 +61,18 @@ function useEventData(eventId: string) {
         }
     }, [eventId]);
 
-    useEffect(() => {
-        fetchEventData();
-    }, [fetchEventData]);
-
     const formattedUserNames = useMemo(() =>
-        formatUserNames(state.submissions),
+        formatUserNames(state.submissions || []),
         [state.submissions]
     );
 
     const exportData = useMemo(() => {
-        return state.submissions.map(submission => ({
-            teamName: submission.teamName,
-            projectTitle: submission.title,
-            teamMembers: submission.teamMembers.map(member => member.name).join(', ')
+        return (state.submissions || []).map(submission => ({
+            teamName: submission?.teamName || 'Untitled Team',
+            projectTitle: submission?.title || 'Untitled Project',
+            teamMembers: (submission?.teamMembers || [])
+                .map(member => member?.name || 'Anonymous')
+                .join(', ') || 'No members'
         }));
     }, [state.submissions]);
 
@@ -69,7 +82,6 @@ function useEventData(eventId: string) {
         { header: 'Project Title', key: 'projectTitle' },
         { header: 'Team Members', key: 'teamMembers' }
     ];
-
 
     useEffect(() => {
         fetchEventData();

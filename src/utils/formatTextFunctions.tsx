@@ -55,10 +55,9 @@ interface NumberedListOptions {
 }
 
 export const formatStringToNumberedListWithOptions = (
-  text: string,
+  text: string = '', // Set default value for `text`
   options: NumberedListOptions = {}
 ): JSX.Element => {
-  console.log(text);
   const {
     spacing = 'space-y-4',
     padding = 'pl-4',
@@ -68,10 +67,10 @@ export const formatStringToNumberedListWithOptions = (
     counterStyle = 'decimal'
   } = options;
 
-  // Split by newlines, hyphens, or number patterns
+  // Ensure `text` is not undefined
   const cleanedText = text.replace(/^[\s\n]*-\s*/, '');
 
-  // Then split on standalone hyphens that start with a newline or space
+  // Split and format items
   const items = cleanedText
     .split(/(?:\r?\n\s*|\s+)-\s+/)
     .map(item => item.trim())
@@ -80,7 +79,7 @@ export const formatStringToNumberedListWithOptions = (
   return (
     <ol
       className={`${spacing} ${padding} ${fontSize} ${textColor} list-${counterStyle}`}
-      style={{ counterReset: 'item' }} // Ensures counting starts at 1
+      style={{ counterReset: 'item' }}
     >
       {items.map((item, index) => (
         <li

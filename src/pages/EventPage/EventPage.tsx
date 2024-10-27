@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { fetchHackathonEvents } from "../../Firebase/FirebaseQueries";
 import { HackathonEventType } from "../../Firebase/FirebaseQueries";
 import { STYLES } from '../../constants/styles';
@@ -25,15 +25,14 @@ const EventPage = () => {
   const [status, setStatus] = useState(null);
 
   const { eventId } = useParams()
-  const navigate = useNavigate()
-  const { submissions, participantCount, formattedUserNames, exportData, exportFields, } = useEventData(eventId);
+  const { submissions, formattedUserNames, exportData, exportFields, } = useEventData(eventId);
 
   const { formattedTime, ended } = useEventCountdown(eventId || '', "start");
 
   useEffect(() => {
-      if (ended) {
-          setStatus("ongoing");
-      }
+    if (ended) {
+      setStatus("ongoing");
+    }
   }, [ended]);
   useEffect(() => {
     async function loadEvent() {
@@ -42,6 +41,7 @@ const EventPage = () => {
 
       try {
         const { event, error } = await fetchHackathonEvents(eventId);
+        console.log(event)
 
         if (error) {
           setError(error);
@@ -64,7 +64,7 @@ const EventPage = () => {
       const startTime = new Date(event.startTime).getTime();
       const endTime = new Date(event.endTime).getTime();
       const now = Date.now();
-  
+
       if (now < endTime) {
         if (now < startTime) {
           setStatus("not started");
@@ -92,27 +92,25 @@ const EventPage = () => {
 
   const eventState = () => {
     if (status === 'not started') {
-        return (
-            <span className="font-gilroy text-xl font-bold">
-                Event Starts in: {formattedTime}
-            </span>
-        );
+      return (
+        <span className="font-gilroy text-xl font-bold">
+          Event Starts in: {formattedTime}
+        </span>
+      );
     } else if (status === 'ongoing') {
-        return (
-            <span className="font-gilroy text-xl font-bold">
-                Event is ongoing, happy hacking!
-            </span>
-        );
+      return (
+        <span className="font-gilroy text-xl font-bold">
+          Event is ongoing, happy hacking!
+        </span>
+      );
     } else if (status === 'ended') {
-        return (
-            <span className="font-gilroy text-xl font-bold">
-                Event ended
-            </span>
-        );
+      return (
+        <span className="font-gilroy text-xl font-bold">
+          Event ended
+        </span>
+      );
     }
   };
-
-  console.log(status);
 
   return (
     <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">

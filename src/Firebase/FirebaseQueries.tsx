@@ -1,4 +1,4 @@
-import { getDocs, collection, doc, getDoc, query, where, runTransaction, arrayRemove } from "firebase/firestore";
+import { getDocs, collection, doc, getDoc, setDoc, query, where, runTransaction, arrayRemove } from "firebase/firestore";
 import { db } from "./FirebaseConfig";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
@@ -16,13 +16,13 @@ export type HackathonEventType = {
   endTime: string;
   evaluationCriteria: string;
   imageUrl: string;
-  judges: {firstName: string, lastName: string}[];
+  judges: { firstName: string, lastName: string }[];
   meetingLink: string;
   minParticipants: number;
   maxParticipants: number;
   objectivesGoals: string;
   organizer: string;
-  participantCount: number;
+  // participantCount: number;
   problemStatement: string;
   skillLevel: string;
   startDate: string;
@@ -43,6 +43,7 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
   try {
     const colRef = collection(db, "hackathonEvents");
     const querySnapshot = await getDocs(colRef);
+
 
     events = querySnapshot.docs.reduce((acc, doc) => {
 
@@ -218,7 +219,12 @@ export const fetchHackathonParticipants = async (eventId: string) => {
     const eventDoc = await getDoc(eventDocRef);
 
     if (!eventDoc.exists()) {
-      throw new Error("No event found with this eventId.");
+      await setDoc(eventDocRef, {});
+      return {
+        userIds: [],
+        numberOfParticipants: 0,
+        eventData: {}
+      };
     }
 
     const eventData = eventDoc.data();
