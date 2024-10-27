@@ -3,9 +3,10 @@ import { db } from "../Firebase/FirebaseConfig";
 
 export const saveEventToFirestore = async (eventData) => {
   try {
-    const docRef = await addDoc(collection(db, "hackathonEvents"), eventData);
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
+    const docRef = await addDoc(collection(db, 'hackathonEvents'), eventData);
+    return docRef;
+  } catch (error) {
+    console.error("Error saving event data:", error);
+    throw error;
   }
 };
