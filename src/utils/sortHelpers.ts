@@ -11,18 +11,6 @@ export const sortSubmissions = (submissions, sortField, sortOrder) => {
     });
 };
 
-// export const formatUserNames = (submissions) => {
-//     const names = submissions
-//         .map(user => user.teamMembers[0].name)
-//         .slice(0, 2)
-//         .join(", ");
-
-//     const remaining = submissions.length > 2
-//         ? ` and ${submissions.length - 2} others`
-//         : "";
-
-//     return names + remaining;
-// };
 
 interface TeamMember {
     name: string;
