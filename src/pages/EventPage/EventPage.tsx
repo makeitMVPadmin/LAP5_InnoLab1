@@ -112,6 +112,8 @@ const EventPage = () => {
     }
   };
 
+  console.log(status);
+
   return (
     <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">
       <div className="w-full max-w-[1130px] h-full flex flex-col m-auto pb-32">
@@ -249,15 +251,17 @@ const EventPage = () => {
         </section>
       </div>
       {/* Banner */}
-      <section className="h-[100px] z-50  w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white flex justify-between items-center">
-        <div className="flex gap-2 ">
-          <img className="h-6" src={Clock} alt="clock icon" />
-          <p className="font-gilroy font-bold">Time left to submit: 50m:15s</p>
-        </div>
-        <button className={`${STYLES.primaryButton} rounded-[10px] w-auto`} aria-label="Submit Project">
-          <Link to={`/event/${eventId}/submit`} >Submit Project</Link>
-        </button>
-      </section>
+      {status === "ongoing" &&
+        <section className="h-[100px] z-50  w-full fixed bottom-0 px-8 border-t-[3px] border-MVP-black bg-MVP-white flex justify-between items-center">
+          <div className="flex gap-2 ">
+            <img className="h-6" src={Clock} alt="clock icon" />
+            <p className="font-gilroy font-bold">Time left to submit: 50m:15s</p>
+          </div>
+          <button className={`${STYLES.primaryButton} rounded-[10px] w-auto`} aria-label="Submit Project">
+            <Link to={`/event/${eventId}/submit`} >Submit Project</Link>
+          </button>
+        </section>
+      }
     </main>)
 }
 
