@@ -25,24 +25,24 @@ export function formatTextSections(text: String) {
 }
 
 
-// export const formatStringToNumberedList = (text: string): JSX.Element => {
-//   const items = text
-//     .split(/(?:\r?\n|\s*-\s*|(?:\d+[\.\)\-]\s*))/)
-//     .filter(item => item.trim().length > 0);
+export const formatStringToNumberedList = (text: string): JSX.Element => {
+  const items = text
+    .split(/(?:\r?\n|\s*-\s*|\d+[.)-]\s*)/)
+    .filter(item => item.trim().length > 0);
 
-//   return (
-//     <ol className="list-decimal space-y-4 pl-4">
-//       {items.map((item, index) => (
-//         <li
-//           key={index}
-//           className="font-poppins leading-relaxed pl-2" // Added pl-2 for better alignment
-//         >
-//           {item.trim()}
-//         </li>
-//       ))}
-//     </ol>
-//   );
-// };
+  return (
+    <ol className="list-decimal space-y-2 pl-4 mt-2">
+      {items.map((item, index) => (
+        <li
+          key={index}
+          className="font-poppins leading-relaxed pl-2" // Added pl-2 for better alignment
+        >
+          {item.trim()}
+        </li>
+      ))}
+    </ol>
+  );
+};
 
 
 interface NumberedListOptions {

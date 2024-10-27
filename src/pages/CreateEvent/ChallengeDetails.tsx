@@ -1,8 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
-import { saveEventToFirestore } from "../../Firebase/Firebaseutils";
 import { saveFormData, getFormData } from "./StorageUtils";
-import { uploadFiles } from "../../Firebase/FirebaseStore"
 import { STYLES } from "../../constants/styles";
 
 
@@ -49,23 +47,8 @@ const ChallengeDetailsForm: React.FC = () => {
       ...eventData,
       ...data,
     };
-    console.log(combinedData)
 
-    try {
-      const projectFileURL = await uploadFiles(combinedData.file);
-      const dataWithImageUrl = {
-        ...combinedData,
-        imageUrl: projectFileURL
-      }
-      delete dataWithImageUrl.file
-      console.log(dataWithImageUrl)
-
-      await saveEventToFirestore(dataWithImageUrl);
-    } catch (error) {
-      console.error("Error saving event data:", error);
-    } finally {
-      navigate("/previewevent", { state: { eventData: combinedData } });
-    }
+    navigate("/previewevent", { state: { eventData: combinedData } });
   };
 
   const handlePreviousClick = () => {
@@ -132,10 +115,9 @@ const ChallengeDetailsForm: React.FC = () => {
                     const releaseDate = new Date(value);
                     const start = new Date(startDate);
 
-                    // Calculate 2 weeks before the start date
-                    const twoWeeksBeforeStart = new Date(
-                      start.setDate(start.getDate() - 14)
-                    );
+                    // Calculate 2 weeks before the start date without modifying 'start'
+                    const twoWeeksBeforeStart = new Date(start);
+                    twoWeeksBeforeStart.setDate(start.getDate() - 14);
 
                     return (
                       releaseDate <= twoWeeksBeforeStart ||
