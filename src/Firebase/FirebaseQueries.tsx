@@ -22,7 +22,6 @@ export type HackathonEventType = {
   maxParticipants: number;
   objectivesGoals: string;
   organizer: string;
-  // participantCount: number;
   problemStatement: string;
   skillLevel: string;
   startDate: string;

@@ -9,11 +9,12 @@ interface EventFormInputs {
   startTime: string;
   endDate: string;
   endTime: string;
-  timezone: string;
+  timeZone: string;
   meetingLink: string;
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
+  file: File
 }
 
 interface ChallengeDetailsInputs {

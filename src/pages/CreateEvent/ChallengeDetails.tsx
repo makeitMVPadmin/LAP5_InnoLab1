@@ -39,7 +39,6 @@ const ChallengeDetailsForm: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  // const startDate = location.state?.startDate;
   const { initialFormData } = location.state || {};
 
 
@@ -55,7 +54,7 @@ const ChallengeDetailsForm: React.FC = () => {
   const handlePreviousClick = () => {
     const data = watch();
     saveFormData("challengeDetailsData", data);
-    navigate("/EventForm");
+    navigate("/EventForm", { state: { savedData: initialFormData } });
   };
 
   return (

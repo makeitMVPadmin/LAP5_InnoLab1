@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { saveFormData, getFormData, clearFormData } from "./StorageUtils";
 import { STYLES } from "../../constants/styles";
@@ -29,13 +29,14 @@ interface EventFormInputs {
   minParticipants: number;
   maxParticipants: number;
   judges: { firstName: string; lastName: string }[];
-  // imageUrl: string[];
   file: File;
 }
 
 const EventForm: React.FC = () => {
   const { hackathonUser } = useFetchHackathonUser(auth.currentUser?.uid);
-  const savedData = getFormData("eventFormData");
+  const location = useLocation();
+  const { savedData } = location.state || {};
+  console.log("saved Data", savedData)
 
   const {
     watch,
@@ -59,13 +60,12 @@ const EventForm: React.FC = () => {
       startTime: savedData?.startTime || "",
       endDate: savedData?.endDate || "",
       endTime: savedData?.endTime || "",
-      timeZone: savedData?.timezone || "",
+      timeZone: savedData?.timeZone || "",
       meetingLink: savedData?.meetingLink || "",
       minParticipants: savedData?.minParticipants || 0,
       maxParticipants: savedData?.maxParticipants || 0,
       judges: savedData?.judges || [{ firstName: "", lastName: "" }],
-      // imageUrl: savedData?.imageUrl || null,
-      file: null,
+      file: savedData?.file || null,
     },
   });
 
@@ -160,9 +160,6 @@ const EventForm: React.FC = () => {
   };
 
   const onSubmit = (initialFormData: EventFormInputs) => {
-
-
-    // saveFormData("eventFormData", initialFormData);
     navigate("/ChallengeDetails", { state: { initialFormData } });
   };
 
