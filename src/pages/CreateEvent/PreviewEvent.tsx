@@ -28,18 +28,24 @@ const PreviewEvent = () => {
       const dataWithImageUrl = {
         ...eventData,
         imageUrl: projectFileURL
-      }
-      delete dataWithImageUrl.file
-      console.log(dataWithImageUrl)
-      await saveEventToFirestore(eventData);
+      };
+      delete dataWithImageUrl.file;
+  
+      // Save the event data to Firestore and get the document reference
+      const docRef = await saveEventToFirestore(dataWithImageUrl);
+  
+      // Clear form data
       clearFormData("eventFormData");
       clearFormData("challengeDetailsData");
+  
+      // Redirect to the specific event page using the eventId from Firestore
+      navigate(`/event/${docRef.id}`);
     } catch (error) {
       console.error("Error saving event data:", error);
-    } finally {
-      navigate("/hackathons");
     }
   };
+  
+  
 
   const subHeading = "text-lg font-bold mt-4"
   const textStyle = "font-normal px-2"
