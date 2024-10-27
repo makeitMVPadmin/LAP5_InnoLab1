@@ -24,7 +24,7 @@ interface EventFormInputs {
   startTime: string;
   endDate: string;
   endTime: string;
-  timezone: string;
+  timeZone: string;
   meetingLink: string;
   minParticipants: number;
   maxParticipants: number;
@@ -59,7 +59,7 @@ const EventForm: React.FC = () => {
       startTime: savedData?.startTime || "",
       endDate: savedData?.endDate || "",
       endTime: savedData?.endTime || "",
-      timezone: savedData?.timezone || "",
+      timeZone: savedData?.timezone || "",
       meetingLink: savedData?.meetingLink || "",
       minParticipants: savedData?.minParticipants || 0,
       maxParticipants: savedData?.maxParticipants || 0,
@@ -159,11 +159,11 @@ const EventForm: React.FC = () => {
     setValue('file', chosenFile)
   };
 
-  const onSubmit = (data: EventFormInputs) => {
-    console.log(data)
-    const startDate = getValues("startDate");
-    saveFormData("eventFormData", data);
-    navigate("/ChallengeDetails", { state: { startDate } });
+  const onSubmit = (initialFormData: EventFormInputs) => {
+
+
+    // saveFormData("eventFormData", initialFormData);
+    navigate("/ChallengeDetails", { state: { initialFormData } });
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -470,10 +470,10 @@ const EventForm: React.FC = () => {
               Timezone<span className="mb-2/3 text-[2rem]">*</span>
             </label>
             <div
-              className={`${styledBorder} ${errors.timezone && "border-MVP-red"}`}
+              className={`${styledBorder} ${errors.timeZone && "border-MVP-red"}`}
             >
               <select
-                {...register("timezone", {
+                {...register("timeZone", {
                   required: "Timezone is required",
                 })}
                 className="text-[1.2rem] focus:outline-none w-full"
@@ -485,8 +485,8 @@ const EventForm: React.FC = () => {
                 <option value="GMT-0500">EST (GMT-0500)</option>
               </select>
             </div>
-            {errors.timezone && (
-              <p className="text-MVP-red">{errors.timezone.message}</p>
+            {errors.timeZone && (
+              <p className="text-MVP-red">{errors.timeZone.message}</p>
             )}
           </div>
           <div className="mb-[1rem] flex flex-col">

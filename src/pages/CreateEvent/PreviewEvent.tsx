@@ -20,32 +20,32 @@ const DataField = ({ label, value, labelClass, valueClass }) => {
 const PreviewEvent = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const eventData = location.state?.eventData;
+  const { eventData } = location.state || {};
 
   const handlePublish = async () => {
     try {
-      const projectFileURL = await uploadFiles(eventData);
+      const projectFileURL = await uploadFiles(eventData.file[0]);
       const dataWithImageUrl = {
         ...eventData,
         imageUrl: projectFileURL
       };
       delete dataWithImageUrl.file;
-  
+
       // Save the event data to Firestore and get the document reference
       const docRef = await saveEventToFirestore(dataWithImageUrl);
-  
+
       // Clear form data
       clearFormData("eventFormData");
       clearFormData("challengeDetailsData");
-  
+
       // Redirect to the specific event page using the eventId from Firestore
       navigate(`/event/${docRef.id}`);
     } catch (error) {
       console.error("Error saving event data:", error);
     }
   };
-  
-  
+
+
 
   const subHeading = "text-lg font-bold mt-4"
   const textStyle = "font-normal px-2"

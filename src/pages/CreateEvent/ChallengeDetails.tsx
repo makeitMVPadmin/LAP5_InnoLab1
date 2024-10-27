@@ -39,15 +39,16 @@ const ChallengeDetailsForm: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const startDate = location.state?.startDate;
+  // const startDate = location.state?.startDate;
+  const { initialFormData } = location.state || {};
+
 
   const onSubmit = async (data: ChallengeDetailsFormInputs) => {
-    const eventData = getFormData("eventFormData");
+
     const combinedData = {
-      ...eventData,
+      ...initialFormData,
       ...data,
     };
-
     navigate("/previewevent", { state: { eventData: combinedData } });
   };
 
@@ -113,7 +114,7 @@ const ChallengeDetailsForm: React.FC = () => {
                   required: "Release date is required",
                   validate: (value) => {
                     const releaseDate = new Date(value);
-                    const start = new Date(startDate);
+                    const start = new Date(initialFormData.startDate);
 
                     // Calculate 2 weeks before the start date without modifying 'start'
                     const twoWeeksBeforeStart = new Date(start);
