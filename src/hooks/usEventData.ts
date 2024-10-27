@@ -33,7 +33,7 @@ function useEventData(eventId: string) {
             setState(prev => ({
                 ...prev,
                 submissions,
-                participantCount: submissionsResponse.numberOfParticipants,
+                // participantCount: submissionsResponse.numberOfParticipants,
                 isLoading: false
             }));
         } catch (error) {

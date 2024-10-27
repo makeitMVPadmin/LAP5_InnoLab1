@@ -112,7 +112,7 @@ const EventPage = () => {
     }
   };
 
-  console.log(status);
+  // console.log(status);
 
   return (
     <main className="w-full  relative bg-gradient-to-b from-MVP-extra-light-blue to-MVP-white bg-no-repeat">

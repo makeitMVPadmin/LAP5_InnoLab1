@@ -49,9 +49,10 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
       const data = doc.data() as HackathonEventType;
       const { startDate, startTime, endDate, endTime, timeZone } = data;
 
-      data.startTime = convertToUTC(startDate, startTime, timeZone.slice(3));
-      data.endTime = convertToUTC(endDate, endTime, timeZone.slice(3));
-      data.timeZone = getTimeZoneFromOffset(timeZone);
+      data.startTime = convertToUTC(startDate, startTime, timeZone ? timeZone.slice(3) : ''); 
+      data.endTime = convertToUTC(endDate, endTime, timeZone ? timeZone.slice(3) : '');
+      data.timeZone = timeZone ? getTimeZoneFromOffset(timeZone) : '';
+      
 
       acc[doc.id] = data;
 
@@ -209,16 +210,15 @@ export const deleteSubmission = async (submissionId: string, eventId: string) =>
 
 export const fetchHackathonParticipants = async (eventId: string) => {
   try {
-    // Check if eventId is valid
     if (!eventId) {
       throw new Error("Invalid eventId");
     }
-    // Get all the participants that joined the event
+
     const eventDocRef = doc(db, "hackathonParticipantData", eventId);
     const eventDoc = await getDoc(eventDocRef);
 
     if (!eventDoc.exists()) {
-      throw new Error("No event found with this eventId.");
+      throw new Error(`No event found with eventId: ${eventId}`);
     }
 
     const eventData = eventDoc.data();
@@ -226,12 +226,12 @@ export const fetchHackathonParticipants = async (eventId: string) => {
     const numberOfParticipants = userIds.length;
 
     return { userIds, numberOfParticipants, eventData };
-
   } catch (err) {
     console.error("Error fetching hackathon participants:", err);
     return null;
   }
 };
+
 
 export const useJoinedEvents = (userId: string | undefined): { joinedEvents: string[], loading: boolean, error: string | null } => {
   const [joinedEvents, setJoinedEvents] = useState<string[]>([]);
