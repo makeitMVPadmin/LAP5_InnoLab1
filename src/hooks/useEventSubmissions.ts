@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
     fetchAllEventProjectSubmissions,
     fetchHackathonEvents,
@@ -18,11 +18,9 @@ export const useEventSubmissions = (eventId: string) => {
 
         try {
             const { event, error: eventError } = await fetchHackathonEvents(eventId);
-
             if (eventError || !event) {
                 throw new Error(eventError || "Invalid event ID.");
             }
-
             const { submissions } = await fetchAllEventProjectSubmissions(eventId);
             setSubmissions(submissions);
         } catch (error) {
@@ -45,6 +43,12 @@ export const useEventSubmissions = (eventId: string) => {
             console.error("Error deleting submission:", error);
         }
     }, [eventId]);
+
+    useEffect(() => {
+        if (eventId.length) {
+            fetchAllSubmissions();
+        }
+      }, [eventId]);
 
     return {
         allSubmissions,

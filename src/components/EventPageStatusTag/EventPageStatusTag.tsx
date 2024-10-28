@@ -1,4 +1,6 @@
 import PulsingAnimation from "../PulsingAnimation/PulsingAnimation";
+import { ReactComponent as CircleCheckmark } from "../../assets/images/circlewithcheckmark.svg";
+import { ReactComponent as CrossCalendar } from "../../assets/images/cross-calendar.svg";
 
 type UserRole = 'normal' | 'admin';
 type EventStatus = 'not-joined' | 'joined' | 'ongoing' | 'ended';
@@ -12,6 +14,7 @@ const EventPageStatusTag: React.FC<Props> = ({ userRole, eventStatus }) => {
     let displayText = '';
     let textColor = 'text-MVP-black';
     let backgroundColor = 'bg-MVP-green';
+    let svgColor = '';
 
     if (eventStatus === 'ongoing') {
         displayText = 'On-going';
@@ -19,6 +22,7 @@ const EventPageStatusTag: React.FC<Props> = ({ userRole, eventStatus }) => {
         displayText = 'Event Ended';
         textColor = 'text-MVP-gray';
         backgroundColor = 'bg-MVP-light-gray';
+        svgColor = 'fill-MVP-gray';
     } else if (userRole === 'admin') {
         displayText = 'Event Published';
     } else if (userRole === 'normal' && eventStatus === 'joined') {
@@ -31,11 +35,13 @@ const EventPageStatusTag: React.FC<Props> = ({ userRole, eventStatus }) => {
     }
 
     return (
-        <div className={`flex justify-center gap-4 rounded-full px-6 ${backgroundColor} max-w-52 items-center h-12`}>
+        <div className={`flex justify-center gap-4 rounded-full px-10 ${backgroundColor} items-center h-12 self-start`}>
             <div className="basis-8">
                 {eventStatus === 'ongoing' && <PulsingAnimation />}
+                {eventStatus === 'joined' && <CircleCheckmark className="h-5"/>}
+                {eventStatus === 'ended' && <CrossCalendar className={`h-5 ${svgColor}`}/>}
             </div>
-            <p className={`font-bold font-gilroy text-xl flex-grow ${textColor}`}>{displayText}</p>
+            <p className={`font-bold font-gilroy text-xl whitespace-nowrap ${textColor}`}>{displayText}</p>
         </div>
     );
 }

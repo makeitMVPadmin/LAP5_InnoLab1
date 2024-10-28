@@ -1,16 +1,11 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { fetchAllEventProjectSubmissions, fetchHackathonEvents, fetchHackathonParticipants } from '../Firebase/FirebaseQueries';
 import { formatUserNames } from "../utils/sortHelpers";
+import { HackathonSubmissionType } from '../Firebase/FirebaseQueries'; 
 
 // Define types for better type safety
-interface Submission {
-    teamName: string;
-    title: string;
-    teamMembers: Array<{ name: string }>;
-}
-
 interface EventDataState {
-    submissions: Submission[];
+    submissions: HackathonSubmissionType[];
     participantCount: number;
     isLoading: boolean;
     error: string | null;

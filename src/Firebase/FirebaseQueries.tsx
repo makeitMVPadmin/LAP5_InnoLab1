@@ -45,7 +45,6 @@ export const fetchHackathonEvents = async (hackathonId?: string): Promise<{ even
 
 
     events = querySnapshot.docs.reduce((acc, doc) => {
-
       const data = doc.data() as HackathonEventType;
       const { startDate, startTime, endDate, endTime, timeZone } = data;
 
@@ -81,14 +80,10 @@ type JudgeCommentType = {
   suggestions: string;
 }
 
-type CommunityCommentType = {
-  commentEntry: string;
-  commentTimestamp: Timestamp;
-  commenterName: string;
-}
 
-type HackathonSubmissionType = {
+export type HackathonSubmissionType = {
   id?: string;
+  userId: string;
   title: string;
   designFeatures: string;
   designTools: string;
@@ -101,51 +96,58 @@ type HackathonSubmissionType = {
   teamMembers: { name: string, role: string }[];
   teamName: string;
   techStack: string[];
-  judgesComments: JudgeCommentType[];
-  comments?: CommunityCommentType[];
+  createdAt: Timestamp;
+  comments?: {commentEntry: string, commentTimestamp: Timestamp, commenterName: string}[];
 };
 
-export const fetchHackathonSubmissions = async (id: string): Promise<{ submissions: Record<string, HackathonSubmissionType>; loading: boolean; error: string | null }> => {
-  let loading = true;
-  let error: string | null = null;
-  let submissions: Record<string, HackathonSubmissionType> = {};
+export const fetchHackathonSubmission = async (submissionId: string): Promise<{ submission: HackathonSubmissionType | null; loading: boolean; error: string | null }> => {
+    let loading = true;
+    let error: string | null = null;
+    let submission: HackathonSubmissionType | null = null;
 
-  try {
-    const colRef = collection(db, "hackathonProjectSubmissions");
-    const querySnapshot = await getDocs(colRef);
+    try {
+        const colRef = collection(db, "hackathonProjectSubmissions");
+        const querySnapshot = await getDocs(colRef);
 
-    submissions = querySnapshot.docs.reduce((acc, doc) => {
-      if (doc.id === id) {
-        acc[doc.id] = doc.data() as HackathonSubmissionType;
-      }
-      return acc;
-    }, {} as Record<string, HackathonSubmissionType>);
-  } catch (err) {
-    error = (err as Error).message;
-  } finally {
-    loading = false;
-  }
+        const submissionDoc = querySnapshot.docs.find(doc => doc.id === submissionId);
 
-  return { submissions, loading, error };
+        if (submissionDoc) {
+            submission = submissionDoc.data() as HackathonSubmissionType;
+        } else {
+            error = "No submission found with the given ID.";
+        }
+    } catch (err) {
+        error = (err as Error).message;
+    } finally {
+        loading = false;
+    }
+
+    return { submission, loading, error };
 };
 
-export const fetchAllEventProjectSubmissions = async (eventId: string) => {
+
+export const fetchAllEventProjectSubmissions = async (id: string) => {
   let loading = true;
   let error: string | null = null;
   let submissions: HackathonSubmissionType[] = [];
 
   try {
-    //Get all the hackathon submissions with the matching eventId
     const colRef = collection(db, "hackathonProjectSubmissions");
-    const q = query(colRef, where("eventId", "==", eventId));
+    const q = query(colRef);
     const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach((doc) => {
-      submissions.push({
-        id: doc.id,
-        ...doc.data(),
-      } as HackathonSubmissionType);
-    });
+    if (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+          if (data.eventId == id) {
+
+          submissions.push({
+            id: doc.id,
+            ...doc.data(),
+          } as HackathonSubmissionType);
+        }
+        });
+    }
 
   } catch (err) {
     error = (err as Error).message;

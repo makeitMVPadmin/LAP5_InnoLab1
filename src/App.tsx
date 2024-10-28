@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/hackathons/joined" element={<Layout redirect="/hackathons"><MyEventsPage /></Layout>} />
           <Route path="/hackathons/submissions/:submissionId" element={<Layout navigateback><ProjectShowcasePage /></Layout>} />
           <Route path="/join-event/:eventId" element={<Layout redirect="/hackathons" ><JoinEvent /></Layout>} />
-          <Route path="/event/:eventId" element={<Layout navigateback ><EventPage /></Layout>} />
+          <Route path="/event/:eventId" element={<Layout redirect="/hackathons" ><EventPage /></Layout>} />
           <Route path="/event/:eventId/admin" element={<Layout navigateback><OrganizerReviewPage /></Layout>} />
           <Route path="/event/:eventId/submit" element={<Layout navigateback ><ProjectSubmissionPage /></Layout>} />
           <Route path="/event/:eventId/review-submit" element={<Layout navigateback><ProjectReviewPage /></Layout>} />

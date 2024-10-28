@@ -203,8 +203,8 @@ const ProjectReviewPage = () => {
             <main className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto pb-32">
                 <h1 className="text-4xl font-bold mb-5 pt-14">Review Submission</h1>
                 <section className="flex py-12 justify-end gap-2 items-center">
-                    <img className="w-6 h-6" src={Clock2} alt="clock icon" />
-                    <p className="font-bold text-xl">Submission Ends In: 1h: 25m: 15s</p>
+                    {/* <img className="w-6 h-6" src={Clock2} alt="clock icon" />
+                    <p className="font-bold text-xl">Submission Ends In: 1h: 25m: 15s</p> */}
                 </section>
                 <section>
                     {showAlert && (

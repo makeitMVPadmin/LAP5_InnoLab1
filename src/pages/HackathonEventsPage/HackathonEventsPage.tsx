@@ -22,7 +22,6 @@ const HackathonEventsPage = () => {
     if (eventEndingSoon) {
       setAlertEvent(true);
     }
-
   }, [joinedCurrentEvents]);
 
   const displayCards = filteredEvents?.map(event => (

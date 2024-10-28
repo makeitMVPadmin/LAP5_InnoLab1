@@ -115,7 +115,7 @@ const ProjectShowcasePage = () => {
                             {id: 'nextSteps', label: 'Next Steps', content: nextSteps}
                         ]}
                     />
-                    <h1 className="flex-1 text-MVP-black font-gilroy text-[1.5rem] font-extrabold leading-[1.8rem]">
+                    <h1 className="flex-1 text-MVP-black font-gilroy text-[2.3rem] font-extrabold leading-[1.8rem] mt-[4rem]">
                         Judges' Comments
                     </h1>
                     <CommentSection submissionId={submissionId} />

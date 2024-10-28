@@ -4,36 +4,35 @@ import useEvents from "../../hooks/useEvents";
 import useEventCountdown from "../../hooks/useEventCountdown";
 
 const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => void }> = ({ joinedEvents, onCountdownEnd }) => {
-    const { events, getEndingEvent } = useEvents(joinedEvents); // grabs events joined
+    const { events, getEndingEvent } = useEvents(joinedEvents);
     const { joinedCurrentEvents } = events;
     const [eventAlert, setEventAlert] = useState(null);
 
     useEffect(() => {
-        const eventEndingSoon = getEndingEvent(joinedCurrentEvents); // checks if the event is ending (within 2 hours)
+        const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
         if (eventEndingSoon) {
             const { title, id, endTime } = eventEndingSoon;
             setEventAlert({
                 title: title,
                 eventId: id,
-                endTime: endTime // returns id and end time, and event title
+                endTime: endTime
             });
         } else {
-            setEventAlert(null); // otherwise no banner shown
+            setEventAlert(null);
         }
     }, [joinedCurrentEvents]);
 
-    const { formattedTime, ended } = useEventCountdown(eventAlert?.eventId || '', "end"); // passes event id if theres an event ending
-    // returns formattedTime which is a dynamic string and ended boolean
+    const { formattedTime, ended } = useEventCountdown(eventAlert?.eventId || '', "end");
 
     useEffect(() => {
         if (ended) {
             setEventAlert(null);
-            onCountdownEnd(); // triggers event refetching. This function is passed from MyEventsPage
+            onCountdownEnd();
         }
     }, [ended, onCountdownEnd]);
 
     if (!eventAlert) {
-        return null; // Banner is not shown in MyEventsPage if no joined event is ending soon
+        return null;
     }
 
     const { title } = eventAlert;
@@ -45,7 +44,7 @@ const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => 
                 <h1 className="text-2xl">{title}</h1>
                 <h2 className="font-gilroy text-xl">Submissions Close in {formattedTime}</h2>
             </div>
-            <Link to={`/join-event/${eventAlert.eventId}`} className="h-fit rounded-[10px] border-y-[3px] border-x-[5px] py-3 px-6 border-MVP-black bg-MVP-yellow text-[#161616] text-center font-gilroy text-xl normal-case font-extrabold leading-[115.645%] tracking-tight">
+            <Link to={`/event/${eventAlert.eventId}/submit`} className="h-fit rounded-[10px] border-y-[3px] border-x-[5px] py-3 px-6 border-MVP-black bg-MVP-yellow text-[#161616] text-center font-gilroy text-xl normal-case font-extrabold leading-[115.645%] tracking-tight">
                 Submit Project
             </Link>
         </div>

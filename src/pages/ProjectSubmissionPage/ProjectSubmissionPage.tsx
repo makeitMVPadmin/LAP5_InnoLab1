@@ -146,9 +146,9 @@ const ProjectSubmissionPage = () => {
             <section className="px-5 w-full md:w-9/12 max-w-[930px] md:m-auto">
                 <h1 className="text-4xl font-gilroy font-bold mb-5 pt-14">Project Submission</h1>
                 <div className="flex py-12 justify-end gap-2 items-center">
-                    <img className="w-6	h-6" src={Clock} alt="clock icon" />
                     {/* TODO get date and count how much time left */}
-                    <p className="font-bold text-xl">Submission Ends In: 1h: 25m: 15s</p>
+                    {/* <img className="w-6	h-6" src={Clock} alt="clock icon" /> */}
+                    {/* <p className="font-bold text-xl">Submission Ends In: 1h: 25m: 15s</p> */}
                 </div>
                 <Form {...form} >
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

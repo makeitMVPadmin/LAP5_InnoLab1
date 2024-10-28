@@ -118,5 +118,3 @@ export const getTimeZoneFromOffset = (offset: string) => {
 
     return timeZoneMap[offset];
 }
-
-
