@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import useEvents from "../../hooks/useEvents";
 import useFilterEvents from "../../hooks/useFilterEvents";
 import Filters from "../../components/Filters/Filters";
-
+import { useEventSubmissions } from "../../hooks/useEventSubmissions";
+import { auth } from "../../Firebase/FirebaseConfig";
 
 const HackathonEventsPage = () => {
   const { currentUser } = useAuth();
@@ -16,13 +17,24 @@ const HackathonEventsPage = () => {
   const { allCurrentEvents, joinedCurrentEvents } = events || {};
   const { filters, setFilters, filteredEvents } = useFilterEvents(allCurrentEvents);
   const [alertEvent, setAlertEvent] = useState(false);
+  const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
+  const { allSubmissions: submissions } = useEventSubmissions(eventEndingSoon?.id);
+  const submission = submissions
+    .find(submission => submission.userId === auth.currentUser?.uid) || null
+  
+    useEffect(() => {
+      if (eventEndingSoon) {
+        setAlertEvent(true);
+      } else {
+        setAlertEvent(false);
+      }
+    }, [eventEndingSoon]);
 
-  useEffect(() => {
-    const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
-    if (eventEndingSoon) {
-      setAlertEvent(true);
-    }
-  }, [joinedCurrentEvents]);
+    useEffect(() => {
+      if (submission) {
+        setAlertEvent(false);
+      }
+    }, [submission]);
 
   const displayCards = filteredEvents?.map(event => (
     <EventCard

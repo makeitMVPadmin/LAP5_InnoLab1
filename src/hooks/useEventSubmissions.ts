@@ -45,7 +45,7 @@ export const useEventSubmissions = (eventId: string) => {
     }, [eventId]);
 
     useEffect(() => {
-        if (eventId.length) {
+        if (eventId && eventId.length) {
             fetchAllSubmissions();
         }
       }, [eventId]);
