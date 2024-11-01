@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fetchAllEventProjectSubmissions, fetchHackathonEvents, deleteSubmission, fetchHackathonParticipants } from '../../Firebase/FirebaseQueries';
 import { SUBMISSION_TABLE_FIELDS } from "../../constants/tableFields"
 import { sortSubmissions, formatUserNames } from '../../utils/sortHelpers';
@@ -18,7 +18,6 @@ const OrganizerReviewPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const { eventId } = useParams();
-    const navigate = useNavigate();
 
     const fetchSubmissions = useCallback(async () => {
         if (!eventId) return;
@@ -107,24 +106,24 @@ const OrganizerReviewPage = () => {
 
                 <div className="flex justify-between pt-8">
                     <div>
-                        <h2 className="text-xl">
-                            Registrants <span className="font-medium">{`(${submissionCount}/${participatingUsers})`}</span>
+                        <h2 className="text-xl font-bold">
+                            Registrants <span className="font-semibold">{`(${submissionCount}/${participatingUsers})`}</span>
                         </h2>
                         <p className="mt-3 font-normal font-poppins">{formattedUserNames} </p>
                     </div>
                     <ExportButton data={allSubmissions} fields={SUBMISSION_TABLE_FIELDS} />
                 </div>
                 <div className="mt-24">
-                    <div className="grid grid-cols-12 border-b-2 border-MVP-light-gray">
+                    <div className="grid grid-cols-12 border-b-2 border-MVP-light-gray font-bold">
                         <div className="text-xl p-4 col-span-3 flex gap-4 items-center" onClick={() => handleSort('teamName')}>
                             <span>Team </span>
                             <img className="h-5" src={SortIcon} alt="sort team" />
                         </div>
-                        <div className="text-xl p-4 col-span-4 flex gap-4 items-center" onClick={() => handleSort('title')}>
+                        <div className="text-xl p-4 col-span-4 flex gap-4 items-center font-bold" onClick={() => handleSort('title')}>
                             <span>Title </span>
                             <img className="h-5" src={SortIcon} alt="sort title" />
                         </div>
-                        <div className="text-xl grow p-4 col-span-3 flex gap-4 items-center">
+                        <div className="text-xl grow p-4 col-span-3 flex gap-4 items-center font-bold">
                             <span>Status </span>
                             <img className="h-5" src={SortIcon} alt="sort status" />
                         </div>
@@ -134,12 +133,15 @@ const OrganizerReviewPage = () => {
                     <ul className="w-full mt-6">
                         {sortedSubmissions.map((submission) => {
                             return (
+
                                 <li key={submission.id} className="flex w-full  py-6 items-center">
                                     <Link to={`/hackathons/submissions/${submission.id}`} className="grid grid-cols-12 w-full items-center">
                                         <span className="col-span-3  px-4">{submission.teamName}</span>
                                         <span className="col-span-5 grow px-4">{submission?.title}</span>
                                         <div className="col-span-3 px-4 rounded-full bg-MVP-green justify-center h-8 items-center flex font-bold">
-                                            Submitted
+                                            <Link to={`/hackathons/submissions/${submission.id}`}>
+                                                Submitted
+                                            </Link>
                                         </div>
                                     </Link>
 

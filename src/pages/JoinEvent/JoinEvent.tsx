@@ -104,6 +104,8 @@ const JoinEvent = () => {
       console.log("Participant data saved successfully");
     } catch (error) {
       console.error("Error saving participant data:", error);
+    } finally {
+      navigate(`/event/${eventId}`);
     }
   };
 
@@ -182,8 +184,8 @@ const JoinEvent = () => {
           <div className="flex flex-col">
             <label className={`${STYLES.label} m-0 p-0`}>Skill Level*</label>
             <div className="space-y-2 flex gap-4 items-center m-0 p-0">
-              {["Beginner", "Intermediate", "Experienced", "Advanced"].map((level) => (
-                <label key={level} className="inline-flex items-center  pt-0 gap-2 font-bold font-gilroy">
+              {["Beginner", "Intermediate", "Advanced"].map((level) => (
+                <label key={level} className="inline-flex items-center pt-0 gap-2 font-bold font-gilroy">
                   <Input
                     type="radio"
                     name="skillLevel"

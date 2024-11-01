@@ -11,15 +11,46 @@ export const sortSubmissions = (submissions, sortField, sortOrder) => {
     });
 };
 
-export const formatUserNames = (submissions) => {
-    const names = submissions
-        .map(user => user.teamMembers[0].name)
-        .slice(0, 2)
-        .join(", ");
 
-    const remaining = submissions.length > 2
-        ? ` and ${submissions.length - 2} others`
-        : "";
+interface TeamMember {
+    name: string;
+}
 
-    return names + remaining;
+interface Submission {
+    teamMembers: TeamMember[];
+}
+
+export const formatUserNames = (submissions: Submission[] = []) => {
+    try {
+        // Safely extract and flatten team members
+        const allTeamMembers = submissions
+            .filter(submission => submission && submission.teamMembers)
+            .flatMap(submission => submission.teamMembers || [])
+            .filter(member => member && member.name)
+            .map(member => member.name);
+
+        // Remove duplicates and sort alphabetically
+        const uniqueNames = [...new Set(allTeamMembers)].sort((a, b) =>
+            a.localeCompare(b)
+        );
+
+        // Format based on length
+        if (uniqueNames.length === 0) {
+            return "";
+        }
+        if (uniqueNames.length === 1) {
+            return uniqueNames[0];
+        }
+        if (uniqueNames.length === 2) {
+            return `${uniqueNames[0]} and ${uniqueNames[1]}`;
+        }
+
+        // More than 2 names
+        const othersCount = uniqueNames.length - 2;
+        return `${uniqueNames[0]}, ${uniqueNames[1]} and ${othersCount} others`;
+
+    } catch (error) {
+        console.error('Error formatting user names:', error);
+        return ""; // Return empty string as fallback for better display
+    }
 };

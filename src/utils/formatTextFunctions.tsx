@@ -25,24 +25,24 @@ export function formatTextSections(text: String) {
 }
 
 
-// export const formatStringToNumberedList = (text: string): JSX.Element => {
-//   const items = text
-//     .split(/(?:\r?\n|\s*-\s*|(?:\d+[\.\)\-]\s*))/)
-//     .filter(item => item.trim().length > 0);
+export const formatStringToNumberedList = (text: string): JSX.Element => {
+  const items = text
+    .split(/(?:\r?\n|\s*-\s*|\d+[.)-]\s*)/)
+    .filter(item => item.trim().length > 0);
 
-//   return (
-//     <ol className="list-decimal space-y-4 pl-4">
-//       {items.map((item, index) => (
-//         <li
-//           key={index}
-//           className="font-poppins leading-relaxed pl-2" // Added pl-2 for better alignment
-//         >
-//           {item.trim()}
-//         </li>
-//       ))}
-//     </ol>
-//   );
-// };
+  return (
+    <ol className="list-decimal space-y-2 pl-4 mt-2">
+      {items.map((item, index) => (
+        <li
+          key={index}
+          className="font-poppins leading-relaxed pl-2" // Added pl-2 for better alignment
+        >
+          {item.trim()}
+        </li>
+      ))}
+    </ol>
+  );
+};
 
 
 interface NumberedListOptions {
@@ -55,7 +55,7 @@ interface NumberedListOptions {
 }
 
 export const formatStringToNumberedListWithOptions = (
-  text: string,
+  text: string = '', // Set default value for `text`
   options: NumberedListOptions = {}
 ): JSX.Element => {
   const {
@@ -67,10 +67,10 @@ export const formatStringToNumberedListWithOptions = (
     counterStyle = 'decimal'
   } = options;
 
-  // Split by newlines, hyphens, or number patterns
+  // Ensure `text` is not undefined
   const cleanedText = text.replace(/^[\s\n]*-\s*/, '');
 
-  // Then split on standalone hyphens that start with a newline or space
+  // Split and format items
   const items = cleanedText
     .split(/(?:\r?\n\s*|\s+)-\s+/)
     .map(item => item.trim())
@@ -79,7 +79,7 @@ export const formatStringToNumberedListWithOptions = (
   return (
     <ol
       className={`${spacing} ${padding} ${fontSize} ${textColor} list-${counterStyle}`}
-      style={{ counterReset: 'item' }} // Ensures counting starts at 1
+      style={{ counterReset: 'item' }}
     >
       {items.map((item, index) => (
         <li

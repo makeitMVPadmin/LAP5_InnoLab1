@@ -13,6 +13,7 @@ import ProjectReviewPage from "./pages/ProjectReviewPage/ProjectReviewPage";
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import EventForm from "./pages/CreateEvent/EventForm";
 import ChallengeDetails from "./pages/CreateEvent/ChallengeDetails";
+import PreviewEvent from "./pages/CreateEvent/PreviewEvent";
 import ProjectShowcasePage from "./pages/ProjectShowcasePage/ProjectShowcasePage";
 import "./styles/_global.scss";
 import EventDetailsPage from "./pages/EventDetails/EventDetailsPage";
@@ -35,12 +36,13 @@ const App = () => {
           <Route path="/hackathons/joined" element={<Layout redirect="/hackathons"><MyEventsPage /></Layout>} />
           <Route path="/hackathons/submissions/:submissionId" element={<Layout navigateback><ProjectShowcasePage /></Layout>} />
           <Route path="/join-event/:eventId" element={<Layout redirect="/hackathons" ><JoinEvent /></Layout>} />
-          <Route path="/event/:eventId" element={<Layout navigateback ><EventPage /></Layout>} />
+          <Route path="/event/:eventId" element={<Layout redirect="/hackathons" ><EventPage /></Layout>} />
           <Route path="/event/:eventId/admin" element={<Layout navigateback><OrganizerReviewPage /></Layout>} />
           <Route path="/event/:eventId/submit" element={<Layout navigateback ><ProjectSubmissionPage /></Layout>} />
           <Route path="/event/:eventId/review-submit" element={<Layout navigateback><ProjectReviewPage /></Layout>} />
-          <Route path="/EventForm" element={<Layout redirect="/hackathons" ><EventForm /></Layout>} />
-          <Route path="/ChallengeDetails" element={<Layout redirect="/EventForm"><ChallengeDetails /></Layout>} />
+          <Route path="/eventform" element={<Layout redirect="/hackathons" ><EventForm /></Layout>} />
+          <Route path="/challengedetails" element={<Layout redirect="/EventForm"><ChallengeDetails /></Layout>} />
+          <Route path="/previewevent" element={<Layout redirect="/PreviewEvent"><PreviewEvent /></Layout>} />
         </Route>
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

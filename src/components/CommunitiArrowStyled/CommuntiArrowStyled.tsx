@@ -20,13 +20,9 @@ const CommuntiArrowStyled: FC<ArrowProps> = ({
   return (
     <button
         className={`
-            flex justify-center items-center 
-            rounded-[0.6rem] 
-            border-[0.2rem] border-black 
-            bg-white 
-            shadow-[-0.2rem 0.3rem 0.3rem 0 rgba(0, 0, 0, 0.25)]
+            rounded-[0.6rem] border-t-[3px] border-b-[5px] border-l-[3px] border-r-[5px] border-MVP-black
             ${className} 
-            ${disabled ? 'border-MVP-light-gray cursor-not-allowed opacity-50' : 'border-r-[0.3rem] border-b-[0.4rem]'}
+            ${disabled && 'border-MVP-light-gray cursor-not-allowed opacity-50'}
         `}
         aria-label={ariaLabel}
         onClick={disabled ? null : onClick}

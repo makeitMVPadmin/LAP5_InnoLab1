@@ -5,9 +5,11 @@ import { addCommentToSubmission, removeCommentFromSubmission } from '../../Fireb
 import { auth } from '../../Firebase/FirebaseConfig';
 import { Timestamp } from 'firebase/firestore';
 import { ReactComponent as MoreIcon } from '../../assets/images/moreIcon.svg';
+import { STYLES } from "../../constants/styles";
 
 
-const CommunityCommentSection = ({ submissionId }) => {
+const CommentSection = ({ submissionId }) => {
+    const { styledBorder } = STYLES;
     const { hackathonUser } = useFetchHackathonUser(auth.currentUser?.uid);
     const { submission } = useSubmission(submissionId);
     const [comments, setComments] = useState([]);
@@ -100,7 +102,7 @@ const CommunityCommentSection = ({ submissionId }) => {
     return (
         <div>
             <form onSubmit={handleCommentSubmit} className='flex flex-col' aria-labelledby="comment-form-title">
-                <h2 id="comment-form-title" className="hidden">Comment Section</h2>
+                {/* hide comment text input box for when partcipant reviews project submission, judges only */}
                 <div className="flex gap-[1rem] mt-[1.7rem] mb-[0.9rem]">
                     <img 
                         src={hackathonUser?.profilePhoto || 'https://i.pravatar.cc/150?img=10'}
@@ -117,21 +119,21 @@ const CommunityCommentSection = ({ submissionId }) => {
                                 handleCommentSubmit(e);
                             }
                         }}
-                        placeholder="Write your comment here"
+                        placeholder="Write your feedback here"
                         rows={4}
                         required
-                        className="flex flex-col items-end h-[6.3rem] flex-1 rounded-[0.6rem] border-[0.2rem] border-black bg-white p-[1rem] placeholder:text-MVP-gray text-[1.2rem]"
+                        className={`${styledBorder} h-[6.3rem] flex-1 !p-[1rem] !placeholder:text-MVP-gray text-[1.2rem]`}
                     />
                 </div>
                 <button 
                     type="submit" 
-                    className='bg-MVP-light-gray rounded-[0.6rem] border-[0.2rem] border-black flex p-[0.5rem] px-[1.1rem] justify-center items-center gap-[0.6rem] text-MVP-black text-[1rem] font-extrabold leading-[115.645%] self-end'
+                    className={`${styledBorder} flex !bg-MVP-light-gray !py-[0.5rem] !px-[1.1rem] text-[1.2rem] font-semibold leading-[115.645%] self-end`}
                     aria-label="Submit comment"
                 >
                     Submit
                 </button>
             </form>
-            <ul className='w-full' role="list">
+            <ul className='w-full mt-[4rem]' role="list">
                 {comments?.map((comment, index) => { 
                     let renderedTimestamp;
                     const {commenterName, commenterEmail, commentEntry, commentTimestamp, profileUrl } = comment;
@@ -157,11 +159,14 @@ const CommunityCommentSection = ({ submissionId }) => {
                                     </time>
                                 </div>
                                 <p className="text-black font-poppins text-[1.1rem] font-light leading-[115.645%]">
-                                    {(showsFull[index] || commentEntry.split(/\s+/).filter(Boolean).length < 25) ? 
+                                    {/* show full judge feedback */}
+                                    {/* uncomment to hide more than 25 words */}
+                                    {/* {(showsFull[index] || commentEntry.split(/\s+/).filter(Boolean).length < 25) ? 
                                         commentEntry : 
-                                        `${commentEntry.split(' ').slice(0, 24).join(' ')}...`}
+                                        `${commentEntry.split(' ').slice(0, 24).join(' ')}...`} */}
+                                        {commentEntry}
                                 </p>
-                                {commentEntry.split(/\s+/).filter(Boolean).length > 25 && (
+                                {/* {commentEntry.split(/\s+/).filter(Boolean).length > 25 && (
                                     <button 
                                         onClick={() => toggleCommentLength(index)} 
                                         className="text-blue-600 hover:underline"
@@ -169,7 +174,7 @@ const CommunityCommentSection = ({ submissionId }) => {
                                     >
                                         {showsFull[index] ? 'See Less' : 'Read More'}
                                     </button>
-                                )}
+                                )} */}
                             </div>                           
                             {hackathonUser.email === commenterEmail && (
                                 <>
@@ -198,4 +203,4 @@ const CommunityCommentSection = ({ submissionId }) => {
     );
 };
 
-export default CommunityCommentSection;
+export default CommentSection;

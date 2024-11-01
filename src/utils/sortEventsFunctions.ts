@@ -10,7 +10,6 @@ type EventType = {
   judges: string[];
   lastName: string;
   meetingLink: string;
-  participantCount: number;
   skillLevel: string;
   startTime: string;
   themes: string[];

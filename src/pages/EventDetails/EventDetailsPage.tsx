@@ -18,7 +18,6 @@ type HackathonEvent = {
   judges: string[];
   lastName: string;
   meetingLink: string;
-  participantCount: number;
   skillLevel: string;
   startTime: string;
   submissionsId: string[];
@@ -28,48 +27,48 @@ type HackathonEvent = {
 };
 
 const EventDetailsPage = () => {
-    const [hackathonEvents, setHackathonEvents] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const [hackathonEvents, setHackathonEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-      const fetchData = async () => {
-          const data = await fetchHackathonEvents();
-          const eventsArray = Object.entries(data).map(([id, event]) => {
-            // Ensure that `event` is an object before spreading
-            if (typeof event === 'object' && event !== null) {
-              return { id, ...event };
-            }
-            console.error(`Event data for ID ${id} is not an object`, event);
-            return null; // Or handle this case differently if needed
-          }).filter(event => event !== null);
-          
-          setHackathonEvents(eventsArray);
-          setIsLoading(false);
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchHackathonEvents();
+      const eventsArray = Object.entries(data).map(([id, event]) => {
+        // Ensure that `event` is an object before spreading
+        if (typeof event === 'object' && event !== null) {
+          return { id, ...event };
+        }
+        console.error(`Event data for ID ${id} is not an object`, event);
+        return null; // Or handle this case differently if needed
+      }).filter(event => event !== null);
 
-      fetchData();
+      setHackathonEvents(eventsArray);
+      setIsLoading(false);
+    };
+
+    fetchData();
   }, []);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    return(
-        <div className="event-details-page">
-        <DashboardNavbar/>
-            <div className="event-details-page__banner">
-            <Link to="/" className="join-event__back-link">← Back</Link>
-            </div>
+  return (
+    <div className="event-details-page">
+      <DashboardNavbar />
+      <div className="event-details-page__banner">
+        <Link to="/" className="join-event__back-link">← Back</Link>
+      </div>
 
-            
-            {/* <div className = "event-details-page_join-button">
+
+      {/* <div className = "event-details-page_join-button">
                 <Link to={`join-event/${eventId}`} className = "event-details-page__join-event-button">
                  Join Event
                 </Link>
             </div> */}
 
-        </div>
-    )
+    </div>
+  )
 }
 
 
@@ -120,7 +119,7 @@ const EventDetailsPage = () => {
 //     //     </div>
 //     // )
 
-    
+
 // };
 
 export default EventDetailsPage;

@@ -1,10 +1,14 @@
 import { useForm, Controller } from "react-hook-form";
-import "./ChallengeDetails.scss";
-import { useNavigate } from "react-router-dom";
-import { CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { useNavigate, useLocation } from "react-router-dom";
+import { saveFormData, getFormData } from "./StorageUtils";
+import { STYLES } from "../../constants/styles";
+
+
+const { styledBorder, sectionHeader } = STYLES;
 
 interface ChallengeDetailsFormInputs {
   challengeReleaseDate: string;
+  challengeReleaseTime: string;
   problemStatement: string;
   objectivesGoals: string;
   constraints: string;
@@ -13,6 +17,8 @@ interface ChallengeDetailsFormInputs {
 }
 
 const ChallengeDetailsForm: React.FC = () => {
+  const savedData = getFormData("challengeDetailsData");
+
   const {
     register,
     handleSubmit,
@@ -21,156 +27,259 @@ const ChallengeDetailsForm: React.FC = () => {
     watch,
   } = useForm<ChallengeDetailsFormInputs>({
     defaultValues: {
-      challengeReleaseDate: "",
-      problemStatement: "",
-      objectivesGoals: "",
-      constraints: "",
-      evaluationCriteria: "",
-      additionalInformation: "",
+      challengeReleaseDate: savedData?.challengeReleaseDate || "",
+      challengeReleaseTime: savedData?.challengeReleaseTime || "",
+      problemStatement: savedData?.problemStatement || "",
+      objectivesGoals: savedData?.objectivesGoals || "",
+      constraints: savedData?.constraints || "",
+      evaluationCriteria: savedData?.evaluationCriteria || "",
+      additionalInformation: savedData?.additionalInformation || "",
     },
   });
 
-  const onSubmit = (data: ChallengeDetailsFormInputs) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { initialFormData } = location.state || {};
+
+
+  const onSubmit = async (data: ChallengeDetailsFormInputs) => {
+
+    const combinedData = {
+      ...initialFormData,
+      ...data,
+    };
+    navigate("/previewevent", { state: { eventData: combinedData } });
   };
 
-  const navigate = useNavigate();
-
   const handlePreviousClick = () => {
-    navigate("/EventForm");
+    const data = watch();
+    saveFormData("challengeDetailsData", data);
+    navigate("/EventForm", { state: { savedData: initialFormData } });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="challenge-details-form">
-      <h1>Create an Event</h1>
-      <div className="steps">
-        <div className="step active">1. Event Details</div>
-        <div className="step active">2. Challenge Details</div>
-        <div className="step">3. Review</div>
-      </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-2/3 mx-auto py-[3.5rem] px-[1.5rem] rounded-lg font-gilroy"
+    >
+      <section className="mb-[1.3rem]">
+        <h2 className="font-bold text-[3rem] leading-[115.645%]">
+          Create an Event
+        </h2>
+        <div className="flex gap-[2rem] my-[3.5rem] font-extrabold text-[1.2rem]">
+          <div
+            className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center bg-MVP-yellow`}
+          >
+            <div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">
+              1
+            </div>{" "}
+            Event Details
+          </div>
+          <div
+            className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center bg-MVP-yellow`}
+          >
+            <div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">
+              2
+            </div>{" "}
+            Challenge Details
+          </div>
+          <div
+            className={`${styledBorder} rounded-none flex flex-1 gap-[0.8rem] !py-[0.6rem] !px-0 justify-center items-center text-center`}
+          >
+            <div className="flex justify-center items-center rounded-full h-full border-MVP-black border-[0.1rem] aspect-square">
+              3
+            </div>{" "}
+            Review
+          </div>
+        </div>
+        <div className="py-[0.5rem] px-[2rem]">
+          <div className="mb-[1rem] flex flex-col">
+            <label
+              htmlFor="challengeReleaseDate"
+              className={`${sectionHeader}`}
+            >
+              Challenge Release Date
+              <span className="mb-2/3 text-[2rem]">*</span>
+            </label>
+            <div
+              className={`${styledBorder} flex w-fit h-[3rem] !px-[1rem] !py-0 items-center justify-center gap-[1rem] ${(errors.challengeReleaseDate || errors.challengeReleaseTime) &&
+                "border-MVP-red"
+                }`}
+            >
+              <Controller
+                name="challengeReleaseDate"
+                control={control}
+                rules={{
+                  required: "Release date is required",
+                  validate: (value) => {
+                    const releaseDate = new Date(value);
+                    const start = new Date(initialFormData.startDate);
 
-      <div className="form-group">
-        <label htmlFor="challengeReleaseDate">Challenge Release Date*</label>
-        <Controller
-          name="challengeReleaseDate"
-          control={control}
-          rules={{ required: "Challenge release date is required" }}
-          render={({ field }) => (
-            <div className="date-input-container">
-              <CalendarIcon className="icon" />
-              <input
-                type="date"
-                {...field}
-                className={`form-control ${
-                  errors.challengeReleaseDate ? "error" : ""
-                }`}
+                    // Calculate 2 weeks before the start date without modifying 'start'
+                    const twoWeeksBeforeStart = new Date(start);
+                    twoWeeksBeforeStart.setDate(start.getDate() - 14);
+
+                    return (
+                      releaseDate <= twoWeeksBeforeStart ||
+                      "Release date must be at least 2 weeks before the start date"
+                    );
+                  },
+                }}
+                render={({ field }) => (
+                  <input
+                    type="date"
+                    {...field}
+                    className="bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
+                  />
+                )}
               />
-              <span className="divider">|</span>
-              <ClockIcon className="icon" />
-              <input
-                type="time"
-                {...field}
-                className={`form-control ${
-                  errors.challengeReleaseDate ? "error" : ""
-                }`}
+              <div className="border-l-[0.18rem] border-MVP-black h-[70%]" />
+              <Controller
+                name="challengeReleaseTime"
+                control={control}
+                rules={{ required: "Release time is required" }}
+                render={({ field }) => (
+                  <input
+                    type="time"
+                    {...field}
+                    className="bg-transparent outline-none font-inherit text-inherit cursor-pointer border-0"
+                  />
+                )}
               />
             </div>
-          )}
-        />
-        {errors.challengeReleaseDate && (
-          <p className="error-text">{errors.challengeReleaseDate.message}</p>
-        )}
-      </div>
+            <div className="flex gap-[2.6rem]">
+              {errors.challengeReleaseDate && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
+                  {errors.challengeReleaseDate.message}
+                </p>
+              )}
+              {errors.challengeReleaseTime && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
+                  {errors.challengeReleaseTime.message}
+                </p>
+              )}
+            </div>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="problemStatement">Problem Statement*</label>
-        <textarea
-          {...register("problemStatement", {
-            required: "Problem statement is required",
-            maxLength: 500,
-          })}
-          className={`form-control ${errors.problemStatement ? "error" : ""}`}
-          placeholder="Enter the Problem Statement"
-          maxLength={500}
-        />
-        <p className="char-count">
-          {watch("problemStatement")?.length || 0}/500 characters
-        </p>
-        {errors.problemStatement && (
-          <p className="error-text">{errors.problemStatement.message}</p>
-        )}
-      </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="problemStatement" className={`${sectionHeader}`}>
+              Problem Statement<span className="mb-2/3 text-[2rem]">*</span>
+            </label>
+            <textarea
+              {...register("problemStatement", {
+                required: "Problem statement is required",
+                maxLength: 500,
+              })}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.problemStatement && "border-MVP-red"
+                }`}
+              placeholder="Enter the Problem Statement"
+              maxLength={500}
+            />
+            <div className="flex">
+              {errors.problemStatement && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
+                  {errors.problemStatement.message}
+                </p>
+              )}
+              <p className="ml-auto font-bold">
+                {watch("problemStatement")?.length || 0}/500 characters
+              </p>
+            </div>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="objectivesGoals">Objectives/Goals*</label>
-        <textarea
-          {...register("objectivesGoals", {
-            required: "Objectives/Goals are required",
-            maxLength: 500,
-          })}
-          className={`form-control ${errors.objectivesGoals ? "error" : ""}`}
-          placeholder="Enter the objectives/goals"
-          maxLength={500}
-        />
-        <p className="char-count">
-          {watch("objectivesGoals")?.length || 0}/500 characters
-        </p>
-        {errors.objectivesGoals && (
-          <p className="error-text">{errors.objectivesGoals.message}</p>
-        )}
-      </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="objectivesGoals" className={`${sectionHeader}`}>
+              Objectives/Goals<span className="mb-2/3 text-[2rem]">*</span>
+            </label>
+            <textarea
+              {...register("objectivesGoals", {
+                required: "Objectives/Goals are required",
+                maxLength: 500,
+              })}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.objectivesGoals && "border-MVP-red"
+                }`}
+              placeholder="Enter the objectives/goals"
+              maxLength={500}
+            />
+            <div className="flex">
+              {errors.objectivesGoals && (
+                <p className="text-MVP-red text-[0.8rem] mt-[0.3rem]">
+                  {errors.objectivesGoals.message}
+                </p>
+              )}
+              <p className="ml-auto font-bold">
+                {watch("objectivesGoals")?.length || 0}/500 characters
+              </p>
+            </div>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="constraints">Constraints/Limitations</label>
-        <textarea
-          {...register("constraints", { maxLength: 500 })}
-          className="form-control"
-          placeholder="Enter the constraints/limitations"
-          maxLength={500}
-        />
-        <p className="char-count">
-          {watch("constraints")?.length || 0}/500 characters
-        </p>
-      </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="constraints" className={`${sectionHeader}`}>
+              Constraints/Limitations
+            </label>
+            <textarea
+              {...register("constraints", { maxLength: 500 })}
+              placeholder="Enter the constraints/limitations"
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.constraints && "border-MVP-red"
+                }`}
+              maxLength={500}
+            />
+            <p className="ml-auto font-bold">
+              {watch("constraints")?.length || 0}/500 characters
+            </p>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="evaluationCriteria">Evaluation Criteria</label>
-        <textarea
-          {...register("evaluationCriteria", { maxLength: 500 })}
-          className="form-control"
-          placeholder="Enter the evaluation criteria"
-          maxLength={500}
-        />
-        <p className="char-count">
-          {watch("evaluationCriteria")?.length || 0}/500 characters
-        </p>
-      </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label htmlFor="evaluationCriteria" className={`${sectionHeader}`}>
+              Evaluation Criteria
+            </label>
+            <textarea
+              {...register("evaluationCriteria", { maxLength: 500 })}
+              placeholder="Enter the evaluation criteria"
+              maxLength={500}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.evaluationCriteria && "border-MVP-red"
+                }`}
+            />
+            <p className="ml-auto font-bold">
+              {watch("evaluationCriteria")?.length || 0}/500 characters
+            </p>
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="additionalInformation">Additional Information</label>
-        <textarea
-          {...register("additionalInformation", { maxLength: 500 })}
-          className="form-control"
-          placeholder="Enter any additional information needed"
-          maxLength={500}
-        />
-        <p className="char-count">
-          {watch("additionalInformation")?.length || 0}/500 characters
-        </p>
-      </div>
-
-      <div className="form-navigation">
-        <button
-          type="button"
-          className="btn prev"
-          onClick={handlePreviousClick}
-        >
-          Previous
-        </button>
-        <button type="submit" className="btn next">
-          Next
-        </button>
-      </div>
+          <div className="mb-[1rem] flex flex-col">
+            <label
+              htmlFor="additionalInformation"
+              className={`${sectionHeader}`}
+            >
+              Additional Information
+            </label>
+            <textarea
+              {...register("additionalInformation", { maxLength: 500 })}
+              placeholder="Enter any additional information needed"
+              maxLength={500}
+              className={`${styledBorder} text-[1.2rem] flex items-center min-h-[12rem] ${errors.additionalInformation && "border-MVP-red"
+                }`}
+            />
+            <p className="ml-auto font-bold">
+              {watch("additionalInformation")?.length || 0}/500 characters
+            </p>
+          </div>
+          <div className="flex justify-end gap-[2rem] my-10 font-extrabold text-2xl">
+            <button
+              type="button"
+              className={`${styledBorder} !py-[0.7rem] !px-[1.5rem]`}
+              onClick={handlePreviousClick}
+            >
+              Previous
+            </button>
+            <button
+              type="submit"
+              className={`${styledBorder} !bg-MVP-light-blue !py-[0.7rem] !px-[1.5rem]`}
+            >
+              Review
+            </button>
+          </div>
+        </div>
+      </section>
     </form>
   );
 };

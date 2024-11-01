@@ -1,77 +1,62 @@
 import { Link } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useEvents from "../../hooks/useEvents";
+import useEventCountdown from "../../hooks/useEventCountdown";
+import { useEventSubmissions } from "../../hooks/useEventSubmissions";
+import { auth } from "../../Firebase/FirebaseConfig";
 
 const CountdownBanner: React.FC<{ joinedEvents: string[], onCountdownEnd: () => void }> = ({ joinedEvents, onCountdownEnd }) => {
     const { events, getEndingEvent } = useEvents(joinedEvents);
     const { joinedCurrentEvents } = events;
-    const [countdown, setCountdown] = useState("");
     const [eventAlert, setEventAlert] = useState(null);
+    const [alreadySubmitted, setAlreadySubmitted] = useState(false);
 
     useEffect(() => {
         const eventEndingSoon = getEndingEvent(joinedCurrentEvents);
         if (eventEndingSoon) {
             const { title, id, endTime } = eventEndingSoon;
-            setEventAlert({
-                title: title,
-                eventId: id,
-                endTime: endTime
-            });
+            setEventAlert({ title, eventId: id, endTime });
         } else {
             setEventAlert(null);
         }
-    }, [joinedCurrentEvents]);
+    }, [joinedCurrentEvents, getEndingEvent]);
 
-    const updateCountdown = useCallback(() => {
-        if (!eventAlert) return;
-
-        const { endTime } = eventAlert;
-        const eventEndTime = new Date(endTime);
-        const now = new Date();
-        const timeLeftInMilliseconds = eventEndTime.getTime() - now.getTime();
-
-        if (timeLeftInMilliseconds <= 0) {
-            setCountdown("");
-            setEventAlert(null);
-            onCountdownEnd();
-            return;
-        }
-
-        const minutesLeft = Math.floor((timeLeftInMilliseconds / 1000 / 60) % 60);
-        const secondsLeft = Math.floor((timeLeftInMilliseconds / 1000) % 60);
-        const newCountdown = `${minutesLeft}m: ${String(secondsLeft).padStart(2, '0')}s`;
-
-        setCountdown(newCountdown);
-    }, [eventAlert, onCountdownEnd]);
+    const { allSubmissions: submissions } = useEventSubmissions(eventAlert?.eventId);
+    const submission = submissions?.find(sub => sub.userId === auth.currentUser?.uid) || null;
 
     useEffect(() => {
-        if (!eventAlert) {
-            setCountdown("");
-            return;
+        if (submission) {
+            setAlreadySubmitted(true);
         }
+    }, [submission]);
 
-        const intervalId = setInterval(updateCountdown, 1000);
-        updateCountdown();
+    const { formattedTime, ended } = useEventCountdown(eventAlert?.eventId || '', "end");
 
-        return () => clearInterval(intervalId);
-    }, [eventAlert, updateCountdown]);
+    useEffect(() => {
+        if (ended) {
+            setEventAlert(null);
+            onCountdownEnd();
+        }
+    }, [ended, onCountdownEnd]);
 
     if (!eventAlert) {
         return null;
     }
 
-    const { title, eventId } = eventAlert;
+    const { title } = eventAlert;
 
     return (
-        <div className="flex flex-wrap mx-8 my-4 min-h-fit rounded-[12px] h-[8%] bg-MVP-soft-blue px-8 py-4 font-poppins justify-between items-center">
-            <div className="flex flex-col gap-1 h-fit">
-                <h1 className="text-2xl">{title}</h1>
-                <h2 className="font-gilroy text-xl">Submissions Close in {countdown}</h2>
+        alreadySubmitted ? null : (
+            <div className="flex flex-wrap mx-8 my-4 min-h-fit rounded-[12px] h-[8%] bg-MVP-soft-blue px-8 py-4 font-poppins justify-between items-center">
+                <div className="flex flex-col gap-1 h-fit">
+                    <h1 className="text-2xl">{title}</h1>
+                    <h2 className="font-gilroy text-xl">Submissions Close in {formattedTime}</h2>
+                </div>
+                <Link to={`/event/${eventAlert.eventId}/submit`} className="h-fit rounded-[10px] border-y-[3px] border-x-[5px] py-3 px-6 border-MVP-black bg-MVP-yellow text-[#161616] text-center font-gilroy text-xl normal-case font-extrabold leading-[115.645%] tracking-tight">
+                    Submit Project
+                </Link>
             </div>
-            <Link to={`/join-event/${eventId}`} className="h-fit rounded-[10px] border-y-[3px] border-x-[5px] py-3 px-6 border-MVP-black bg-MVP-yellow text-[#161616] text-center font-gilroy text-xl normal-case font-extrabold leading-[115.645%] tracking-tight">
-                Submit Project
-            </Link>
-        </div>
+        )
     );
 };
 

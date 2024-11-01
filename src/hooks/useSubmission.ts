@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchHackathonEvents, fetchHackathonSubmissions } from "../Firebase/FirebaseQueries";
+import { fetchHackathonEvents, fetchHackathonSubmission } from "../Firebase/FirebaseQueries";
 
 const useSubmission = (submissionId: string) => {
     const [submission, setSubmission] = useState(null);
@@ -12,10 +12,10 @@ const useSubmission = (submissionId: string) => {
       setError(null);
       
       try {
-        const { submissions } = await fetchHackathonSubmissions(submissionId);
-        setSubmission(submissions[submissionId]);
-        if (submissions) {
-          const { event } = await fetchHackathonEvents(submissions[submissionId].eventId);
+        const { submission } = await fetchHackathonSubmission(submissionId);
+        setSubmission(submission);
+        if (submission) {
+          const { event } = await fetchHackathonEvents(submission.eventId);
           if (event) {
             setEvent(event);
           }

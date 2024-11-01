@@ -14,7 +14,6 @@ const DashboardNavbar = () => {
   const navigate = useNavigate();
   const [dropdownButton, setDropdownButton] = useState(false);
   const { hackathonUser } = useFetchHackathonUser(auth.currentUser?.uid);
-  console.log(hackathonUser);
 
   const navItems = [
     { path: "/dashboard", icon: HomeIcon, label: "Home" },

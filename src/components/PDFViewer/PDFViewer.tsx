@@ -68,7 +68,7 @@ const PDFViewer = ({ pdfFileName }) => {
     <div className='flex items-center justify-center'>
       <CommuntiArrowStyled 
           direction='left'
-          className="py-[1.8rem] px-[1.5rem] w-fit h-fit"
+          className="py-[1.4rem] px-[1.2rem] w-fit h-fit"
           onClick={previousPage}
           aria-label="Show previous slide"
           disabled={pageNumber === 1}
@@ -77,11 +77,11 @@ const PDFViewer = ({ pdfFileName }) => {
         file={pdfUrl}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page pageNumber={pageNumber} />
+        <Page pageNumber={pageNumber} scale={0.75}/>
       </Document>
       <CommuntiArrowStyled 
           direction='right'
-          className="py-[1.8rem] px-[1.5rem] w-fit h-fit"
+          className="py-[1.4rem] px-[1.2rem] w-fit h-fit"
           disabled={pageNumber >= numPages}
           onClick={nextPage}
           aria-label="Show next slide"
