@@ -64,6 +64,9 @@ https://github.com/makeitMVPadmin/LAP5_InnoLab1
 
 ### Live Demo <a name="live-demo">
 Demo: <a href="https://innolab-hackathon-suite.web.app/">https://innolab-hackathon-suite.web.app/</a>
+<br />
+Email: `testuser@mail.com`
+Password: `password`
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 💻 Getting Started <a name="getting-started"></a>
